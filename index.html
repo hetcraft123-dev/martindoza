@@ -1,0 +1,1089 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Psicólogo Martin Doza | Salud Mental & Bienestar</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --pride-red: #E40303;
+    --pride-orange: #FF8C00;
+    --pride-yellow: #FFED00;
+    --pride-green: #008026;
+    --pride-blue: #004DFF;
+    --pride-purple: #750787;
+    --dark: #0d0d0d;
+    --dark2: #1a1a2e;
+    --card-bg: #111122;
+    --text: #f0f0f0;
+    --text-muted: #aaa;
+    --white: #ffffff;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--dark);
+    color: var(--text);
+    font-family: 'Inter', sans-serif;
+    overflow-x: hidden;
+  }
+
+  /* SCROLLBAR */
+  ::-webkit-scrollbar { width: 6px; }
+  ::-webkit-scrollbar-track { background: var(--dark); }
+  ::-webkit-scrollbar-thumb {
+    background: linear-gradient(var(--pride-red), var(--pride-orange), var(--pride-yellow), var(--pride-green), var(--pride-blue), var(--pride-purple));
+    border-radius: 3px;
+  }
+
+  /* RAINBOW DIVIDER */
+  .rainbow-bar {
+    height: 4px;
+    background: linear-gradient(90deg, var(--pride-red), var(--pride-orange), var(--pride-yellow), var(--pride-green), var(--pride-blue), var(--pride-purple));
+  }
+
+  /* NAV */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+    padding: 16px 40px;
+    display: flex; justify-content: space-between; align-items: center;
+    transition: all 0.3s;
+  }
+  nav.scrolled {
+    background: rgba(13,13,13,0.92);
+    backdrop-filter: blur(16px);
+    border-bottom: 1px solid rgba(255,255,255,0.07);
+  }
+  .nav-logo {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.2rem;
+    font-weight: 700;
+    background: linear-gradient(90deg, var(--pride-red), var(--pride-orange), var(--pride-yellow), var(--pride-green), var(--pride-blue), var(--pride-purple));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .nav-links { display: flex; gap: 28px; list-style: none; }
+  .nav-links a {
+    color: var(--text-muted);
+    text-decoration: none;
+    font-size: 0.88rem;
+    font-weight: 500;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    transition: color 0.2s;
+  }
+  .nav-links a:hover { color: var(--white); }
+
+  /* HERO */
+  .hero {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 100px 40px 60px;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero-bg {
+    position: absolute; inset: 0;
+    background: radial-gradient(ellipse 80% 60% at 50% 0%, rgba(116,7,135,0.18) 0%, transparent 70%),
+                radial-gradient(ellipse 60% 40% at 100% 100%, rgba(0,77,255,0.12) 0%, transparent 60%),
+                radial-gradient(ellipse 50% 40% at 0% 100%, rgba(228,3,3,0.1) 0%, transparent 60%);
+  }
+  .hero-inner {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 40px;
+    max-width: 900px;
+    width: 100%;
+  }
+
+  /* IG CARD */
+  .ig-card {
+    background: var(--card-bg);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 24px;
+    padding: 32px;
+    width: 100%;
+    max-width: 520px;
+    position: relative;
+    overflow: hidden;
+  }
+  .ig-card::before {
+    content: '';
+    position: absolute; top: 0; left: 0; right: 0; height: 3px;
+    background: linear-gradient(90deg, var(--pride-red), var(--pride-orange), var(--pride-yellow), var(--pride-green), var(--pride-blue), var(--pride-purple));
+  }
+
+  .ig-header { display: flex; gap: 20px; align-items: center; margin-bottom: 20px; }
+
+  .profile-ring {
+    width: 88px; height: 88px;
+    border-radius: 50%;
+    padding: 3px;
+    background: linear-gradient(45deg, var(--pride-red), var(--pride-orange), var(--pride-yellow), var(--pride-green), var(--pride-blue), var(--pride-purple));
+    animation: spin-ring 6s linear infinite;
+    flex-shrink: 0;
+  }
+  @keyframes spin-ring {
+    0% { background: linear-gradient(0deg, var(--pride-red), var(--pride-orange), var(--pride-yellow), var(--pride-green), var(--pride-blue), var(--pride-purple)); }
+    100% { background: linear-gradient(360deg, var(--pride-red), var(--pride-orange), var(--pride-yellow), var(--pride-green), var(--pride-blue), var(--pride-purple)); }
+  }
+  .profile-img-wrap {
+    width: 100%; height: 100%;
+    border-radius: 50%;
+    overflow: hidden;
+    background: var(--dark2);
+    border: 3px solid var(--card-bg);
+  }
+  .profile-img-wrap img {
+    width: 100%; height: 100%;
+    object-fit: cover;
+  }
+
+  .ig-info { flex: 1; }
+  .ig-name-row {
+    display: flex; align-items: center; gap: 8px;
+    margin-bottom: 2px;
+  }
+  .ig-name {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: var(--white);
+  }
+  .verified-badge {
+    width: 20px; height: 20px;
+    background: linear-gradient(135deg, #0095f6, #0070d1);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    box-shadow: 0 2px 8px rgba(0,149,246,0.4);
+    flex-shrink: 0;
+  }
+  .verified-badge svg { width: 12px; height: 12px; }
+  .ig-handle {
+    color: #0095f6;
+    font-size: 0.82rem;
+    font-weight: 500;
+    text-decoration: none;
+    display: block;
+    margin-bottom: 4px;
+  }
+  .ig-category {
+    font-size: 0.78rem;
+    color: var(--text-muted);
+  }
+
+  .ig-stats {
+    display: flex; gap: 0;
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 12px;
+    overflow: hidden;
+    margin-bottom: 16px;
+  }
+  .stat {
+    flex: 1;
+    text-align: center;
+    padding: 10px 8px;
+    border-right: 1px solid rgba(255,255,255,0.08);
+  }
+  .stat:last-child { border-right: none; }
+  .stat-num {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: var(--white);
+    display: block;
+  }
+  .stat-label {
+    font-size: 0.7rem;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  .ig-bio {
+    font-size: 0.85rem;
+    color: var(--text);
+    line-height: 1.6;
+    margin-bottom: 16px;
+  }
+  .ig-bio .emoji { margin-right: 4px; }
+
+  .ig-buttons { display: flex; gap: 8px; margin-bottom: 20px; }
+  .btn-ig {
+    flex: 1;
+    padding: 9px 12px;
+    border-radius: 10px;
+    font-size: 0.82rem;
+    font-weight: 600;
+    cursor: pointer;
+    text-decoration: none;
+    text-align: center;
+    transition: all 0.2s;
+  }
+  .btn-ig-primary {
+    background: linear-gradient(90deg, var(--pride-purple), var(--pride-blue));
+    color: white;
+    border: none;
+  }
+  .btn-ig-primary:hover { opacity: 0.85; transform: translateY(-1px); }
+  .btn-ig-secondary {
+    background: rgba(255,255,255,0.07);
+    color: var(--text);
+    border: 1px solid rgba(255,255,255,0.12);
+  }
+  .btn-ig-secondary:hover { background: rgba(255,255,255,0.12); }
+
+  .mini-grid {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 3px;
+    border-radius: 10px;
+    overflow: hidden;
+  }
+  .mini-grid img {
+    width: 100%;
+    aspect-ratio: 1;
+    object-fit: cover;
+    display: block;
+  }
+
+  /* HERO HEADLINE */
+  .hero-headline { text-align: center; }
+  .hero-headline h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2rem, 5vw, 3.2rem);
+    font-weight: 900;
+    line-height: 1.15;
+    margin-bottom: 16px;
+    color: var(--white);
+  }
+  .hero-headline h1 span {
+    background: linear-gradient(90deg, var(--pride-red), var(--pride-orange), var(--pride-yellow), var(--pride-green), var(--pride-blue), var(--pride-purple));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .hero-community {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 100px;
+    padding: 10px 24px;
+    font-size: 0.88rem;
+    color: var(--text-muted);
+  }
+  .community-num {
+    font-weight: 700;
+    font-size: 1.1rem;
+    color: var(--white);
+    background: linear-gradient(90deg, var(--pride-red), var(--pride-orange));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  /* SECTIONS COMMON */
+  section { padding: 80px 40px; }
+  .section-label {
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--pride-orange);
+    margin-bottom: 12px;
+  }
+  .section-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(1.8rem, 4vw, 2.8rem);
+    font-weight: 700;
+    color: var(--white);
+    line-height: 1.2;
+    margin-bottom: 16px;
+  }
+  .section-title span {
+    background: linear-gradient(90deg, var(--pride-blue), var(--pride-purple));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .section-sub {
+    color: var(--text-muted);
+    font-size: 1rem;
+    line-height: 1.7;
+    max-width: 600px;
+  }
+  .container { max-width: 1100px; margin: 0 auto; }
+
+  /* REVEAL ANIMATION */
+  .reveal {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+  }
+  .reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  .reveal-delay-1 { transition-delay: 0.1s; }
+  .reveal-delay-2 { transition-delay: 0.2s; }
+  .reveal-delay-3 { transition-delay: 0.3s; }
+  .reveal-delay-4 { transition-delay: 0.4s; }
+
+  /* ABOUT */
+  #sobre-mi { background: var(--dark2); }
+  .about-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 60px;
+    align-items: center;
+  }
+  .about-text { }
+  .about-text .section-sub { max-width: 100%; margin-bottom: 28px; }
+  .expertise-tags { display: flex; flex-wrap: wrap; gap: 10px; }
+  .tag {
+    padding: 6px 16px;
+    border-radius: 100px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    border: 1px solid;
+  }
+  .tag-red    { color: var(--pride-red);    border-color: rgba(228,3,3,0.4);    background: rgba(228,3,3,0.08); }
+  .tag-orange { color: var(--pride-orange); border-color: rgba(255,140,0,0.4);  background: rgba(255,140,0,0.08); }
+  .tag-yellow { color: var(--pride-yellow); border-color: rgba(255,237,0,0.4);  background: rgba(255,237,0,0.08); }
+  .tag-green  { color: #00c43a;             border-color: rgba(0,196,58,0.4);   background: rgba(0,196,58,0.08); }
+  .tag-blue   { color: #4d88ff;             border-color: rgba(77,136,255,0.4); background: rgba(77,136,255,0.08); }
+  .tag-purple { color: #c060e0;             border-color: rgba(117,7,135,0.4);  background: rgba(117,7,135,0.08); }
+
+  .about-photos {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+  }
+  .about-photos img {
+    width: 100%;
+    aspect-ratio: 1;
+    object-fit: cover;
+    border-radius: 16px;
+  }
+  .about-photos img:first-child {
+    grid-column: 1 / -1;
+    aspect-ratio: 16/9;
+  }
+
+  /* SERVICIOS */
+  #servicios { }
+  .services-header { text-align: center; margin-bottom: 56px; }
+  .services-header .section-sub { margin: 0 auto; }
+  .services-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+  }
+  .service-card {
+    background: var(--card-bg);
+    border: 1px solid rgba(255,255,255,0.07);
+    border-radius: 20px;
+    padding: 32px 28px;
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.3s, border-color 0.3s;
+  }
+  .service-card:hover {
+    transform: translateY(-6px);
+    border-color: rgba(255,255,255,0.15);
+  }
+  .service-card::before {
+    content: '';
+    position: absolute; top: 0; left: 0; right: 0; height: 3px;
+  }
+  .service-card:nth-child(1)::before { background: linear-gradient(90deg, var(--pride-red), var(--pride-orange)); }
+  .service-card:nth-child(2)::before { background: linear-gradient(90deg, var(--pride-yellow), var(--pride-green)); }
+  .service-card:nth-child(3)::before { background: linear-gradient(90deg, var(--pride-blue), var(--pride-purple)); }
+  .service-card:nth-child(4)::before { background: linear-gradient(90deg, var(--pride-purple), var(--pride-red)); }
+  .service-card:nth-child(5)::before { background: linear-gradient(90deg, var(--pride-orange), var(--pride-yellow)); }
+  .service-card:nth-child(6)::before { background: linear-gradient(90deg, var(--pride-green), var(--pride-blue)); }
+
+  .service-icon {
+    font-size: 2rem;
+    margin-bottom: 16px;
+    display: block;
+  }
+  .service-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--white);
+    margin-bottom: 10px;
+  }
+  .service-desc {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    line-height: 1.6;
+  }
+
+  /* GALERÍA */
+  #galeria { background: var(--dark2); }
+  .gallery-header { text-align: center; margin-bottom: 48px; }
+  .gallery-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+  }
+  .gallery-item {
+    position: relative;
+    overflow: hidden;
+    border-radius: 14px;
+    aspect-ratio: 1;
+    cursor: pointer;
+  }
+  .gallery-item:nth-child(1) {
+    grid-column: span 2;
+    grid-row: span 2;
+  }
+  .gallery-item img {
+    width: 100%; height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s ease;
+  }
+  .gallery-item:hover img { transform: scale(1.06); }
+  .gallery-overlay {
+    position: absolute; inset: 0;
+    background: linear-gradient(to top, rgba(0,0,0,0.7) 0%, transparent 60%);
+    opacity: 0;
+    transition: opacity 0.3s;
+    display: flex; align-items: flex-end;
+    padding: 16px;
+  }
+  .gallery-item:hover .gallery-overlay { opacity: 1; }
+  .gallery-overlay span {
+    font-size: 0.8rem;
+    color: white;
+    font-weight: 500;
+  }
+
+  /* METRICS */
+  #metricas {
+    background: linear-gradient(135deg, #0a0a1a 0%, #1a0a2a 50%, #0a1a2a 100%);
+  }
+  .metrics-header { text-align: center; margin-bottom: 56px; }
+  .metrics-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 2px;
+    background: linear-gradient(90deg, var(--pride-red), var(--pride-orange), var(--pride-yellow), var(--pride-green), var(--pride-blue), var(--pride-purple));
+    border-radius: 20px;
+    overflow: hidden;
+    padding: 2px;
+  }
+  .metric-item {
+    background: #0d0d20;
+    padding: 36px 20px;
+    text-align: center;
+  }
+  .metric-item:first-child { border-radius: 18px 0 0 18px; }
+  .metric-item:last-child { border-radius: 0 18px 18px 0; }
+  .metric-num {
+    font-family: 'Playfair Display', serif;
+    font-size: 2.8rem;
+    font-weight: 900;
+    color: var(--white);
+    display: block;
+    line-height: 1;
+    margin-bottom: 8px;
+  }
+  .metric-num.counter { }
+  .metric-label {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+
+  /* CONTACTO */
+  #contacto { }
+  .contact-inner {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 60px;
+    align-items: start;
+  }
+  .contact-left .section-sub { margin-bottom: 32px; }
+  .social-links { display: flex; flex-direction: column; gap: 12px; }
+  .social-link {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 14px 18px;
+    background: var(--card-bg);
+    border: 1px solid rgba(255,255,255,0.07);
+    border-radius: 14px;
+    text-decoration: none;
+    color: var(--text);
+    font-size: 0.9rem;
+    font-weight: 500;
+    transition: all 0.25s;
+  }
+  .social-link:hover {
+    border-color: rgba(255,255,255,0.18);
+    transform: translateX(4px);
+  }
+  .social-link-icon {
+    width: 36px; height: 36px;
+    border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.1rem;
+    flex-shrink: 0;
+  }
+  .ig-icon-bg {
+    background: linear-gradient(135deg, #f9ce34, #ee2a7b, #6228d7);
+  }
+
+  .contact-form {
+    background: var(--card-bg);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 20px;
+    padding: 32px;
+  }
+  .form-group { margin-bottom: 18px; }
+  .form-group label {
+    display: block;
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 8px;
+  }
+  .form-group input,
+  .form-group textarea,
+  .form-group select {
+    width: 100%;
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 10px;
+    padding: 12px 16px;
+    color: var(--text);
+    font-size: 0.9rem;
+    font-family: 'Inter', sans-serif;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+  .form-group input:focus,
+  .form-group textarea:focus,
+  .form-group select:focus {
+    border-color: var(--pride-purple);
+  }
+  .form-group textarea { resize: vertical; min-height: 100px; }
+  .form-group select option { background: var(--dark2); }
+  .btn-submit {
+    width: 100%;
+    padding: 14px;
+    border: none;
+    border-radius: 12px;
+    background: linear-gradient(90deg, var(--pride-purple), var(--pride-blue));
+    color: white;
+    font-size: 0.95rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: opacity 0.2s, transform 0.2s;
+    font-family: 'Inter', sans-serif;
+  }
+  .btn-submit:hover { opacity: 0.88; transform: translateY(-2px); }
+
+  /* FOOTER */
+  footer {
+    padding: 32px 40px;
+    border-top: 1px solid rgba(255,255,255,0.07);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: var(--dark2);
+    flex-wrap: wrap;
+    gap: 16px;
+  }
+  .footer-logo {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.1rem;
+    font-weight: 700;
+    background: linear-gradient(90deg, var(--pride-red), var(--pride-orange), var(--pride-yellow), var(--pride-green), var(--pride-blue), var(--pride-purple));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  footer p { color: var(--text-muted); font-size: 0.82rem; }
+  .footer-ig a {
+    color: #0095f6;
+    text-decoration: none;
+    font-size: 0.85rem;
+    font-weight: 500;
+  }
+
+  /* PARALLAX SECTION */
+  .parallax-section {
+    height: 300px;
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .parallax-bg {
+    position: absolute; inset: -50px;
+    background: linear-gradient(135deg, #0d001a, #001a0d, #00001a);
+    transform: translateZ(0);
+  }
+  .parallax-content {
+    position: relative;
+    text-align: center;
+    z-index: 1;
+  }
+  .parallax-content h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(1.8rem, 4vw, 3rem);
+    font-weight: 900;
+    color: var(--white);
+    margin-bottom: 20px;
+  }
+  .parallax-content h2 span {
+    background: linear-gradient(90deg, var(--pride-red), var(--pride-orange), var(--pride-yellow), var(--pride-green), var(--pride-blue), var(--pride-purple));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .btn-cta {
+    display: inline-block;
+    padding: 14px 36px;
+    background: linear-gradient(90deg, var(--pride-red), var(--pride-orange), var(--pride-yellow), var(--pride-green), var(--pride-blue), var(--pride-purple));
+    background-size: 200%;
+    border-radius: 100px;
+    color: white;
+    text-decoration: none;
+    font-weight: 700;
+    font-size: 0.95rem;
+    transition: background-position 0.4s, transform 0.2s;
+    text-shadow: 0 1px 3px rgba(0,0,0,0.3);
+  }
+  .btn-cta:hover { background-position: right; transform: translateY(-2px); }
+
+  /* RESPONSIVE */
+  @media (max-width: 900px) {
+    nav { padding: 14px 20px; }
+    .nav-links { display: none; }
+    section { padding: 60px 20px; }
+    .hero { padding: 80px 20px 40px; }
+    .about-grid { grid-template-columns: 1fr; }
+    .services-grid { grid-template-columns: 1fr 1fr; }
+    .gallery-grid { grid-template-columns: repeat(3, 1fr); }
+    .gallery-item:nth-child(1) { grid-column: span 1; grid-row: span 1; }
+    .metrics-grid { grid-template-columns: repeat(2, 1fr); }
+    .metric-item:nth-child(2) { border-radius: 0 18px 0 0; }
+    .metric-item:nth-child(3) { border-radius: 0 0 0 18px; }
+    .contact-inner { grid-template-columns: 1fr; }
+    footer { flex-direction: column; text-align: center; }
+  }
+  @media (max-width: 600px) {
+    .ig-card { padding: 20px; }
+    .services-grid { grid-template-columns: 1fr; }
+    .gallery-grid { grid-template-columns: repeat(2, 1fr); }
+    .metrics-grid { grid-template-columns: 1fr 1fr; }
+    .mini-grid { grid-template-columns: repeat(3, 1fr); }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav id="navbar">
+  <div class="nav-logo">Psic. Martin Doza</div>
+  <ul class="nav-links">
+    <li><a href="#sobre-mi">Sobre mí</a></li>
+    <li><a href="#servicios">Servicios</a></li>
+    <li><a href="#galeria">Contenido</a></li>
+    <li><a href="#contacto">Contacto</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero" id="inicio">
+  <div class="hero-bg"></div>
+  <div class="hero-inner">
+
+    <!-- IG CARD -->
+    <div class="ig-card reveal">
+      <div class="ig-header">
+        <div class="profile-ring">
+          <div class="profile-img-wrap">
+            <img src="assets/instagram/profile.jpg" alt="Martin Doza" onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%2288%22 height=%2288%22 viewBox=%220 0 88 88%22><circle cx=%2244%22 cy=%2244%22 r=%2244%22 fill=%22%231a1a2e%22/><text x=%2244%22 y=%2250%22 text-anchor=%22middle%22 fill=%22%23aaa%22 font-size=%2232%22>👤</text></svg>'">
+          </div>
+        </div>
+        <div class="ig-info">
+          <div class="ig-name-row">
+            <span class="ig-name">Martin Doza</span>
+            <div class="verified-badge">
+              <svg viewBox="0 0 24 24" fill="white">
+                <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" stroke="white" stroke-width="2.5" fill="none"/>
+              </svg>
+            </div>
+          </div>
+          <a href="https://www.instagram.com/psi.martindoza/" target="_blank" class="ig-handle">@psi.martindoza</a>
+          <span class="ig-category">🧠 Psicólogo · Salud mental &amp; diversidad</span>
+        </div>
+      </div>
+
+      <div class="ig-stats">
+        <div class="stat">
+          <span class="stat-num">153</span>
+          <span class="stat-label">Posts</span>
+        </div>
+        <div class="stat">
+          <span class="stat-num">304</span>
+          <span class="stat-label">Seguidores</span>
+        </div>
+        <div class="stat">
+          <span class="stat-num">360</span>
+          <span class="stat-label">Seguidos</span>
+        </div>
+      </div>
+
+      <p class="ig-bio">
+        <span class="emoji">🧠</span> Psicólogo | Salud mental con perspectiva de diversidad<br>
+        <span class="emoji">🌈</span> Educación sexual &amp; bienestar emocional<br>
+        <span class="emoji">💬</span> Consultas online y presenciales<br>
+        <span class="emoji">❤️</span> Ansiedad · Pareja · Identidad
+      </p>
+
+      <div class="ig-buttons">
+        <a href="#contacto" class="btn-ig btn-ig-primary">Contactar</a>
+        <a href="#servicios" class="btn-ig btn-ig-secondary">Servicios</a>
+        <a href="https://www.instagram.com/psi.martindoza/" target="_blank" class="btn-ig btn-ig-secondary">Seguir</a>
+      </div>
+
+      <div class="mini-grid">
+        <img src="assets/instagram/post-1.jpg" alt="post" onerror="this.style.background='#1a1a2e'">
+        <img src="assets/instagram/post-2.jpg" alt="post" onerror="this.style.background='#1a1a2e'">
+        <img src="assets/instagram/post-3.jpg" alt="post" onerror="this.style.background='#1a1a2e'">
+        <img src="assets/instagram/post-4.jpg" alt="post" onerror="this.style.background='#1a1a2e'">
+        <img src="assets/instagram/post-5.jpg" alt="post" onerror="this.style.background='#1a1a2e'">
+        <img src="assets/instagram/post-6.jpg" alt="post" onerror="this.style.background='#1a1a2e'">
+      </div>
+    </div>
+
+    <!-- HEADLINE -->
+    <div class="hero-headline reveal reveal-delay-2">
+      <h1>Tu bienestar mental<br>merece un espacio <span>sin prejuicios</span></h1>
+      <div class="hero-community">
+        <span class="community-num">304</span>
+        <span>personas ya forman parte de esta comunidad</span>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<div class="rainbow-bar"></div>
+
+<!-- SOBRE MÍ -->
+<section id="sobre-mi">
+  <div class="container">
+    <div class="about-grid">
+      <div class="about-text">
+        <p class="section-label reveal">Sobre mí</p>
+        <h2 class="section-title reveal">Psicólogo comprometido con <span>tu salud mental</span></h2>
+        <p class="section-sub reveal">
+          Soy Martin Doza, psicólogo con un enfoque inclusivo y libre de juicios. Acompaño a personas en sus procesos de bienestar emocional, identidad y vínculos desde una mirada que celebra la diversidad en todas sus formas.
+        </p>
+        <p class="section-sub reveal" style="margin-top:12px; margin-bottom:28px;">
+          Creo que la salud mental es un derecho para todes. Mi trabajo combina herramientas clínicas con perspectiva de género, diversidad sexual y educación sexual para que puedas encontrarte con vos mismo/a sin filtros.
+        </p>
+        <div class="expertise-tags reveal">
+          <span class="tag tag-red">Ansiedad</span>
+          <span class="tag tag-orange">Terapia de pareja</span>
+          <span class="tag tag-yellow">Educación sexual</span>
+          <span class="tag tag-green">Psicología clínica</span>
+          <span class="tag tag-blue">Identidad &amp; diversidad</span>
+          <span class="tag tag-purple">Bienestar emocional</span>
+        </div>
+      </div>
+      <div class="about-photos reveal reveal-delay-2">
+        <img src="assets/instagram/post-10.jpg?v=2" alt="Martin Doza" onerror="this.style.background='#1a1a2e'">
+        <img src="assets/instagram/post-11.jpg?v=2" alt="" onerror="this.style.background='#1a1a2e'">
+        <img src="assets/instagram/post-12.jpg?v=2" alt="" onerror="this.style.background='#1a1a2e'">
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="rainbow-bar"></div>
+
+<!-- SERVICIOS -->
+<section id="servicios">
+  <div class="container">
+    <div class="services-header">
+      <p class="section-label reveal">Servicios</p>
+      <h2 class="section-title reveal">¿En qué puedo <span>acompañarte?</span></h2>
+      <p class="section-sub reveal">Un espacio seguro y confidencial para trabajar lo que necesitás, a tu ritmo.</p>
+    </div>
+    <div class="services-grid">
+      <div class="service-card reveal">
+        <span class="service-icon">💻</span>
+        <h3 class="service-title">Consulta Online</h3>
+        <p class="service-desc">Sesiones individuales por videollamada desde donde estés. Flexibilidad horaria para adaptarse a tu vida cotidiana.</p>
+      </div>
+      <div class="service-card reveal reveal-delay-1">
+        <span class="service-icon">🛋️</span>
+        <h3 class="service-title">Consulta Presencial</h3>
+        <p class="service-desc">Atención en consultorio, en un espacio cálido y confidencial pensado para que te sientas cómodo/a/e desde el primer momento.</p>
+      </div>
+      <div class="service-card reveal reveal-delay-2">
+        <span class="service-icon">🧠</span>
+        <h3 class="service-title">Manejo de Ansiedad</h3>
+        <p class="service-desc">Herramientas concretas para entender y reducir la ansiedad, el estrés y las preocupaciones que te impiden avanzar.</p>
+      </div>
+      <div class="service-card reveal reveal-delay-3">
+        <span class="service-icon">❤️</span>
+        <h3 class="service-title">Terapia de Pareja</h3>
+        <p class="service-desc">Acompañamiento para parejas de cualquier tipo de vínculo. Comunicación, conflictos, deseo, ruptura o reconexión.</p>
+      </div>
+      <div class="service-card reveal reveal-delay-1">
+        <span class="service-icon">🌈</span>
+        <h3 class="service-title">Educación Sexual</h3>
+        <p class="service-desc">Espacios de aprendizaje y reflexión sobre sexualidad, diversidad, identidades y vínculos afectivos. Para individuos y grupos.</p>
+      </div>
+      <div class="service-card reveal reveal-delay-2">
+        <span class="service-icon">🎓</span>
+        <h3 class="service-title">Talleres Grupales</h3>
+        <p class="service-desc">Talleres temáticos de salud mental, bienestar emocional y educación sexual para grupos, instituciones y organizaciones.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PARALLAX CTA -->
+<div class="parallax-section">
+  <div class="parallax-bg" id="parallaxBg"></div>
+  <div class="parallax-content reveal">
+    <h2>Tu proceso empieza con <span>una conversación</span></h2>
+    <br>
+    <a href="#contacto" class="btn-cta">Reservá tu primera consulta</a>
+  </div>
+</div>
+
+<!-- GALERÍA -->
+<section id="galeria">
+  <div class="container">
+    <div class="gallery-header">
+      <p class="section-label reveal">Contenido</p>
+      <h2 class="section-title reveal">Desde <span>Instagram</span></h2>
+      <p class="section-sub reveal">Fotos, reflexiones y recursos de salud mental del perfil @psi.martindoza</p>
+    </div>
+    <div class="gallery-grid">
+      <div class="gallery-item reveal">
+        <img src="assets/instagram/post-1.jpg" alt="Instagram post">
+        <div class="gallery-overlay"><span>@psi.martindoza</span></div>
+      </div>
+      <div class="gallery-item reveal reveal-delay-1">
+        <img src="assets/instagram/post-2.jpg" alt="Instagram post">
+        <div class="gallery-overlay"><span>@psi.martindoza</span></div>
+      </div>
+      <div class="gallery-item reveal reveal-delay-2">
+        <img src="assets/instagram/post-3.jpg" alt="Instagram post">
+        <div class="gallery-overlay"><span>@psi.martindoza</span></div>
+      </div>
+      <div class="gallery-item reveal reveal-delay-3">
+        <img src="assets/instagram/post-4.jpg" alt="Instagram post">
+        <div class="gallery-overlay"><span>@psi.martindoza</span></div>
+      </div>
+      <div class="gallery-item reveal">
+        <img src="assets/instagram/post-5.jpg" alt="Instagram post">
+        <div class="gallery-overlay"><span>@psi.martindoza</span></div>
+      </div>
+      <div class="gallery-item reveal reveal-delay-1">
+        <img src="assets/instagram/post-6.jpg" alt="Instagram post">
+        <div class="gallery-overlay"><span>@psi.martindoza</span></div>
+      </div>
+      <div class="gallery-item reveal reveal-delay-2">
+        <img src="assets/instagram/post-7.jpg" alt="Instagram post">
+        <div class="gallery-overlay"><span>@psi.martindoza</span></div>
+      </div>
+      <div class="gallery-item reveal reveal-delay-3">
+        <img src="assets/instagram/post-8.jpg" alt="Instagram post">
+        <div class="gallery-overlay"><span>@psi.martindoza</span></div>
+      </div>
+      <div class="gallery-item reveal">
+        <img src="assets/instagram/post-9.jpg" alt="Instagram post">
+        <div class="gallery-overlay"><span>@psi.martindoza</span></div>
+      </div>
+    </div>
+
+    <div style="text-align:center; margin-top:36px;" class="reveal">
+      <a href="https://www.instagram.com/psi.martindoza/" target="_blank" class="btn-cta">Ver más en Instagram</a>
+    </div>
+  </div>
+</section>
+
+<div class="rainbow-bar"></div>
+
+<!-- MÉTRICAS -->
+<section id="metricas">
+  <div class="container">
+    <div class="metrics-header">
+      <p class="section-label reveal">En números</p>
+      <h2 class="section-title reveal">Una comunidad que <span>crece</span></h2>
+    </div>
+    <div class="metrics-grid">
+      <div class="metric-item reveal">
+        <span class="metric-num counter" data-target="304">0</span>
+        <span class="metric-label">Seguidores en IG</span>
+      </div>
+      <div class="metric-item reveal reveal-delay-1">
+        <span class="metric-num counter" data-target="153">0</span>
+        <span class="metric-label">Publicaciones</span>
+      </div>
+      <div class="metric-item reveal reveal-delay-2">
+        <span class="metric-num">∞</span>
+        <span class="metric-label">Espacio sin juicios</span>
+      </div>
+      <div class="metric-item reveal reveal-delay-3">
+        <span class="metric-num">🌈</span>
+        <span class="metric-label">Diversidad bienvenida</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACTO -->
+<section id="contacto">
+  <div class="container">
+    <div class="contact-inner">
+      <div class="contact-left">
+        <p class="section-label reveal">Contacto</p>
+        <h2 class="section-title reveal">Hablemos <span>sin vueltas</span></h2>
+        <p class="section-sub reveal" style="margin-bottom:32px;">
+          Escribime por Instagram o completá el formulario. El primer contacto no tiene ningún compromiso — solo una conversación.
+        </p>
+        <div class="social-links reveal">
+          <a href="https://www.instagram.com/psi.martindoza/" target="_blank" class="social-link">
+            <div class="social-link-icon ig-icon-bg">📸</div>
+            <div>
+              <div style="font-weight:600">Instagram</div>
+              <div style="font-size:0.78rem; color: var(--text-muted)">@psi.martindoza</div>
+            </div>
+          </a>
+        </div>
+      </div>
+      <div class="contact-form reveal reveal-delay-2">
+        <form onsubmit="handleSubmit(event)">
+          <div class="form-group">
+            <label>Tu nombre</label>
+            <input type="text" placeholder="¿Cómo te llamás?" required>
+          </div>
+          <div class="form-group">
+            <label>Tu email</label>
+            <input type="email" placeholder="tu@email.com" required>
+          </div>
+          <div class="form-group">
+            <label>¿Qué te interesa?</label>
+            <select>
+              <option value="">Seleccioná una opción</option>
+              <option>Consulta individual online</option>
+              <option>Consulta individual presencial</option>
+              <option>Terapia de pareja</option>
+              <option>Educación sexual</option>
+              <option>Taller grupal</option>
+              <option>Otra consulta</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Mensaje (opcional)</label>
+            <textarea placeholder="Contame brevemente qué estás buscando..."></textarea>
+          </div>
+          <button type="submit" class="btn-submit">Enviar mensaje ✨</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<div class="rainbow-bar"></div>
+<footer>
+  <div class="footer-logo">Psic. Martin Doza</div>
+  <p>© 2026 · Psicólogo Martin Doza · Todos los derechos reservados</p>
+  <div class="footer-ig">
+    <a href="https://www.instagram.com/psi.martindoza/" target="_blank">@psi.martindoza</a>
+  </div>
+</footer>
+
+<script>
+  // NAV SCROLL
+  window.addEventListener('scroll', () => {
+    document.getElementById('navbar').classList.toggle('scrolled', window.scrollY > 40);
+  });
+
+  // REVEAL ANIMATIONS
+  const reveals = document.querySelectorAll('.reveal');
+  const revealObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+      }
+    });
+  }, { threshold: 0.12 });
+  reveals.forEach(el => revealObserver.observe(el));
+
+  // COUNTER ANIMATION
+  const counters = document.querySelectorAll('.counter');
+  const counterObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting && !entry.target.dataset.counted) {
+        entry.target.dataset.counted = 'true';
+        const target = +entry.target.dataset.target;
+        const duration = 1800;
+        const step = target / (duration / 16);
+        let current = 0;
+        const timer = setInterval(() => {
+          current = Math.min(current + step, target);
+          entry.target.textContent = Math.floor(current).toLocaleString('es-AR');
+          if (current >= target) clearInterval(timer);
+        }, 16);
+      }
+    });
+  }, { threshold: 0.5 });
+  counters.forEach(el => counterObserver.observe(el));
+
+  // PARALLAX
+  window.addEventListener('scroll', () => {
+    const bg = document.getElementById('parallaxBg');
+    if (!bg) return;
+    const section = bg.closest('.parallax-section');
+    const rect = section.getBoundingClientRect();
+    const offset = rect.top * 0.3;
+    bg.style.transform = `translateY(${offset}px)`;
+  });
+
+  // FORM SUBMIT
+  function handleSubmit(e) {
+    e.preventDefault();
+    const btn = e.target.querySelector('.btn-submit');
+    btn.textContent = '¡Mensaje enviado! 🎉';
+    btn.style.background = 'linear-gradient(90deg, #008026, #00c43a)';
+    setTimeout(() => {
+      btn.textContent = 'Enviar mensaje ✨';
+      btn.style.background = '';
+      e.target.reset();
+    }, 3000);
+  }
+</script>
+</body>
+</html>
