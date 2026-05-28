@@ -492,9 +492,26 @@
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
  
-        // Get patient slug from URL
-        const pathParts = window.location.pathname.split('/');
-        const patientSlug = pathParts[pathParts.length - 1] || pathParts[pathParts.length - 2];
+        // Get patient slug from URL - multiple methods
+        function getPatientSlug() {
+            // Method 1: From query string (after redirect from 404)
+            const querySlug = window.location.search.slice(1);
+            if (querySlug && querySlug.length > 0) {
+                return querySlug;
+            }
+            
+            // Method 2: From pathname
+            const pathParts = window.location.pathname.split('/').filter(p => p);
+            const pacienteIndex = pathParts.indexOf('paciente');
+            if (pacienteIndex !== -1 && pathParts[pacienteIndex + 1]) {
+                return pathParts[pacienteIndex + 1];
+            }
+            
+            // Method 3: Last part of path
+            return pathParts[pathParts.length - 1] || null;
+        }
+ 
+        const patientSlug = getPatientSlug();
  
         // State
         let patient = null;
@@ -677,6 +694,13 @@
  
         // Load Patient
         async function loadPatient() {
+            if (!patientSlug) {
+                patient = null;
+                render();
+                loadingOverlay.classList.add('hidden');
+                return;
+            }
+ 
             try {
                 const patientDoc = await getDoc(doc(db, 'panelkit_patients', patientSlug));
                 
