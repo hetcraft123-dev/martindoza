@@ -1,0 +1,718 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <meta name="theme-color" content="#0a0a0b">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <title>Mi Tablero</title>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=Outfit:wght@300;500;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+ 
+        :root {
+            --bg-primary: #0a0a0b;
+            --bg-secondary: #141416;
+            --bg-hover: #1a1a1e;
+            --text-primary: #e8e8e8;
+            --text-secondary: #6b6b70;
+            --accent: #6c5ce7;
+            --accent-glow: rgba(108, 92, 231, 0.3);
+            --accent-secondary: #00cec9;
+            --success: #00c853;
+            --warning: #ff9100;
+            --danger: #ff5252;
+            --border: #252529;
+            --safe-top: env(safe-area-inset-top);
+            --safe-bottom: env(safe-area-inset-bottom);
+        }
+ 
+        body {
+            font-family: 'Outfit', sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            min-height: 100vh;
+            padding: calc(24px + var(--safe-top)) 16px calc(24px + var(--safe-bottom));
+            background-image: 
+                radial-gradient(ellipse at top, rgba(108, 92, 231, 0.08) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(0, 206, 201, 0.04) 0%, transparent 40%);
+        }
+ 
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+ 
+        /* Header */
+        .header {
+            text-align: center;
+            margin-bottom: 32px;
+        }
+ 
+        .greeting {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            margin-bottom: 8px;
+        }
+ 
+        .patient-name {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 2rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--accent), var(--accent-secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+ 
+        .subtitle {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            margin-top: 8px;
+        }
+ 
+        .sync-status {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.65rem;
+            color: var(--text-secondary);
+            margin-top: 12px;
+            padding: 4px 12px;
+            background: var(--bg-secondary);
+            border-radius: 20px;
+        }
+ 
+        .sync-dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: var(--success);
+        }
+ 
+        .sync-dot.syncing {
+            background: var(--warning);
+            animation: pulse 1s infinite;
+        }
+ 
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.4; }
+        }
+ 
+        /* Filter Tabs */
+        .filter-tabs {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin-bottom: 24px;
+        }
+ 
+        .filter-tab {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 8px 16px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+ 
+        .filter-tab:hover {
+            border-color: var(--accent);
+            color: var(--text-primary);
+        }
+ 
+        .filter-tab.active {
+            background: var(--accent);
+            border-color: var(--accent);
+            color: white;
+        }
+ 
+        /* Cards Grid */
+        .cards-grid {
+            display: grid;
+            gap: 16px;
+        }
+ 
+        /* Card */
+        .card {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 20px;
+            transition: all 0.3s ease;
+            animation: fadeIn 0.3s ease;
+        }
+ 
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+ 
+        .card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
+        }
+ 
+        .card.read {
+            opacity: 0.6;
+        }
+ 
+        .card.read .card-text {
+            text-decoration: line-through;
+            color: var(--text-secondary);
+        }
+ 
+        .card-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 12px;
+        }
+ 
+        .card-priority {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            flex-shrink: 0;
+        }
+ 
+        .card-priority.alta { background: var(--danger); box-shadow: 0 0 10px var(--danger); }
+        .card-priority.media { background: var(--warning); }
+        .card-priority.baja { background: var(--success); }
+ 
+        .card-category {
+            font-size: 0.7rem;
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-family: 'JetBrains Mono', monospace;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+ 
+        .card-category.cuerpo { background: rgba(255, 107, 107, 0.2); color: #ff6b6b; }
+        .card-category.errores { background: rgba(255, 145, 0, 0.2); color: #ff9100; }
+        .card-category.emociones { background: rgba(0, 206, 201, 0.2); color: #00cec9; }
+        .card-category.relaciones { background: rgba(108, 92, 231, 0.2); color: #6c5ce7; }
+        .card-category.autoestima { background: rgba(253, 203, 110, 0.2); color: #fdcb6e; }
+        .card-category.general { background: rgba(99, 110, 114, 0.2); color: #636e72; }
+ 
+        .card-actions {
+            margin-left: auto;
+            display: flex;
+            gap: 6px;
+        }
+ 
+        .card-text {
+            font-size: 1.1rem;
+            line-height: 1.6;
+            font-weight: 300;
+        }
+ 
+        .card-text.editable {
+            cursor: text;
+            padding: 4px 8px;
+            margin: -4px -8px;
+            border-radius: 8px;
+            transition: background 0.2s ease;
+        }
+ 
+        .card-text.editable:hover {
+            background: rgba(255, 255, 255, 0.05);
+        }
+ 
+        .card-text.editable:focus {
+            outline: none;
+            background: rgba(108, 92, 231, 0.1);
+        }
+ 
+        .card-footer {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-top: 16px;
+            padding-top: 12px;
+            border-top: 1px solid var(--border);
+        }
+ 
+        .card-date {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.65rem;
+            color: var(--text-secondary);
+        }
+ 
+        /* Buttons */
+        button {
+            background: var(--accent);
+            border: none;
+            border-radius: 8px;
+            color: white;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.75rem;
+            font-weight: 600;
+            padding: 10px 16px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+ 
+        button:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 15px var(--accent-glow);
+        }
+ 
+        button:active {
+            transform: scale(0.98);
+        }
+ 
+        button.secondary {
+            background: transparent;
+            border: 1px solid var(--border);
+            color: var(--text-secondary);
+            padding: 8px 12px;
+        }
+ 
+        button.secondary:hover {
+            border-color: var(--text-secondary);
+            color: var(--text-primary);
+            box-shadow: none;
+        }
+ 
+        button.success {
+            background: var(--success);
+        }
+ 
+        button.small {
+            padding: 6px 10px;
+            font-size: 0.65rem;
+        }
+ 
+        /* Empty State */
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: var(--text-secondary);
+        }
+ 
+        .empty-icon {
+            font-size: 4rem;
+            margin-bottom: 16px;
+            opacity: 0.3;
+        }
+ 
+        .empty-text {
+            font-size: 1rem;
+            margin-bottom: 8px;
+        }
+ 
+        .empty-subtext {
+            font-size: 0.85rem;
+            opacity: 0.7;
+        }
+ 
+        /* Error State */
+        .error-state {
+            text-align: center;
+            padding: 60px 20px;
+        }
+ 
+        .error-icon {
+            font-size: 4rem;
+            margin-bottom: 16px;
+        }
+ 
+        .error-text {
+            font-size: 1.1rem;
+            color: var(--danger);
+            margin-bottom: 8px;
+        }
+ 
+        .error-subtext {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+        }
+ 
+        /* Stats Bar */
+        .stats-bar {
+            display: flex;
+            gap: 16px;
+            justify-content: center;
+            margin-bottom: 24px;
+            padding: 16px;
+            background: var(--bg-secondary);
+            border-radius: 12px;
+            border: 1px solid var(--border);
+        }
+ 
+        .stat-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 0 20px;
+        }
+ 
+        .stat-value {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--accent);
+        }
+ 
+        .stat-label {
+            font-size: 0.65rem;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            margin-top: 4px;
+        }
+ 
+        /* Loading */
+        .loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: var(--bg-primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+            transition: opacity 0.3s ease;
+        }
+ 
+        .loading-overlay.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+ 
+        .loading-spinner {
+            width: 40px;
+            height: 40px;
+            border: 3px solid var(--border);
+            border-top-color: var(--accent);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+ 
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+ 
+        /* Motivational Quote */
+        .daily-quote {
+            background: linear-gradient(135deg, rgba(108, 92, 231, 0.1), rgba(0, 206, 201, 0.1));
+            border: 1px solid rgba(108, 92, 231, 0.2);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 24px;
+            text-align: center;
+        }
+ 
+        .quote-icon {
+            font-size: 1.5rem;
+            margin-bottom: 8px;
+        }
+ 
+        .quote-text {
+            font-size: 0.95rem;
+            font-style: italic;
+            color: var(--text-secondary);
+        }
+ 
+        /* High Priority Highlight */
+        .card.priority-alta {
+            border-color: rgba(255, 82, 82, 0.3);
+            background: linear-gradient(135deg, var(--bg-secondary), rgba(255, 82, 82, 0.05));
+        }
+ 
+        @media (max-width: 500px) {
+            .patient-name {
+                font-size: 1.5rem;
+            }
+ 
+            .stats-bar {
+                gap: 10px;
+            }
+ 
+            .stat-item {
+                padding: 0 12px;
+            }
+ 
+            .stat-value {
+                font-size: 1.2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="loading-overlay" id="loadingOverlay">
+        <div class="loading-spinner"></div>
+    </div>
+ 
+    <div class="container">
+        <header class="header">
+            <p class="greeting">Hola,</p>
+            <h1 class="patient-name" id="patientName">Cargando...</h1>
+            <p class="subtitle">Tu tablero de pensamientos</p>
+            <div class="sync-status">
+                <div class="sync-dot" id="syncDot"></div>
+                <span id="syncText">Conectando...</span>
+            </div>
+        </header>
+ 
+        <div id="mainContent">
+            <!-- Content will be loaded here -->
+        </div>
+    </div>
+ 
+    <!-- Firebase SDK -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.8.1/firebase-app.js";
+        import { getFirestore, collection, doc, getDoc, setDoc, onSnapshot, query, orderBy } from "https://www.gstatic.com/firebasejs/11.8.1/firebase-firestore.js";
+ 
+        const firebaseConfig = {
+            apiKey: "AIzaSyDetXdN-ujotpEY7HNJMQB2JEOYooLxpkk",
+            authDomain: "todo-hetcraft.firebaseapp.com",
+            projectId: "todo-hetcraft",
+            storageBucket: "todo-hetcraft.firebasestorage.app",
+            messagingSenderId: "225738970824",
+            appId: "1:225738970824:web:f3a5c8432a9c3c6595f7fd"
+        };
+ 
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+ 
+        // Get patient slug from URL
+        const pathParts = window.location.pathname.split('/');
+        const patientSlug = pathParts[pathParts.length - 1] || pathParts[pathParts.length - 2];
+ 
+        // State
+        let patient = null;
+        let cards = [];
+        let activeFilter = 'todas';
+ 
+        // DOM
+        const loadingOverlay = document.getElementById('loadingOverlay');
+        const syncDot = document.getElementById('syncDot');
+        const syncText = document.getElementById('syncText');
+        const patientNameEl = document.getElementById('patientName');
+        const mainContent = document.getElementById('mainContent');
+ 
+        function updateSyncStatus(status) {
+            syncDot.className = 'sync-dot';
+            if (status === 'online') {
+                syncText.textContent = 'Sincronizado';
+            } else if (status === 'syncing') {
+                syncDot.classList.add('syncing');
+                syncText.textContent = 'Sincronizando...';
+            }
+        }
+ 
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+ 
+        function formatDate(timestamp) {
+            const date = new Date(timestamp);
+            return date.toLocaleDateString('es-ES', { day: 'numeric', month: 'short', year: 'numeric' });
+        }
+ 
+        // Get motivational quote based on day
+        function getDailyQuote() {
+            const quotes = [
+                "Cada día es una nueva oportunidad para ser la mejor versión de ti mismo.",
+                "Tus pensamientos crean tu realidad. Elige los que te empoderan.",
+                "El cambio comienza cuando decides que mereces algo mejor.",
+                "No eres tus pensamientos, eres quien los observa.",
+                "La paciencia contigo mismo es la forma más alta de amor propio.",
+                "Cada pequeño paso cuenta en tu camino de crecimiento.",
+                "Tu valor no depende de tus logros, depende de quién eres."
+            ];
+            const dayOfYear = Math.floor((Date.now() - new Date(new Date().getFullYear(), 0, 0)) / 86400000);
+            return quotes[dayOfYear % quotes.length];
+        }
+ 
+        // Render
+        function render() {
+            if (!patient) {
+                mainContent.innerHTML = `
+                    <div class="error-state">
+                        <div class="error-icon">🔍</div>
+                        <p class="error-text">Paciente no encontrado</p>
+                        <p class="error-subtext">Verifica que el enlace sea correcto</p>
+                    </div>
+                `;
+                return;
+            }
+ 
+            const filteredCards = activeFilter === 'todas' 
+                ? cards 
+                : cards.filter(c => c.category === activeFilter);
+ 
+            const totalCards = cards.length;
+            const readCards = cards.filter(c => c.read).length;
+            const highPriority = cards.filter(c => c.priority === 'alta' && !c.read).length;
+ 
+            // Get unique categories
+            const categories = ['todas', ...new Set(cards.map(c => c.category))];
+ 
+            mainContent.innerHTML = `
+                <div class="daily-quote">
+                    <div class="quote-icon">💭</div>
+                    <p class="quote-text">"${getDailyQuote()}"</p>
+                </div>
+ 
+                <div class="stats-bar">
+                    <div class="stat-item">
+                        <span class="stat-value">${totalCards}</span>
+                        <span class="stat-label">Tarjetas</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-value" style="color: var(--success);">${readCards}</span>
+                        <span class="stat-label">Leídas</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-value" style="color: var(--danger);">${highPriority}</span>
+                        <span class="stat-label">Prioritarias</span>
+                    </div>
+                </div>
+ 
+                <div class="filter-tabs">
+                    ${categories.map(cat => `
+                        <button class="filter-tab ${activeFilter === cat ? 'active' : ''}" onclick="setFilter('${cat}')">
+                            ${cat === 'todas' ? '📋 Todas' : cat.charAt(0).toUpperCase() + cat.slice(1)}
+                        </button>
+                    `).join('')}
+                </div>
+ 
+                <div class="cards-grid">
+                    ${filteredCards.length === 0 ? `
+                        <div class="empty-state">
+                            <div class="empty-icon">📝</div>
+                            <p class="empty-text">No hay tarjetas${activeFilter !== 'todas' ? ' en esta categoría' : ''}</p>
+                            <p class="empty-subtext">Tu terapeuta agregará tarjetas para ti</p>
+                        </div>
+                    ` : filteredCards.map(card => `
+                        <div class="card ${card.read ? 'read' : ''} priority-${card.priority}">
+                            <div class="card-header">
+                                <div class="card-priority ${card.priority}"></div>
+                                <span class="card-category ${card.category}">${card.category}</span>
+                                <div class="card-actions">
+                                    ${!card.read ? `
+                                        <button class="success small" onclick="markAsRead('${card.id}')">✓ Leído</button>
+                                    ` : `
+                                        <button class="secondary small" onclick="markAsUnread('${card.id}')">↩ Releer</button>
+                                    `}
+                                </div>
+                            </div>
+                            <div class="card-text editable" contenteditable="true" 
+                                 onblur="editCard('${card.id}', this)"
+                                 onkeydown="handleKeydown(event, this)">${escapeHtml(card.text)}</div>
+                            <div class="card-footer">
+                                <span class="card-date">📅 ${formatDate(card.createdAt)}</span>
+                            </div>
+                        </div>
+                    `).join('')}
+                </div>
+            `;
+        }
+ 
+        // Actions
+        window.setFilter = function(filter) {
+            activeFilter = filter;
+            render();
+        };
+ 
+        window.markAsRead = async function(cardId) {
+            const card = cards.find(c => c.id === cardId);
+            if (!card) return;
+ 
+            updateSyncStatus('syncing');
+            await setDoc(doc(db, `panelkit_cards_${patientSlug}`, cardId), { ...card, read: true });
+            updateSyncStatus('online');
+        };
+ 
+        window.markAsUnread = async function(cardId) {
+            const card = cards.find(c => c.id === cardId);
+            if (!card) return;
+ 
+            updateSyncStatus('syncing');
+            await setDoc(doc(db, `panelkit_cards_${patientSlug}`, cardId), { ...card, read: false });
+            updateSyncStatus('online');
+        };
+ 
+        window.editCard = async function(cardId, element) {
+            const newText = element.textContent.trim();
+            const card = cards.find(c => c.id === cardId);
+            if (!card || !newText) {
+                render();
+                return;
+            }
+ 
+            if (newText !== card.text) {
+                updateSyncStatus('syncing');
+                await setDoc(doc(db, `panelkit_cards_${patientSlug}`, cardId), { ...card, text: newText });
+                updateSyncStatus('online');
+            }
+        };
+ 
+        window.handleKeydown = function(event, element) {
+            if (event.key === 'Enter' && !event.shiftKey) {
+                event.preventDefault();
+                element.blur();
+            }
+        };
+ 
+        // Load Patient
+        async function loadPatient() {
+            try {
+                const patientDoc = await getDoc(doc(db, 'panelkit_patients', patientSlug));
+                
+                if (patientDoc.exists()) {
+                    patient = { id: patientDoc.id, ...patientDoc.data() };
+                    patientNameEl.textContent = patient.name;
+                    document.title = `${patient.name} - Mi Tablero`;
+ 
+                    // Listen to cards
+                    const q = query(collection(db, `panelkit_cards_${patientSlug}`), orderBy('createdAt', 'desc'));
+                    onSnapshot(q, (snapshot) => {
+                        cards = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+                        // Sort: unread first, then by priority
+                        cards.sort((a, b) => {
+                            if (a.read !== b.read) return a.read ? 1 : -1;
+                            const priorityOrder = { alta: 0, media: 1, baja: 2 };
+                            return priorityOrder[a.priority] - priorityOrder[b.priority];
+                        });
+                        render();
+                        updateSyncStatus('online');
+                    });
+                } else {
+                    patient = null;
+                    render();
+                }
+            } catch (error) {
+                console.error('Error loading patient:', error);
+                patient = null;
+                render();
+            }
+ 
+            loadingOverlay.classList.add('hidden');
+        }
+ 
+        // Init
+        loadPatient();
+    </script>
+</body>
+</html>
