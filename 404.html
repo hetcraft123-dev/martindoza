@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <script>
+        // Redirect dynamic routes to the correct page
+        const path = window.location.pathname;
+        
+        // If it's a patient route, redirect to paciente/index.html with the slug
+        if (path.includes('/paciente/')) {
+            // Store the full path and redirect to paciente page
+            sessionStorage.setItem('patientPath', path);
+            window.location.replace('/martindoza/paciente/?' + path.split('/paciente/')[1]);
+        } else {
+            // For other 404s, redirect to home
+            window.location.replace('/martindoza/');
+        }
+    </script>
+</head>
+<body>
+    <p>Redirigiendo...</p>
+</body>
+</html>
