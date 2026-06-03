@@ -1,1013 +1,664 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <meta name="theme-color" content="#0a0a0b">
-    <title>Mi Tablero</title>
-    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=Outfit:wght@300;500;700&display=swap" rel="stylesheet">
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            -webkit-tap-highlight-color: transparent;
-        }
-
-        :root {
-            --bg-primary: #0a0a0b;
-            --bg-secondary: #141416;
-            --bg-hover: #1a1a1e;
-            --text-primary: #e8e8e8;
-            --text-secondary: #6b6b70;
-            --accent: #6c5ce7;
-            --accent-glow: rgba(108, 92, 231, 0.3);
-            --accent-secondary: #00cec9;
-            --success: #00c853;
-            --warning: #ff9100;
-            --danger: #ff5252;
-            --border: #252529;
-            --daily-color: #fdcb6e;
-            --daily-glow: rgba(253, 203, 110, 0.18);
-        }
-
-        body {
-            font-family: 'Outfit', sans-serif;
-            background: var(--bg-primary);
-            color: var(--text-primary);
-            min-height: 100vh;
-            padding: 20px 20px 60px;
-            background-image:
-                radial-gradient(ellipse at top, rgba(108, 92, 231, 0.07) 0%, transparent 50%),
-                radial-gradient(circle at 80% 80%, rgba(0, 206, 201, 0.04) 0%, transparent 40%);
-        }
-
-        .container {
-            max-width: 760px;
-            margin: 0 auto;
-        }
-
-        /* ── Loading ── */
-        .loading-overlay {
-            position: fixed;
-            inset: 0;
-            background: var(--bg-primary);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            z-index: 999;
-            transition: opacity 0.4s ease;
-        }
-
-        .loading-overlay.hidden {
-            opacity: 0;
-            pointer-events: none;
-        }
-
-        .spinner {
-            width: 36px;
-            height: 36px;
-            border: 3px solid var(--border);
-            border-top-color: var(--accent);
-            border-radius: 50%;
-            animation: spin 0.8s linear infinite;
-        }
-
-        @keyframes spin { to { transform: rotate(360deg); } }
-
-        /* ── Header ── */
-        .header {
-            text-align: center;
-            margin-bottom: 28px;
-            padding-top: 8px;
-        }
-
-        .logo {
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 1.5rem;
-            font-weight: 700;
-            background: linear-gradient(135deg, var(--accent), var(--accent-secondary));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-
-        .patient-display-name {
-            font-size: 1.15rem;
-            font-weight: 600;
-            color: var(--text-primary);
-            margin-top: 6px;
-        }
-
-        .sync-status {
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 0.62rem;
-            color: var(--text-secondary);
-            margin-top: 10px;
-            padding: 4px 12px;
-            background: var(--bg-secondary);
-            border-radius: 20px;
-        }
-
-        .sync-dot {
-            width: 6px;
-            height: 6px;
-            border-radius: 50%;
-            background: var(--success);
-            transition: background 0.3s;
-        }
-
-        .sync-dot.syncing {
-            background: var(--warning);
-            animation: pulse 1s infinite;
-        }
-
-        @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
-
-        /* ── Error screen ── */
-        .error-screen {
-            text-align: center;
-            padding: 80px 20px;
-            display: none;
-        }
-
-        .error-screen.show { display: block; }
-
-        .error-icon {
-            font-size: 4rem;
-            margin-bottom: 20px;
-            opacity: 0.4;
-        }
-
-        .error-text {
-            color: var(--text-secondary);
-            font-size: 1rem;
-        }
-
-        /* ── Section ── */
-        .section {
-            background: var(--bg-secondary);
-            border: 1px solid var(--border);
-            border-radius: 16px;
-            padding: 22px;
-            margin-bottom: 20px;
-        }
-
-        .section-title {
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 0.9rem;
-            font-weight: 600;
-            color: var(--accent);
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            margin-bottom: 18px;
-        }
-
-        /* ── Stats ── */
-        .stats-row {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 12px;
-            margin-bottom: 20px;
-        }
-
-        .stat-card {
-            background: var(--bg-secondary);
-            border: 1px solid var(--border);
-            border-radius: 12px;
-            padding: 16px 12px;
-            text-align: center;
-        }
-
-        .stat-value {
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 1.6rem;
-            font-weight: 700;
-            color: var(--accent);
-            line-height: 1;
-        }
-
-        .stat-label {
-            font-size: 0.7rem;
-            color: var(--text-secondary);
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            margin-top: 4px;
-        }
-
-        /* ── Phrase ── */
-        .phrase-card {
-            background: linear-gradient(135deg, rgba(108, 92, 231, 0.12), rgba(0, 206, 201, 0.08));
-            border: 1px solid rgba(108, 92, 231, 0.3);
-            border-radius: 14px;
-            padding: 20px;
-            margin-bottom: 20px;
-            font-style: italic;
-            color: var(--text-secondary);
-            font-size: 0.92rem;
-            line-height: 1.6;
-            text-align: center;
-        }
-
-        /* ── Daily Routine ── */
-        .daily-section {
-            border-color: rgba(253, 203, 110, 0.25);
-            background: linear-gradient(135deg, rgba(253, 203, 110, 0.05) 0%, var(--bg-secondary) 60%);
-        }
-
-        .daily-header {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            margin-bottom: 14px;
-        }
-
-        .daily-title {
-            color: var(--daily-color) !important;
-        }
-
-        .daily-date-badge {
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 0.65rem;
-            color: var(--text-secondary);
-            background: var(--bg-primary);
-            border: 1px solid var(--border);
-            padding: 4px 10px;
-            border-radius: 20px;
-        }
-
-        /* Progress */
-        .daily-progress-wrap {
-            margin-bottom: 16px;
-        }
-
-        .daily-progress-track {
-            width: 100%;
-            height: 6px;
-            background: var(--bg-primary);
-            border-radius: 10px;
-            overflow: hidden;
-            margin-bottom: 6px;
-        }
-
-        .daily-progress-fill {
-            height: 100%;
-            background: linear-gradient(90deg, var(--daily-color), #e17055);
-            border-radius: 10px;
-            transition: width 0.4s ease;
-            width: 0%;
-        }
-
-        .daily-progress-text {
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 0.65rem;
-            color: var(--text-secondary);
-            text-align: right;
-        }
-
-        /* Task items */
-        .routine-list {
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-            margin-bottom: 16px;
-        }
-
-        .routine-task {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            padding: 12px 14px;
-            background: var(--bg-primary);
-            border: 1px solid var(--border);
-            border-radius: 10px;
-            cursor: pointer;
-            transition: all 0.25s ease;
-            user-select: none;
-        }
-
-        .routine-task:hover {
-            border-color: var(--daily-color);
-            background: rgba(253, 203, 110, 0.05);
-        }
-
-        .routine-task.done {
-            opacity: 0.45;
-            border-color: var(--border);
-        }
-
-        .routine-task.done:hover {
-            opacity: 0.6;
-            border-color: var(--border);
-            background: var(--bg-primary);
-        }
-
-        .routine-check {
-            flex-shrink: 0;
-            width: 22px;
-            height: 22px;
-            border-radius: 6px;
-            border: 2px solid var(--border);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 0.7rem;
-            font-weight: 700;
-            color: var(--bg-primary);
-            transition: all 0.2s ease;
-        }
-
-        .routine-check.checked {
-            background: var(--daily-color);
-            border-color: var(--daily-color);
-        }
-
-        .routine-task-text {
-            flex: 1;
-            font-size: 0.9rem;
-            line-height: 1.3;
-            transition: all 0.2s;
-        }
-
-        .routine-task.done .routine-task-text {
-            text-decoration: line-through;
-        }
-
-        .routine-task-delete {
-            flex-shrink: 0;
-            background: transparent;
-            border: none;
-            color: var(--text-secondary);
-            font-size: 0.75rem;
-            cursor: pointer;
-            padding: 4px 6px;
-            border-radius: 4px;
-            opacity: 0;
-            transition: all 0.15s;
-            line-height: 1;
-        }
-
-        .routine-task:hover .routine-task-delete {
-            opacity: 1;
-        }
-
-        .routine-task-delete:hover {
-            color: var(--danger);
-            background: rgba(255, 82, 82, 0.1);
-            transform: none;
-            box-shadow: none;
-        }
-
-        .routine-empty {
-            text-align: center;
-            padding: 20px;
-            color: var(--text-secondary);
-            font-size: 0.85rem;
-        }
-
-        /* Add task row */
-        .daily-add-row {
-            display: flex;
-            gap: 10px;
-        }
-
-        .daily-add-row input {
-            flex: 1;
-            background: var(--bg-primary);
-            border: 1px solid var(--border);
-            border-radius: 8px;
-            color: var(--text-primary);
-            font-family: 'Outfit', sans-serif;
-            font-size: 0.9rem;
-            padding: 10px 14px;
-            outline: none;
-            transition: all 0.2s;
-        }
-
-        .daily-add-row input::placeholder {
-            color: var(--text-secondary);
-            font-size: 0.85rem;
-        }
-
-        .daily-add-row input:focus {
-            border-color: var(--daily-color);
-            box-shadow: 0 0 0 3px var(--daily-glow);
-        }
-
-        .daily-add-row button {
-            background: var(--daily-color);
-            border: none;
-            border-radius: 8px;
-            color: #0a0a0b;
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 1.2rem;
-            font-weight: 700;
-            padding: 10px 18px;
-            cursor: pointer;
-            transition: all 0.2s;
-            line-height: 1;
-        }
-
-        .daily-add-row button:hover {
-            transform: translateY(-1px);
-            box-shadow: 0 4px 16px var(--daily-glow);
-        }
-
-        .daily-add-row button:active {
-            transform: scale(0.97);
-        }
-
-        /* ── Category Filters ── */
-        .filter-row {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 8px;
-            margin-bottom: 18px;
-        }
-
-        .filter-btn {
-            background: var(--bg-primary);
-            border: 1px solid var(--border);
-            border-radius: 20px;
-            color: var(--text-secondary);
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 0.65rem;
-            padding: 6px 14px;
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-
-        .filter-btn:hover {
-            border-color: var(--accent);
-            color: var(--text-primary);
-            transform: none;
-            box-shadow: none;
-        }
-
-        .filter-btn.active {
-            background: var(--accent);
-            border-color: var(--accent);
-            color: white;
-            box-shadow: 0 2px 10px var(--accent-glow);
-        }
-
-        /* ── Cards Grid ── */
-        .cards-grid {
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-        }
-
-        .thought-card {
-            background: var(--bg-primary);
-            border: 1px solid var(--border);
-            border-radius: 12px;
-            padding: 18px;
-            transition: all 0.3s ease;
-            cursor: pointer;
-            position: relative;
-        }
-
-        .thought-card:hover {
-            border-color: rgba(108, 92, 231, 0.4);
-        }
-
-        .thought-card.priority-alta {
-            border-left: 3px solid var(--danger);
-        }
-
-        .thought-card.priority-media {
-            border-left: 3px solid var(--warning);
-        }
-
-        .thought-card.priority-baja {
-            border-left: 3px solid var(--success);
-        }
-
-        .thought-card.read {
-            opacity: 0.55;
-        }
-
-        .card-top {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            margin-bottom: 10px;
-        }
-
-        .priority-dot {
-            width: 7px;
-            height: 7px;
-            border-radius: 50%;
-            flex-shrink: 0;
-        }
-
-        .priority-dot.alta { background: var(--danger); }
-        .priority-dot.media { background: var(--warning); }
-        .priority-dot.baja { background: var(--success); }
-
-        .cat-tag {
-            font-size: 0.6rem;
-            padding: 2px 8px;
-            border-radius: 4px;
-            font-family: 'JetBrains Mono', monospace;
-        }
-
-        .cat-tag.cuerpo      { background: rgba(255, 107, 107, 0.2); color: #ff6b6b; }
-        .cat-tag.errores     { background: rgba(255, 145, 0, 0.2);   color: #ff9100; }
-        .cat-tag.emociones   { background: rgba(0, 206, 201, 0.2);   color: #00cec9; }
-        .cat-tag.relaciones  { background: rgba(108, 92, 231, 0.2);  color: #6c5ce7; }
-        .cat-tag.autoestima  { background: rgba(253, 203, 110, 0.2); color: #fdcb6e; }
-        .cat-tag.general     { background: rgba(99, 110, 114, 0.2);  color: #636e72; }
-
-        .read-badge {
-            margin-left: auto;
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 0.58rem;
-            color: var(--success);
-            border: 1px solid rgba(0, 200, 83, 0.3);
-            padding: 2px 8px;
-            border-radius: 4px;
-            flex-shrink: 0;
-        }
-
-        .card-text {
-            font-size: 0.92rem;
-            line-height: 1.6;
-            color: var(--text-primary);
-            margin-bottom: 12px;
-        }
-
-        .card-action {
-            display: flex;
-            justify-content: flex-end;
-        }
-
-        .read-btn {
-            background: transparent;
-            border: 1px solid var(--border);
-            border-radius: 6px;
-            color: var(--text-secondary);
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 0.65rem;
-            padding: 6px 12px;
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-
-        .read-btn:hover {
-            border-color: var(--success);
-            color: var(--success);
-            transform: none;
-            box-shadow: none;
-        }
-
-        .read-btn.unread-btn:hover {
-            border-color: var(--text-secondary);
-            color: var(--text-primary);
-        }
-
-        /* Empty states */
-        .empty-state {
-            text-align: center;
-            padding: 40px 20px;
-            color: var(--text-secondary);
-        }
-
-        .empty-state-icon {
-            font-size: 2.5rem;
-            opacity: 0.3;
-            margin-bottom: 10px;
-        }
-
-        .empty-state-text {
-            font-size: 0.85rem;
-        }
-
-        /* Responsive */
-        @media (max-width: 480px) {
-            body { padding: 14px 14px 60px; }
-            .stats-row { gap: 8px; }
-            .stat-value { font-size: 1.3rem; }
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=no">
+<meta name="theme-color" content="#0a0a0b">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🧠</text></svg>">
+<title>PanelKit · Admin</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=Outfit:wght@300;500;700&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+:root{
+  --bg:#0a0a0b;--bg2:#141416;--bg3:#1a1a1e;
+  --txt:#e8e8e8;--txt2:#6b6b70;
+  --acc:#6c5ce7;--accg:rgba(108,92,231,.3);
+  --acc2:#00cec9;
+  --ok:#00c853;--warn:#ff9100;--err:#ff5252;
+  --brd:#252529;
+}
+body{font-family:'Outfit',sans-serif;background:var(--bg);color:var(--txt);min-height:100vh;padding:24px;
+  background-image:radial-gradient(ellipse at top,rgba(108,92,231,.08) 0%,transparent 50%),radial-gradient(circle at 80% 80%,rgba(0,206,201,.04) 0%,transparent 40%)}
+
+/* ── Login ── */
+.login-screen{position:fixed;inset:0;background:var(--bg);z-index:9999;display:flex;align-items:center;justify-content:center;padding:20px}
+.login-card{background:var(--bg2);border:1px solid var(--brd);border-radius:20px;padding:40px 36px;width:100%;max-width:380px;text-align:center}
+.login-logo{font-family:'JetBrains Mono',monospace;font-size:2rem;font-weight:700;background:linear-gradient(135deg,var(--acc),var(--acc2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:6px}
+.login-subtitle{color:var(--txt2);font-size:.85rem;margin-bottom:28px}
+.login-input{width:100%;background:var(--bg);border:1px solid var(--brd);border-radius:10px;color:var(--txt);font-family:'Outfit',sans-serif;font-size:16px;padding:13px 16px;outline:none;transition:all .2s;margin-bottom:12px}
+.login-input:focus{border-color:var(--acc);box-shadow:0 0 0 3px var(--accg)}
+.login-btn{width:100%;background:var(--acc);border:none;border-radius:10px;color:white;font-family:'JetBrains Mono',monospace;font-size:.85rem;font-weight:700;padding:14px;cursor:pointer;transition:all .2s;margin-top:4px}
+.login-btn:hover{transform:translateY(-2px);box-shadow:0 6px 20px var(--accg)}
+.login-error{color:var(--err);font-size:.8rem;margin-top:10px;display:none}
+.login-hint{color:var(--txt2);font-size:.7rem;margin-top:14px;font-family:'JetBrains Mono',monospace}
+
+/* ── Loading ── */
+.loading-overlay{position:fixed;inset:0;background:var(--bg);display:flex;align-items:center;justify-content:center;z-index:500;transition:opacity .4s}
+.loading-overlay.hidden{opacity:0;pointer-events:none}
+.spinner{width:36px;height:36px;border:3px solid var(--brd);border-top-color:var(--acc);border-radius:50%;animation:spin .8s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* ── Layout ── */
+.container{max-width:1100px;margin:0 auto}
+.header{text-align:center;margin-bottom:36px}
+.logo{font-family:'JetBrains Mono',monospace;font-size:2rem;font-weight:700;background:linear-gradient(135deg,var(--acc),var(--acc2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:4px}
+.header-row{display:flex;align-items:center;justify-content:center;gap:12px;flex-wrap:wrap;margin-top:10px}
+.sync-status{display:inline-flex;align-items:center;gap:6px;font-family:'JetBrains Mono',monospace;font-size:.62rem;color:var(--txt2);padding:4px 12px;background:var(--bg2);border-radius:20px}
+.sync-dot{width:6px;height:6px;border-radius:50%;background:var(--ok);transition:background .3s}
+.sync-dot.syncing{background:var(--warn);animation:pulse 1s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
+.logout-btn{background:transparent;border:1px solid var(--brd);border-radius:20px;color:var(--txt2);font-family:'JetBrains Mono',monospace;font-size:.62rem;padding:4px 14px;cursor:pointer;transition:all .2s}
+.logout-btn:hover{border-color:var(--err);color:var(--err);transform:none;box-shadow:none}
+
+/* ── Section ── */
+.section{background:var(--bg2);border:1px solid var(--brd);border-radius:16px;padding:24px;margin-bottom:24px}
+.section-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px}
+.section-title{font-family:'JetBrains Mono',monospace;font-size:1rem;font-weight:600;color:var(--acc);display:flex;align-items:center;gap:10px}
+
+/* ── Forms ── */
+.form-row{display:flex;gap:12px;margin-bottom:14px}
+.form-group{flex:1}
+.form-group.small{flex:0 0 auto;min-width:140px}
+label{display:block;font-size:.72rem;color:var(--txt2);margin-bottom:5px;text-transform:uppercase;letter-spacing:1px}
+input,select,textarea{width:100%;background:var(--bg);border:1px solid var(--brd);border-radius:8px;color:var(--txt);font-family:'Outfit',sans-serif;font-size:16px;padding:11px 14px;outline:none;transition:all .2s}
+input:focus,select:focus,textarea:focus{border-color:var(--acc);box-shadow:0 0 0 3px var(--accg)}
+textarea{min-height:80px;resize:vertical}
+select{cursor:pointer}
+button{background:var(--acc);border:none;border-radius:8px;color:white;font-family:'JetBrains Mono',monospace;font-size:.78rem;font-weight:600;padding:11px 18px;cursor:pointer;transition:all .2s;display:inline-flex;align-items:center;gap:7px}
+button:hover{transform:translateY(-2px);box-shadow:0 4px 18px var(--accg)}
+button:active{transform:scale(.98)}
+button.secondary{background:transparent;border:1px solid var(--brd);color:var(--txt2)}
+button.secondary:hover{border-color:var(--txt2);color:var(--txt);box-shadow:none}
+button.danger{background:var(--err)}
+button.danger:hover{box-shadow:0 4px 14px rgba(255,82,82,.3)}
+button.success{background:var(--ok)}
+
+/* ── Patients Grid ── */
+.patients-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px}
+.patient-card{background:var(--bg);border:1px solid var(--brd);border-radius:12px;padding:20px;transition:all .3s;cursor:pointer}
+.patient-card:hover{border-color:var(--acc);transform:translateY(-2px)}
+.patient-header{display:flex;align-items:center;gap:12px;margin-bottom:12px}
+.patient-avatar{width:48px;height:48px;border-radius:12px;background:linear-gradient(135deg,var(--acc),var(--acc2));display:flex;align-items:center;justify-content:center;font-size:1.4rem;font-weight:700;color:white}
+.patient-name{font-weight:600;font-size:1.05rem;margin-bottom:2px}
+.patient-id{font-family:'JetBrains Mono',monospace;font-size:.68rem;color:var(--txt2)}
+.patient-stats{display:flex;gap:16px;margin-top:10px;padding-top:10px;border-top:1px solid var(--brd)}
+.patient-stat-value{font-family:'JetBrains Mono',monospace;font-size:1.05rem;font-weight:600;color:var(--acc)}
+.patient-stat-label{font-size:.62rem;color:var(--txt2);text-transform:uppercase}
+.link-container{display:flex;gap:8px;margin-top:12px}
+.link-input{flex:1;font-family:'JetBrains Mono',monospace;font-size:.72rem}
+.patient-actions{display:flex;gap:8px;margin-top:14px}
+.patient-actions button{flex:1;padding:9px;font-size:.68rem}
+
+/* ── Tags ── */
+.card-tag{font-size:.6rem;padding:3px 8px;border-radius:4px;font-family:'JetBrains Mono',monospace}
+.card-tag.cuerpo{background:rgba(255,107,107,.2);color:#ff6b6b}
+.card-tag.errores{background:rgba(255,145,0,.2);color:#ff9100}
+.card-tag.emociones{background:rgba(0,206,201,.2);color:#00cec9}
+.card-tag.relaciones{background:rgba(108,92,231,.2);color:#6c5ce7}
+.card-tag.autoestima{background:rgba(253,203,110,.2);color:#fdcb6e}
+.card-tag.general{background:rgba(99,110,114,.2);color:#636e72}
+
+/* ── Modal ── */
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.85);display:flex;align-items:center;justify-content:center;z-index:400;opacity:0;pointer-events:none;transition:opacity .3s;padding:20px}
+.modal-overlay.show{opacity:1;pointer-events:auto}
+.modal{background:var(--bg2);border:1px solid var(--brd);border-radius:16px;width:100%;max-width:680px;max-height:92vh;overflow:hidden;display:flex;flex-direction:column;transform:scale(.9);transition:transform .3s}
+.modal-overlay.show .modal{transform:scale(1)}
+.modal-header{display:flex;align-items:center;justify-content:space-between;padding:20px 24px 0}
+.modal-title{font-family:'JetBrains Mono',monospace;font-size:1.05rem;font-weight:600}
+.modal-close{background:transparent;border:none;color:var(--txt2);font-size:1.5rem;cursor:pointer;padding:4px;line-height:1}
+.modal-close:hover{color:var(--txt);transform:none;box-shadow:none}
+
+/* ── Tabs ── */
+.modal-tabs{display:flex;gap:0;padding:0 24px;border-bottom:1px solid var(--brd);margin-top:16px}
+.modal-tab{background:transparent;border:none;border-bottom:2px solid transparent;color:var(--txt2);font-family:'JetBrains Mono',monospace;font-size:.7rem;padding:10px 16px;cursor:pointer;transition:all .2s;border-radius:0;transform:none;box-shadow:none}
+.modal-tab:hover{color:var(--txt);box-shadow:none;transform:none}
+.modal-tab.active{color:var(--acc);border-bottom-color:var(--acc)}
+.modal-body{overflow-y:auto;padding:20px 24px 24px;flex:1}
+
+/* ── Tab content ── */
+.tab-content{display:none}
+.tab-content.active{display:block}
+
+/* ── Cards list ── */
+.cards-list{display:flex;flex-direction:column;gap:10px;margin-top:16px}
+.card-item{background:var(--bg);border:1px solid var(--brd);border-radius:10px;padding:14px}
+.card-item-header{display:flex;align-items:center;gap:10px;margin-bottom:8px}
+.card-priority{width:8px;height:8px;border-radius:50%}
+.card-priority.alta{background:var(--err)}.card-priority.media{background:var(--warn)}.card-priority.baja{background:var(--ok)}
+.card-item-text{font-size:.88rem;line-height:1.5}
+.card-item-actions{margin-left:auto;display:flex;gap:5px}
+.card-item-actions button{padding:5px 8px;font-size:.62rem}
+
+/* ── Values Editor ── */
+.values-section-title{font-family:'JetBrains Mono',monospace;font-size:.8rem;font-weight:700;color:var(--acc2);margin:20px 0 12px;text-transform:uppercase;letter-spacing:1px}
+.values-section-title:first-child{margin-top:0}
+.valor-block{background:var(--bg);border:1px solid var(--brd);border-radius:10px;padding:14px;margin-bottom:12px}
+.valor-block-header{font-family:'JetBrains Mono',monospace;font-size:.7rem;color:var(--txt2);margin-bottom:10px;text-transform:uppercase;letter-spacing:.5px}
+.valor-text-display{font-size:.85rem;color:var(--txt);margin-bottom:10px;padding:8px;background:var(--bg2);border-radius:6px;font-style:italic;min-height:28px}
+.act-xp-row{display:flex;align-items:center;gap:10px;margin-bottom:8px}
+.act-xp-row:last-child{margin-bottom:0}
+.act-label-txt{flex:1;font-size:.82rem;color:var(--txt2)}
+.act-text-display{flex:2;font-size:.82rem;color:var(--txt);background:var(--bg2);padding:6px 10px;border-radius:6px;min-height:24px}
+.act-xp-input-wrap{display:flex;align-items:center;gap:6px;flex-shrink:0}
+.act-xp-input-wrap label{margin:0;font-size:.65rem;color:var(--txt2);text-transform:none;letter-spacing:0;white-space:nowrap}
+.act-xp-input{width:64px;padding:6px 8px;font-size:.8rem;text-align:center}
+.values-save-btn{width:100%;margin-top:16px}
+
+/* ── Config Editor ── */
+.config-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:4px}
+.config-item{background:var(--bg);border:1px solid var(--brd);border-radius:10px;padding:14px}
+.config-item label{font-size:.72rem;color:var(--txt2);text-transform:uppercase;letter-spacing:.5px;display:block;margin-bottom:6px}
+.config-item input{padding:10px 12px;font-size:1rem;font-family:'JetBrains Mono',monospace;text-align:center}
+.config-desc{font-size:.72rem;color:var(--txt2);margin-top:4px;line-height:1.4}
+.config-save-btn{width:100%;margin-top:16px}
+.config-level-preview{background:var(--bg);border:1px solid var(--brd);border-radius:10px;padding:14px;margin-top:14px}
+.config-level-preview-title{font-family:'JetBrains Mono',monospace;font-size:.7rem;color:var(--txt2);margin-bottom:10px;text-transform:uppercase;letter-spacing:.5px}
+.level-preview-row{display:flex;align-items:center;justify-content:space-between;padding:5px 0;border-bottom:1px solid var(--brd);font-size:.8rem}
+.level-preview-row:last-child{border-bottom:none}
+.level-preview-row span:first-child{color:var(--txt)}
+.level-preview-row span:last-child{font-family:'JetBrains Mono',monospace;font-size:.72rem;color:var(--txt2)}
+
+/* ── Empty ── */
+.empty-state{text-align:center;padding:40px 20px;color:var(--txt2)}
+.empty-icon{font-size:3rem;margin-bottom:14px;opacity:.3}
+.empty-text{font-size:.88rem}
+
+/* ── Copy toast ── */
+.copy-feedback{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(20px);background:var(--ok);color:white;padding:12px 24px;border-radius:10px;font-family:'JetBrains Mono',monospace;font-size:.78rem;opacity:0;transition:all .3s;pointer-events:none;z-index:1000}
+.copy-feedback.show{opacity:1;transform:translateX(-50%) translateY(0)}
+
+/* ── Responsive ── */
+@media(max-width:600px){
+  body{padding:14px}
+  .form-row{flex-direction:column}
+  .config-grid{grid-template-columns:1fr}
+  .act-xp-row{flex-wrap:wrap}
+}
+</style>
 </head>
 <body>
 
-    <div class="loading-overlay" id="loadingOverlay">
-        <div class="spinner"></div>
+<!-- Login -->
+<div class="login-screen" id="loginScreen">
+  <div class="login-card">
+    <div class="login-logo">🧠 PanelKit</div>
+    <p class="login-subtitle">Acceso exclusivo para terapeutas</p>
+    <input class="login-input" type="text" id="loginUser" placeholder="Usuario" autocomplete="username">
+    <input class="login-input" type="password" id="loginPass" placeholder="Contraseña" autocomplete="current-password">
+    <button class="login-btn" onclick="doLogin()">Entrar →</button>
+    <p class="login-error" id="loginError">Credenciales incorrectas</p>
+  </div>
+</div>
+
+<!-- Loading -->
+<div class="loading-overlay" id="loadingOverlay"><div class="spinner"></div></div>
+
+<!-- Copy feedback -->
+<div class="copy-feedback" id="copyFeedback">✓ Enlace copiado</div>
+
+<!-- Patient modal -->
+<div class="modal-overlay" id="cardsModal">
+  <div class="modal">
+    <div class="modal-header">
+      <span class="modal-title" id="modalPatientName">Paciente</span>
+      <button class="modal-close" onclick="closeModal()">×</button>
     </div>
-
-    <div class="container">
-        <div class="error-screen" id="errorScreen">
-            <div class="error-icon">🔍</div>
-            <p class="error-text">No se encontró este tablero.<br>Verifica el enlace.</p>
-        </div>
-
-        <div id="mainContent" style="display:none">
-
-            <!-- Header -->
-            <header class="header">
-                <div class="logo">🧠 PanelKit</div>
-                <div class="patient-display-name" id="patientDisplayName">…</div>
-                <div class="sync-status">
-                    <div class="sync-dot" id="syncDot"></div>
-                    <span id="syncText">Conectando...</span>
-                </div>
-            </header>
-
-            <!-- ── RUTINA DIARIA ── -->
-            <div class="section daily-section">
-                <div class="daily-header">
-                    <div class="section-title daily-title">
-                        <span>☀️</span>
-                        Rutina de Hoy
-                    </div>
-                    <div class="daily-date-badge" id="dailyDateBadge">—</div>
-                </div>
-
-                <div class="daily-progress-wrap">
-                    <div class="daily-progress-track">
-                        <div class="daily-progress-fill" id="routineProgressFill"></div>
-                    </div>
-                    <div class="daily-progress-text" id="routineProgressText">0 / 0 completadas</div>
-                </div>
-
-                <div class="routine-list" id="routineList">
-                    <div class="routine-empty">Agrega tareas a tu rutina diaria ↓</div>
-                </div>
-
-                <div class="daily-add-row">
-                    <input type="text" id="routineInput" placeholder="+ Agregar tarea a mi rutina..." autocomplete="off" maxlength="120">
-                    <button onclick="addRoutineTask()">+</button>
-                </div>
-            </div>
-
-            <!-- Stats -->
-            <div class="stats-row">
-                <div class="stat-card">
-                    <div class="stat-value" id="statTotal">0</div>
-                    <div class="stat-label">Tarjetas</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-value" id="statRead">0</div>
-                    <div class="stat-label">Leídas</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-value" id="statPriority">0</div>
-                    <div class="stat-label">Prioritarias</div>
-                </div>
-            </div>
-
-            <!-- Motivational phrase -->
-            <div class="phrase-card" id="phraseCard"></div>
-
-            <!-- Cards section -->
-            <div class="section">
-                <div class="section-title">
-                    <span>📝</span>
-                    Mis Tarjetas
-                </div>
-
-                <div class="filter-row" id="filterRow"></div>
-                <div class="cards-grid" id="cardsGrid"></div>
-            </div>
-
-        </div>
+    <div class="modal-tabs">
+      <button class="modal-tab active" data-tab="cards" onclick="switchTab('cards')">📝 Tarjetas</button>
+      <button class="modal-tab" data-tab="valores" onclick="switchTab('valores')">🌿 Valores</button>
+      <button class="modal-tab" data-tab="config" onclick="switchTab('config')">⚙️ Config XP</button>
     </div>
+    <div class="modal-body">
 
-    <!-- Firebase SDK -->
-    <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.8.1/firebase-app.js";
-        import {
-            getFirestore,
-            collection, doc,
-            getDoc, setDoc, deleteDoc, updateDoc,
-            onSnapshot, query, orderBy
-        } from "https://www.gstatic.com/firebasejs/11.8.1/firebase-firestore.js";
+      <!-- Tab: Tarjetas -->
+      <div class="tab-content active" data-tab="cards">
+        <div class="form-group" style="margin-bottom:12px">
+          <label>Texto de la tarjeta</label>
+          <textarea id="cardText" placeholder="Escribe el pensamiento o afirmación..."></textarea>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Categoría</label>
+            <select id="cardCategory">
+              <option value="general">General</option>
+              <option value="cuerpo">Cuerpo</option>
+              <option value="errores">Errores</option>
+              <option value="emociones">Emociones</option>
+              <option value="relaciones">Relaciones</option>
+              <option value="autoestima">Autoestima</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Prioridad</label>
+            <select id="cardPriority">
+              <option value="alta">🔴 Alta</option>
+              <option value="media">🟡 Media</option>
+              <option value="baja">🟢 Baja</option>
+            </select>
+          </div>
+        </div>
+        <button onclick="addCard()" style="width:100%">+ Agregar Tarjeta</button>
+        <div class="cards-list" id="cardsList"></div>
+      </div>
 
-        // ── Firebase config ──────────────────────────────────────────────
-        const firebaseConfig = {
-            apiKey: "AIzaSyDetXdN-ujotpEY7HNJMQB2JEOYooLxpkk",
-            authDomain: "todo-hetcraft.firebaseapp.com",
-            projectId: "todo-hetcraft",
-            storageBucket: "todo-hetcraft.firebasestorage.app",
-            messagingSenderId: "225738970824",
-            appId: "1:225738970824:web:f3a5c8432a9c3c6595f7fd"
-        };
+      <!-- Tab: Valores -->
+      <div class="tab-content" data-tab="valores">
+        <div id="valoresEditorContent">
+          <div class="empty-state"><div class="empty-icon">⏳</div><p class="empty-text">Cargando...</p></div>
+        </div>
+      </div>
 
-        const app = initializeApp(firebaseConfig);
-        const db  = getFirestore(app);
+      <!-- Tab: Config XP -->
+      <div class="tab-content" data-tab="config">
+        <div class="config-grid">
+          <div class="config-item">
+            <label>XP por tarea de rutina</label>
+            <input type="number" id="cfgXpTask" value="10" min="1" max="999">
+            <p class="config-desc">Puntos al completar cada tarea diaria</p>
+          </div>
+          <div class="config-item">
+            <label>XP por leer tarjeta</label>
+            <input type="number" id="cfgXpCard" value="15" min="1" max="999">
+            <p class="config-desc">Puntos al marcar una tarjeta como leída</p>
+          </div>
+          <div class="config-item">
+            <label>XP bonus rutina completa</label>
+            <input type="number" id="cfgXpBonus" value="50" min="1" max="9999">
+            <p class="config-desc">Bonus al completar TODAS las rutinas del día</p>
+          </div>
+          <div class="config-item">
+            <label>XP para primer nivel</label>
+            <input type="number" id="cfgXpLevel" value="100" min="10" max="9999" oninput="updateLevelPreview()">
+            <p class="config-desc">XP para pasar de Semilla a Brote</p>
+          </div>
+        </div>
+        <div class="config-level-preview">
+          <div class="config-level-preview-title">Vista previa de niveles</div>
+          <div class="level-preview-row"><span>🌱 Semilla</span><span id="lvlP0">0 – 99 XP</span></div>
+          <div class="level-preview-row"><span>🌿 Brote</span><span id="lvlP1">100 – 499 XP</span></div>
+          <div class="level-preview-row"><span>🌳 Árbol</span><span id="lvlP2">500 – 1499 XP</span></div>
+          <div class="level-preview-row"><span>✨ Luz</span><span id="lvlP3">1500+ XP</span></div>
+        </div>
+        <button class="config-save-btn success" onclick="saveConfig()">💾 Guardar configuración</button>
+      </div>
+    </div>
+  </div>
+</div>
 
-        // ── Motivational phrases ─────────────────────────────────────────
-        const PHRASES = [
-            "Cada pequeño paso hacia adelante es una victoria. Estás haciendo más de lo que crees.",
-            "Los pensamientos no son hechos. Puedes observarlos sin que te definan.",
-            "Hoy no tiene que ser perfecto para ser valioso.",
-            "Tu historia no termina en tu peor momento.",
-            "Mereces el mismo cuidado que le das a los demás.",
-            "El progreso no es lineal, y eso está bien.",
-            "Respirar ya es un acto de valentía algunos días.",
-            "No tienes que tenerlo todo resuelto hoy.",
-            "Eres más fuerte que los pensamientos que intentan convencerte de lo contrario.",
-            "Cada día que eliges seguir adelante es un acto de coraje.",
-            "Tu mente puede mentirte; tu esfuerzo habla más fuerte que ella.",
-            "Está bien pedir ayuda. Está bien no estar bien.",
-            "Lo que sientes es válido. Y también puede cambiar.",
-            "Eres un trabajo en progreso, y eso es suficiente.",
-        ];
+<!-- Panel (hidden until login) -->
+<div id="panelContent" style="display:none">
+<div class="container">
+  <header class="header">
+    <div class="logo">🧠 PanelKit</div>
+    <div class="header-row">
+      <div class="sync-status">
+        <div class="sync-dot" id="syncDot"></div>
+        <span id="syncText">Conectando...</span>
+      </div>
+      <button class="logout-btn" onclick="doLogout()">✕ Cerrar sesión</button>
+    </div>
+  </header>
 
-        // ── Slug desde URL ───────────────────────────────────────────────
-        const slug = window.location.search.slice(1);
+  <!-- New Patient -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-title"><span>➕</span> Nuevo Paciente</div>
+    </div>
+    <div class="form-row">
+      <div class="form-group">
+        <label>Nombre del paciente</label>
+        <input type="text" id="patientName" placeholder="Ej: Rodrigo" autocomplete="off">
+      </div>
+      <div class="form-group small">
+        <label>Identificador</label>
+        <input type="text" id="patientId" placeholder="Ej: 1" autocomplete="off">
+      </div>
+    </div>
+    <button onclick="createPatient()">Crear Paciente</button>
+  </div>
 
-        // ── DOM refs ─────────────────────────────────────────────────────
-        const loadingOverlay   = document.getElementById('loadingOverlay');
-        const errorScreen      = document.getElementById('errorScreen');
-        const mainContent      = document.getElementById('mainContent');
-        const patientDisplayName = document.getElementById('patientDisplayName');
-        const syncDot          = document.getElementById('syncDot');
-        const syncText         = document.getElementById('syncText');
-        const dailyDateBadge   = document.getElementById('dailyDateBadge');
-        const routineProgressFill = document.getElementById('routineProgressFill');
-        const routineProgressText = document.getElementById('routineProgressText');
-        const routineList      = document.getElementById('routineList');
-        const routineInput     = document.getElementById('routineInput');
-        const statTotal        = document.getElementById('statTotal');
-        const statRead         = document.getElementById('statRead');
-        const statPriority     = document.getElementById('statPriority');
-        const phraseCard       = document.getElementById('phraseCard');
-        const filterRow        = document.getElementById('filterRow');
-        const cardsGrid        = document.getElementById('cardsGrid');
+  <!-- Patients -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-title"><span>👥</span> Mis Pacientes</div>
+      <span id="patientsCount" style="color:var(--txt2);font-size:.8rem">0 pacientes</span>
+    </div>
+    <div class="patients-grid" id="patientsGrid"></div>
+  </div>
+</div>
+</div>
 
-        // ── State ────────────────────────────────────────────────────────
-        let cards        = [];
-        let routineTasks = [];
-        let activeFilter = 'all';
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/11.8.1/firebase-app.js";
+import { getFirestore,collection,doc,setDoc,getDoc,deleteDoc,onSnapshot,query,orderBy } from "https://www.gstatic.com/firebasejs/11.8.1/firebase-firestore.js";
 
-        // ── Date helpers ─────────────────────────────────────────────────
-        const TODAY = new Date().toISOString().split('T')[0]; // "2026-06-02"
+const firebaseConfig = {
+  apiKey:"AIzaSyDetXdN-ujotpEY7HNJMQB2JEOYooLxpkk",authDomain:"todo-hetcraft.firebaseapp.com",
+  projectId:"todo-hetcraft",storageBucket:"todo-hetcraft.firebasestorage.app",
+  messagingSenderId:"225738970824",appId:"1:225738970824:web:f3a5c8432a9c3c6595f7fd"
+};
+const app = initializeApp(firebaseConfig);
+const db  = getFirestore(app);
 
-        function formatDate(isoDate) {
-            const [y, m, d] = isoDate.split('-');
-            const months = ['ene','feb','mar','abr','may','jun','jul','ago','sep','oct','nov','dic'];
-            return `${d} ${months[parseInt(m) - 1]} ${y}`;
-        }
+// ── Constants ──────────────────────────────────────────────────────────────
+const CREDENTIALS   = { user:'admin', pass:'peru@@2026' };
+const AUTH_KEY      = 'panelkit_auth_v2';
+const BASE_URL      = 'https://hetcraft123-dev.github.io/martindoza/paciente/';
+const DEFAULT_CFG   = { xpRoutineTask:10, xpCardRead:15, xpAllRoutinesBonus:50, xpToLevel1:100 };
+const VALORES_PREFIXES = {
+  familia: ['Ser un hijo', 'Ser un hermano'],
+  amigos:  ['Ser un amigo', '']
+};
 
-        // ── Sync indicator ────────────────────────────────────────────────
-        function setSyncing(on) {
-            syncDot.className = 'sync-dot' + (on ? ' syncing' : '');
-            syncText.textContent = on ? 'Guardando…' : 'Sincronizado';
-        }
+// ── State ─────────────────────────────────────────────────────────────────
+let patients=[],currentId=null,currentCards=[],currentValues=null,currentConfig=null;
+let unsubCards=null;
 
-        // ── Escape HTML ───────────────────────────────────────────────────
-        function escapeHtml(text) {
-            const div = document.createElement('div');
-            div.textContent = text;
-            return div.innerHTML;
-        }
+// ── DOM ───────────────────────────────────────────────────────────────────
+const loginScreen    = document.getElementById('loginScreen');
+const panelContent   = document.getElementById('panelContent');
+const loadingOverlay = document.getElementById('loadingOverlay');
+const copyFeedback   = document.getElementById('copyFeedback');
+const patientsGrid   = document.getElementById('patientsGrid');
+const patientsCount  = document.getElementById('patientsCount');
+const cardsModal     = document.getElementById('cardsModal');
+const cardsList      = document.getElementById('cardsList');
+const syncDot        = document.getElementById('syncDot');
+const syncText       = document.getElementById('syncText');
 
-        // ── Daily state (localStorage, per-day) ──────────────────────────
-        const DAILY_KEY = `routine_done_${slug}`;
+// ── Helpers ───────────────────────────────────────────────────────────────
+function esc(t){const d=document.createElement('div');d.textContent=t;return d.innerHTML}
+function setSyncing(on){syncDot.className='sync-dot'+(on?' syncing':'');syncText.textContent=on?'Guardando…':'Sincronizado'}
+function showFeedback(msg){copyFeedback.textContent=msg;copyFeedback.classList.add('show');setTimeout(()=>copyFeedback.classList.remove('show'),2200)}
 
-        function getTodayDone() {
-            try {
-                const saved = JSON.parse(localStorage.getItem(DAILY_KEY) || '{}');
-                if (saved.date !== TODAY) return [];   // new day → clean slate
-                return Array.isArray(saved.ids) ? saved.ids : [];
-            } catch { return []; }
-        }
+// ── Auth ──────────────────────────────────────────────────────────────────
+function checkAuth(){
+  if(localStorage.getItem(AUTH_KEY)==='ok'){showPanel()}
+  else{loginScreen.style.display='flex'}
+}
 
-        function setTodayDone(ids) {
-            localStorage.setItem(DAILY_KEY, JSON.stringify({ date: TODAY, ids }));
-        }
+window.doLogin = function(){
+  const u=document.getElementById('loginUser').value.trim();
+  const p=document.getElementById('loginPass').value;
+  if(u===CREDENTIALS.user&&p===CREDENTIALS.pass){
+    localStorage.setItem(AUTH_KEY,'ok');
+    loginScreen.style.display='none';
+    showPanel();
+  }else{
+    document.getElementById('loginError').style.display='block';
+  }
+};
 
-        // ── Routine render ────────────────────────────────────────────────
-        function renderRoutine() {
-            const done    = getTodayDone();
-            const validId = id => routineTasks.some(t => t.id === id);
-            const doneFilt = done.filter(validId);
-            const total   = routineTasks.length;
-            const completed = doneFilt.length;
+window.doLogout = function(){
+  localStorage.removeItem(AUTH_KEY);
+  location.reload();
+};
 
-            // Progress bar
-            const pct = total === 0 ? 0 : Math.round((completed / total) * 100);
-            routineProgressFill.style.width = pct + '%';
-            routineProgressText.textContent = `${completed} / ${total} completadas`;
+document.getElementById('loginPass').addEventListener('keypress',e=>{if(e.key==='Enter')doLogin()});
+document.getElementById('loginUser').addEventListener('keypress',e=>{if(e.key==='Enter')document.getElementById('loginPass').focus()});
 
-            // Sort: undone first, done last; preserve original order within each group
-            const sorted = [...routineTasks].sort((a, b) => {
-                const aDone = doneFilt.includes(a.id);
-                const bDone = doneFilt.includes(b.id);
-                if (aDone !== bDone) return aDone ? 1 : -1;
-                return (a.createdAt || 0) - (b.createdAt || 0);
-            });
+function showPanel(){
+  panelContent.style.display='block';
+  setupListeners();
+}
 
-            if (sorted.length === 0) {
-                routineList.innerHTML = `<div class="routine-empty">Agrega tareas a tu rutina diaria ↓</div>`;
-                return;
-            }
+// ── Modal tabs ────────────────────────────────────────────────────────────
+window.switchTab = function(tab){
+  document.querySelectorAll('.modal-tab').forEach(t=>t.classList.toggle('active',t.dataset.tab===tab));
+  document.querySelectorAll('.tab-content').forEach(c=>c.classList.toggle('active',c.dataset.tab===tab));
+  if(tab==='valores') loadValores();
+  if(tab==='config')  loadConfig();
+};
 
-            routineList.innerHTML = sorted.map(task => {
-                const isDone = doneFilt.includes(task.id);
-                return `
-                    <div class="routine-task ${isDone ? 'done' : ''}" onclick="toggleRoutineTask('${task.id}')">
-                        <div class="routine-check ${isDone ? 'checked' : ''}">${isDone ? '✓' : ''}</div>
-                        <span class="routine-task-text">${escapeHtml(task.text)}</span>
-                        <button class="routine-task-delete" onclick="deleteRoutineTask('${task.id}', event)" title="Eliminar de la rutina">✕</button>
-                    </div>
-                `;
-            }).join('');
-        }
+// ── Values (Tabla de Valores) ─────────────────────────────────────────────
+function getDefaultValues(){
+  const makeActs=()=>[{text:'',xp:10},{text:'',xp:10},{text:'',xp:10}];
+  return{
+    self:Array(5).fill(''),
+    familia:[{valor:'',act:makeActs()},{valor:'',act:makeActs()}],
+    amigos: [{valor:'',act:makeActs()},{valor:'',act:makeActs()}]
+  };
+}
 
-        // ── Toggle task done ──────────────────────────────────────────────
-        window.toggleRoutineTask = function(id) {
-            const done = getTodayDone();
-            const idx  = done.indexOf(id);
-            if (idx === -1) done.push(id);
-            else done.splice(idx, 1);
-            setTodayDone(done);
-            renderRoutine();
-        };
+async function loadValores(){
+  const el=document.getElementById('valoresEditorContent');
+  el.innerHTML='<div class="empty-state"><div class="empty-icon">⏳</div><p class="empty-text">Cargando valores...</p></div>';
+  const d=await getDoc(doc(db,'panelkit_values',currentId));
+  currentValues=d.exists()?mergeDefaultValues(d.data()):getDefaultValues();
+  renderValoresEditor();
+}
 
-        // ── Add routine task (persistent) ─────────────────────────────────
-        window.addRoutineTask = async function() {
-            const text = routineInput.value.trim();
-            if (!text) { routineInput.focus(); return; }
+function mergeDefaultValues(data){
+  const def=getDefaultValues();
+  const makeActs=()=>[{text:'',xp:10},{text:'',xp:10},{text:'',xp:10}];
+  return{
+    self: Array.isArray(data.self)?data.self:def.self,
+    familia: (data.familia||def.familia).map(v=>({valor:v.valor||'',act:(v.act||makeActs()).map(a=>({text:a.text||'',xp:a.xp??10}))})),
+    amigos:  (data.amigos||def.amigos).map(v=>({valor:v.valor||'',act:(v.act||makeActs()).map(a=>({text:a.text||'',xp:a.xp??10}))}))
+  };
+}
 
-            setSyncing(true);
-            const id = Date.now().toString(36) + Math.random().toString(36).substr(2, 5);
-            await setDoc(doc(db, `panelkit_routine_${slug}`, id), {
-                text,
-                createdAt: Date.now()
-            });
-            routineInput.value = '';
-            setSyncing(false);
-        };
+function renderValoresEditor(){
+  const v=currentValues;
+  let html='';
 
-        // ── Delete routine task (removes from template + today's done) ────
-        window.deleteRoutineTask = async function(id, event) {
-            event.stopPropagation();
-            setSyncing(true);
-            await deleteDoc(doc(db, `panelkit_routine_${slug}`, id));
-            const done = getTodayDone().filter(d => d !== id);
-            setTodayDone(done);
-            setSyncing(false);
-        };
+  // Self section
+  html+=`<div class="values-section-title">Relaciones Conmigo Mismo</div>`;
+  html+=`<div class="valor-block"><div class="valor-block-header">¿Qué tipo de persona quiero ser?</div>`;
+  v.self.forEach((txt,i)=>html+=`<div style="padding:6px 0;border-bottom:1px solid var(--brd);font-size:.83rem;color:${txt?'var(--txt)':'var(--txt2)'}"><span style="color:var(--txt2);font-size:.72rem">Una persona que...</span><br>${txt?esc(txt):'<em>(sin completar)</em>'}</div>`);
+  html+=`</div>`;
 
-        // ── Listen to routine tasks (realtime) ────────────────────────────
-        function listenRoutine() {
-            const q = query(
-                collection(db, `panelkit_routine_${slug}`),
-                orderBy('createdAt', 'asc')
-            );
-            onSnapshot(q, snap => {
-                routineTasks = snap.docs.map(d => ({ id: d.id, ...d.data() }));
-                renderRoutine();
-            });
-        }
+  // Familia + Amigos
+  ['familia','amigos'].forEach(section=>{
+    const labels={familia:'Relación con mi Familia',amigos:'Relaciones con mis Amigos'};
+    html+=`<div class="values-section-title">${labels[section]}</div>`;
+    v[section].forEach((blk,vi)=>{
+      const prefix=VALORES_PREFIXES[section][vi];
+      html+=`<div class="valor-block">
+        <div class="valor-block-header">VALOR: ${prefix?prefix+' — ':''}${blk.valor?esc(blk.valor):'<em style="color:var(--txt2)">(sin completar)</em>'}</div>`;
+      blk.act.forEach((a,ai)=>{
+        const actId=`xp_${section}_${vi}_${ai}`;
+        html+=`<div class="act-xp-row">
+          <div class="act-label-txt">Act. ${ai+1}:</div>
+          <div class="act-text-display">${a.text?esc(a.text):'<em style="color:var(--txt2)">(vacío)</em>'}</div>
+          <div class="act-xp-input-wrap">
+            <label for="${actId}">XP:</label>
+            <input class="act-xp-input" type="number" id="${actId}" value="${a.xp}" min="1" max="999">
+          </div>
+        </div>`;
+      });
+      html+=`</div>`;
+    });
+  });
 
-        // ── Cards render ──────────────────────────────────────────────────
-        function renderCards() {
-            const filtered = activeFilter === 'all'
-                ? cards
-                : cards.filter(c => c.category === activeFilter);
+  html+=`<button class="values-save-btn success" onclick="saveValores()">💾 Guardar XP de actividades</button>`;
+  document.getElementById('valoresEditorContent').innerHTML=html;
+}
 
-            // Unread first, then by priority
-            const priorityOrder = { alta: 0, media: 1, baja: 2 };
-            const sorted = [...filtered].sort((a, b) => {
-                if (a.read !== b.read) return a.read ? 1 : -1;
-                return (priorityOrder[a.priority] ?? 3) - (priorityOrder[b.priority] ?? 3);
-            });
+window.saveValores = async function(){
+  if(!currentValues||!currentId)return;
+  const v=JSON.parse(JSON.stringify(currentValues));
+  ['familia','amigos'].forEach(section=>{
+    v[section].forEach((blk,vi)=>{
+      blk.act.forEach((a,ai)=>{
+        const el=document.getElementById(`xp_${section}_${vi}_${ai}`);
+        if(el)a.xp=parseInt(el.value)||10;
+      });
+    });
+  });
+  setSyncing(true);
+  await setDoc(doc(db,'panelkit_values',currentId),v);
+  currentValues=v;
+  setSyncing(false);
+  showFeedback('✓ XP guardados correctamente');
+};
 
-            if (sorted.length === 0) {
-                cardsGrid.innerHTML = `
-                    <div class="empty-state">
-                        <div class="empty-state-icon">📭</div>
-                        <p class="empty-state-text">${activeFilter === 'all' ? 'Sin tarjetas aún' : 'Nada en esta categoría'}</p>
-                    </div>`;
-                return;
-            }
+// ── Config ────────────────────────────────────────────────────────────────
+async function loadConfig(){
+  const d=await getDoc(doc(db,'panelkit_config',currentId));
+  currentConfig=d.exists()?{...DEFAULT_CFG,...d.data()}:{...DEFAULT_CFG};
+  document.getElementById('cfgXpTask').value=currentConfig.xpRoutineTask;
+  document.getElementById('cfgXpCard').value=currentConfig.xpCardRead;
+  document.getElementById('cfgXpBonus').value=currentConfig.xpAllRoutinesBonus;
+  document.getElementById('cfgXpLevel').value=currentConfig.xpToLevel1;
+  updateLevelPreview();
+}
 
-            cardsGrid.innerHTML = sorted.map(card => `
-                <div class="thought-card priority-${card.priority} ${card.read ? 'read' : ''}" onclick="toggleRead('${card.id}', ${card.read})">
-                    <div class="card-top">
-                        <div class="priority-dot ${card.priority}"></div>
-                        <span class="cat-tag ${card.category}">${card.category}</span>
-                        ${card.read ? '<span class="read-badge">leído</span>' : ''}
-                    </div>
-                    <div class="card-text">${escapeHtml(card.text)}</div>
-                    <div class="card-action">
-                        <button class="read-btn ${card.read ? 'unread-btn' : ''}" onclick="toggleRead('${card.id}', ${card.read}); event.stopPropagation()">
-                            ${card.read ? '↩ Marcar no leído' : '✓ Marcar leído'}
-                        </button>
-                    </div>
-                </div>
-            `).join('');
-        }
+window.updateLevelPreview = function(){
+  const l=parseInt(document.getElementById('cfgXpLevel').value)||100;
+  document.getElementById('lvlP0').textContent=`0 – ${l-1} XP`;
+  document.getElementById('lvlP1').textContent=`${l} – ${l*5-1} XP`;
+  document.getElementById('lvlP2').textContent=`${l*5} – ${l*15-1} XP`;
+  document.getElementById('lvlP3').textContent=`${l*15}+ XP`;
+};
 
-        // ── Toggle read ───────────────────────────────────────────────────
-        window.toggleRead = async function(cardId, currentRead) {
-            setSyncing(true);
-            await updateDoc(doc(db, `panelkit_cards_${slug}`, cardId), { read: !currentRead });
-            setSyncing(false);
-        };
+window.saveConfig = async function(){
+  if(!currentId)return;
+  const c={
+    xpRoutineTask:parseInt(document.getElementById('cfgXpTask').value)||10,
+    xpCardRead:parseInt(document.getElementById('cfgXpCard').value)||15,
+    xpAllRoutinesBonus:parseInt(document.getElementById('cfgXpBonus').value)||50,
+    xpToLevel1:parseInt(document.getElementById('cfgXpLevel').value)||100
+  };
+  setSyncing(true);
+  await setDoc(doc(db,'panelkit_config',currentId),c);
+  currentConfig=c;
+  setSyncing(false);
+  showFeedback('✓ Configuración guardada');
+};
 
-        // ── Render filters ────────────────────────────────────────────────
-        function renderFilters() {
-            const categories = ['all', ...new Set(cards.map(c => c.category))];
-            const labels = { all: 'Todas', cuerpo: 'Cuerpo', errores: 'Errores', emociones: 'Emociones', relaciones: 'Relaciones', autoestima: 'Autoestima', general: 'General' };
-            filterRow.innerHTML = categories.map(cat => `
-                <button class="filter-btn ${activeFilter === cat ? 'active' : ''}" onclick="setFilter('${cat}')">
-                    ${labels[cat] || cat}
-                </button>
-            `).join('');
-        }
+// ── Modal ─────────────────────────────────────────────────────────────────
+window.openModal = function(slug){
+  currentId=slug;
+  const p=patients.find(p=>p.slug===slug);
+  document.getElementById('modalPatientName').textContent=p?.name||slug;
+  // Reset to cards tab
+  switchTab('cards');
+  cardsModal.classList.add('show');
+  // Listen to cards
+  if(unsubCards)unsubCards();
+  const q=query(collection(db,`panelkit_cards_${slug}`),orderBy('createdAt','desc'));
+  unsubCards=onSnapshot(q,snap=>{currentCards=snap.docs.map(d=>({id:d.id,...d.data()}));renderCards()});
+};
 
-        window.setFilter = function(cat) {
-            activeFilter = cat;
-            renderFilters();
-            renderCards();
-        };
+window.closeModal = function(){
+  cardsModal.classList.remove('show');
+  if(unsubCards){unsubCards();unsubCards=null}
+  currentId=null;
+};
 
-        // ── Update stats ──────────────────────────────────────────────────
-        function updateStats() {
-            statTotal.textContent    = cards.length;
-            statRead.textContent     = cards.filter(c => c.read).length;
-            statPriority.textContent = cards.filter(c => c.priority === 'alta').length;
-        }
+// ── Cards ─────────────────────────────────────────────────────────────────
+function renderCards(){
+  if(currentCards.length===0){cardsList.innerHTML=`<div class="empty-state"><div class="empty-icon">📝</div><p class="empty-text">Sin tarjetas</p></div>`;return}
+  cardsList.innerHTML=currentCards.map(c=>`
+    <div class="card-item">
+      <div class="card-item-header">
+        <div class="card-priority ${c.priority}"></div>
+        <span class="card-tag ${c.category}">${c.category}</span>
+        <div class="card-item-actions"><button class="danger" onclick="deleteCard('${c.id}')">✕</button></div>
+      </div>
+      <div class="card-item-text">${esc(c.text)}</div>
+    </div>`).join('');
+}
 
-        // ── Listen to cards ───────────────────────────────────────────────
-        function listenCards() {
-            const q = query(
-                collection(db, `panelkit_cards_${slug}`),
-                orderBy('createdAt', 'desc')
-            );
-            onSnapshot(q, snap => {
-                cards = snap.docs.map(d => ({ id: d.id, ...d.data() }));
-                updateStats();
-                renderFilters();
-                renderCards();
-                setSyncing(false);
-            });
-        }
+window.addCard = async function(){
+  const text=document.getElementById('cardText').value.trim();
+  if(!text||!currentId)return;
+  const id=Date.now().toString(36)+Math.random().toString(36).substr(2,5);
+  setSyncing(true);
+  await setDoc(doc(db,`panelkit_cards_${currentId}`,id),{
+    text,category:document.getElementById('cardCategory').value,
+    priority:document.getElementById('cardPriority').value,createdAt:Date.now(),read:false
+  });
+  const p=patients.find(p=>p.slug===currentId);
+  if(p)await setDoc(doc(db,'panelkit_patients',currentId),{...p,cardsCount:(p.cardsCount||0)+1});
+  document.getElementById('cardText').value='';
+  setSyncing(false);
+};
 
-        // ── Load patient ───────────────────────────────────────────────────
-        async function loadPatient() {
-            if (!slug) {
-                showError();
-                return;
-            }
+window.deleteCard = async function(cardId){
+  if(!currentId)return;
+  setSyncing(true);
+  await deleteDoc(doc(db,`panelkit_cards_${currentId}`,cardId));
+  const p=patients.find(p=>p.slug===currentId);
+  if(p)await setDoc(doc(db,'panelkit_patients',currentId),{...p,cardsCount:Math.max((p.cardsCount||1)-1,0)});
+  setSyncing(false);
+};
 
-            try {
-                const patientDoc = await getDoc(doc(db, 'panelkit_patients', slug));
-                if (!patientDoc.exists()) {
-                    showError();
-                    return;
-                }
+// ── Patients ──────────────────────────────────────────────────────────────
+function generateSlug(name,id){
+  return name.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^a-z0-9]/g,'-').replace(/-+/g,'-').replace(/^-|-$/g,'')+'-'+id;
+}
 
-                const patient = patientDoc.data();
-                patientDisplayName.textContent = patient.name || slug;
-                document.title = `${patient.name} — PanelKit`;
+function renderPatients(){
+  patientsCount.textContent=`${patients.length} paciente${patients.length!==1?'s':''}`;
+  if(patients.length===0){patientsGrid.innerHTML=`<div class="empty-state" style="grid-column:1/-1"><div class="empty-icon">👥</div><p class="empty-text">No hay pacientes aún</p></div>`;return}
+  patientsGrid.innerHTML=patients.map(p=>{
+    const url=BASE_URL+p.slug;
+    return`<div class="patient-card">
+      <div class="patient-header">
+        <div class="patient-avatar">${p.name.charAt(0).toUpperCase()}</div>
+        <div><div class="patient-name">${esc(p.name)}</div><div class="patient-id">#${p.identifier}</div></div>
+      </div>
+      <div class="patient-stats">
+        <div><div class="patient-stat-value">${p.cardsCount||0}</div><div class="patient-stat-label">Tarjetas</div></div>
+      </div>
+      <div class="link-container">
+        <input type="text" class="link-input" value="${url}" readonly onclick="this.select()">
+        <button class="secondary" onclick="copyLink('${p.slug}')">📋</button>
+      </div>
+      <div class="patient-actions">
+        <button onclick="openModal('${p.slug}')">📝 Gestionar</button>
+        <button class="danger" onclick="deletePatient('${p.slug}')">🗑️</button>
+      </div>
+    </div>`;
+  }).join('');
+}
 
-                // Date badge
-                dailyDateBadge.textContent = formatDate(TODAY);
+window.createPatient = async function(){
+  const nameInput=document.getElementById('patientName');
+  const idInput=document.getElementById('patientId');
+  const name=nameInput.value.trim();
+  const id=idInput.value.trim()||Date.now().toString().slice(-4);
+  if(!name){nameInput.focus();return}
+  const slug=generateSlug(name,id);
+  setSyncing(true);
+  await setDoc(doc(db,'panelkit_patients',slug),{name,identifier:id,slug,createdAt:Date.now(),cardsCount:0});
+  nameInput.value='';idInput.value='';
+  setSyncing(false);
+};
 
-                // Motivational phrase (rotates daily)
-                const dayOfYear = Math.floor((new Date() - new Date(new Date().getFullYear(), 0, 0)) / 86400000);
-                phraseCard.textContent = '"' + PHRASES[dayOfYear % PHRASES.length] + '"';
+window.deletePatient = async function(slug){
+  if(!confirm('¿Eliminar este paciente y todos sus datos?'))return;
+  setSyncing(true);
+  const p=patients.find(p=>p.slug===slug);
+  if(p?.cardsCount)for(const c of currentCards)await deleteDoc(doc(db,`panelkit_cards_${slug}`,c.id));
+  await deleteDoc(doc(db,'panelkit_patients',slug));
+  setSyncing(false);
+};
 
-                // Show main content
-                mainContent.style.display = 'block';
-                setSyncing(false);
+window.copyLink = function(slug){
+  navigator.clipboard.writeText(BASE_URL+slug).then(()=>showFeedback('✓ Enlace copiado'));
+};
 
-                // Start listeners
-                listenRoutine();
-                listenCards();
+// ── Listeners ─────────────────────────────────────────────────────────────
+function setupListeners(){
+  const q=query(collection(db,'panelkit_patients'),orderBy('createdAt','desc'));
+  onSnapshot(q,snap=>{
+    patients=snap.docs.map(d=>({id:d.id,...d.data()}));
+    renderPatients();setSyncing(false);
+  });
+  setTimeout(()=>loadingOverlay.classList.add('hidden'),500);
+}
 
-            } catch (err) {
-                console.error(err);
-                showError();
-            } finally {
-                loadingOverlay.classList.add('hidden');
-            }
-        }
+// ── Close modal on outside click ──────────────────────────────────────────
+cardsModal.addEventListener('click',e=>{if(e.target===cardsModal)closeModal()});
 
-        function showError() {
-            loadingOverlay.classList.add('hidden');
-            errorScreen.classList.add('show');
-        }
+document.getElementById('patientName').addEventListener('keypress',e=>{if(e.key==='Enter')document.getElementById('patientId').focus()});
+document.getElementById('patientId').addEventListener('keypress',e=>{if(e.key==='Enter')createPatient()});
 
-        // ── Enter key on routine input ─────────────────────────────────────
-        routineInput.addEventListener('keypress', e => {
-            if (e.key === 'Enter') addRoutineTask();
-        });
-
-        // ── Init ───────────────────────────────────────────────────────────
-        loadPatient();
-    </script>
+// ── Init ──────────────────────────────────────────────────────────────────
+checkAuth();
+</script>
 </body>
 </html>
