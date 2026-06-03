@@ -90,21 +90,39 @@ body{font-family:'Outfit',sans-serif;background:var(--bg);color:var(--txt);min-h
 .daily-add-row button{background:var(--daily);border:none;border-radius:8px;color:#0a0a0b;font-family:'JetBrains Mono',monospace;font-size:1.2rem;font-weight:700;padding:10px 18px;cursor:pointer;transition:all .2s;line-height:1}
 .daily-add-row button:hover{transform:translateY(-1px);box-shadow:0 4px 16px var(--dailyg)}
 
-/* ── Values Table ── */
-.values-section{border-color:rgba(0,206,201,.2);background:linear-gradient(135deg,rgba(0,206,201,.04) 0%,var(--bg2) 70%)}
-.values-title{color:var(--acc2)!important}
-.values-group{margin-bottom:22px}
+/* ── Values FAB ── */
+.values-fab{position:fixed;bottom:28px;right:24px;width:56px;height:56px;border-radius:50%;background:linear-gradient(135deg,#00cec9,#00b894);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:1.5rem;box-shadow:0 4px 22px rgba(0,206,201,.45);z-index:300;transition:all .25s;padding:0;line-height:1}
+.values-fab:hover{transform:scale(1.12);box-shadow:0 6px 30px rgba(0,206,201,.55)}
+.values-fab:active{transform:scale(.96)}
+.values-fab-badge{position:absolute;top:-5px;right:-5px;background:var(--ok);color:white;font-family:'JetBrains Mono',monospace;font-size:.52rem;font-weight:800;padding:2px 6px;border-radius:10px;border:2px solid var(--bg);white-space:nowrap;display:none}
+.values-fab-badge.show{display:block}
+
+/* ── Values Drawer ── */
+.drawer-overlay{position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:700;opacity:0;pointer-events:none;transition:opacity .3s}
+.drawer-overlay.open{opacity:1;pointer-events:auto}
+.values-drawer{position:fixed;bottom:0;left:0;right:0;height:88vh;background:var(--bg2);border-radius:20px 20px 0 0;z-index:701;transform:translateY(100%);transition:transform .35s cubic-bezier(.32,.72,0,1);display:flex;flex-direction:column;overflow:hidden;max-width:900px;margin:0 auto}
+.drawer-overlay.open .values-drawer{transform:translateY(0)}
+.drawer-handle{width:38px;height:4px;background:var(--brd);border-radius:2px;margin:12px auto 0;flex-shrink:0}
+.drawer-header{display:flex;align-items:center;justify-content:space-between;padding:14px 22px 12px;border-bottom:1px solid var(--brd);flex-shrink:0}
+.drawer-title{font-family:'JetBrains Mono',monospace;font-size:.92rem;font-weight:700;color:var(--acc2);display:flex;align-items:center;gap:8px}
+.drawer-progress{font-family:'JetBrains Mono',monospace;font-size:.65rem;color:var(--txt2);background:var(--bg);padding:3px 10px;border-radius:12px}
+.drawer-close{background:transparent;border:none;color:var(--txt2);font-size:1.4rem;cursor:pointer;padding:4px;line-height:1;transition:color .2s}
+.drawer-close:hover{color:var(--txt);transform:none;box-shadow:none}
+.drawer-body{overflow-y:auto;flex:1;padding:20px 22px 48px;-webkit-overflow-scrolling:touch}
+
+/* ── Values content (inside drawer) ── */
+.values-group{margin-bottom:24px}
 .values-group:last-child{margin-bottom:0}
-.values-group-label{font-family:'JetBrains Mono',monospace;font-size:.78rem;font-weight:700;color:var(--acc2);text-transform:uppercase;letter-spacing:.8px;margin-bottom:10px;padding-bottom:6px;border-bottom:1px solid rgba(0,206,201,.2)}
+.values-group-label{font-family:'JetBrains Mono',monospace;font-size:.75rem;font-weight:700;color:var(--acc2);text-transform:uppercase;letter-spacing:.8px;margin-bottom:10px;padding-bottom:6px;border-bottom:1px solid rgba(0,206,201,.2)}
 .values-question{font-size:.8rem;color:var(--txt2);margin-bottom:10px}
 .self-row{display:flex;align-items:center;gap:10px;margin-bottom:8px}
 .self-prefix{font-size:.8rem;color:var(--txt2);white-space:nowrap;flex-shrink:0}
 .self-input{flex:1;background:var(--bg);border:1px solid var(--brd);border-radius:8px;color:var(--txt);font-family:'Outfit',sans-serif;font-size:.88rem;padding:8px 12px;outline:none;transition:all .2s}
 .self-input:focus{border-color:var(--acc2);box-shadow:0 0 0 3px rgba(0,206,201,.15)}
-.valor-block{background:var(--bg);border:1px solid var(--brd);border-radius:10px;padding:14px;margin-bottom:12px}
+.valor-block{background:var(--bg);border:1px solid var(--brd);border-radius:10px;padding:14px;margin-bottom:10px}
 .valor-block:last-child{margin-bottom:0}
 .valor-header{display:flex;align-items:center;gap:8px;margin-bottom:10px}
-.valor-prefix{font-family:'JetBrains Mono',monospace;font-size:.7rem;color:var(--acc2);font-weight:700;white-space:nowrap}
+.valor-prefix{font-family:'JetBrains Mono',monospace;font-size:.68rem;color:var(--acc2);font-weight:700;white-space:nowrap}
 .valor-input{flex:1;background:var(--bg2);border:1px solid var(--brd);border-radius:6px;color:var(--txt);font-family:'Outfit',sans-serif;font-size:.85rem;padding:6px 10px;outline:none;transition:all .2s}
 .valor-input:focus{border-color:var(--acc2);box-shadow:0 0 0 2px rgba(0,206,201,.15)}
 .act-row{display:flex;align-items:center;gap:8px;margin-bottom:8px}
@@ -112,8 +130,8 @@ body{font-family:'Outfit',sans-serif;background:var(--bg);color:var(--txt);min-h
 .act-num{font-family:'JetBrains Mono',monospace;font-size:.65rem;color:var(--txt2);flex-shrink:0;width:18px}
 .act-input{flex:1;background:var(--bg2);border:1px solid var(--brd);border-radius:6px;color:var(--txt);font-family:'Outfit',sans-serif;font-size:.85rem;padding:7px 10px;outline:none;transition:all .2s}
 .act-input:focus{border-color:var(--acc2);box-shadow:0 0 0 2px rgba(0,206,201,.15)}
-.act-xp-badge{font-family:'JetBrains Mono',monospace;font-size:.65rem;color:var(--ok);background:rgba(0,200,83,.1);border:1px solid rgba(0,200,83,.2);padding:4px 8px;border-radius:8px;white-space:nowrap;flex-shrink:0}
-.act-done-btn{flex-shrink:0;background:transparent;border:1px solid var(--brd);border-radius:6px;color:var(--txt2);font-size:.7rem;padding:5px 9px;cursor:pointer;transition:all .2s;white-space:nowrap;font-family:'JetBrains Mono',monospace}
+.act-xp-badge{font-family:'JetBrains Mono',monospace;font-size:.62rem;color:var(--ok);background:rgba(0,200,83,.1);border:1px solid rgba(0,200,83,.2);padding:3px 8px;border-radius:8px;white-space:nowrap;flex-shrink:0}
+.act-done-btn{flex-shrink:0;background:transparent;border:1px solid var(--brd);border-radius:6px;color:var(--txt2);font-size:.68rem;padding:5px 9px;cursor:pointer;transition:all .2s;white-space:nowrap;font-family:'JetBrains Mono',monospace}
 .act-done-btn:hover{border-color:var(--ok);color:var(--ok);transform:none;box-shadow:none}
 .act-done-btn.completed{background:rgba(0,200,83,.1);border-color:var(--ok);color:var(--ok);cursor:default}
 .act-done-btn.completed:hover{transform:none;box-shadow:none}
@@ -267,30 +285,6 @@ body{font-family:'Outfit',sans-serif;background:var(--bg);color:var(--txt);min-h
       </div>
     </div>
 
-    <!-- Tabla de Valores -->
-    <div class="section values-section">
-      <div class="section-title values-title"><span>🌿</span> Mis Valores</div>
-
-      <!-- Conmigo mismo -->
-      <div class="values-group">
-        <div class="values-group-label">Relaciones Conmigo Mismo</div>
-        <div class="values-question">¿Qué tipo de persona quiero ser?</div>
-        <div id="selfList"></div>
-      </div>
-
-      <!-- Familia -->
-      <div class="values-group">
-        <div class="values-group-label">Relación con mi Familia</div>
-        <div id="familiaList"></div>
-      </div>
-
-      <!-- Amigos -->
-      <div class="values-group">
-        <div class="values-group-label">Relaciones con mis Amigos</div>
-        <div id="amigosList"></div>
-      </div>
-    </div>
-
     <!-- Stats -->
     <div class="stats-row">
       <div class="stat-card"><div class="stat-value" id="statTotal">0</div><div class="stat-label">Tarjetas</div></div>
@@ -316,6 +310,41 @@ body{font-family:'Outfit',sans-serif;background:var(--bg);color:var(--txt);min-h
       </div>
       <div class="achievements-body" id="achievementsBody">
         <div class="achievements-grid" id="achievementsGrid"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Values FAB -->
+<button class="values-fab" onclick="openValuesDrawer()" title="Mis Valores">
+  🌿
+  <span class="values-fab-badge" id="valuesFabBadge"></span>
+</button>
+
+<!-- Values Drawer -->
+<div class="drawer-overlay" id="drawerOverlay" onclick="handleDrawerOverlayClick(event)">
+  <div class="values-drawer" id="valuesDrawer">
+    <div class="drawer-handle"></div>
+    <div class="drawer-header">
+      <div class="drawer-title"><span>🌿</span> Mis Valores</div>
+      <div style="display:flex;align-items:center;gap:10px">
+        <span class="drawer-progress" id="drawerProgress">0 / 12 actividades</span>
+        <button class="drawer-close" onclick="closeValuesDrawer()">×</button>
+      </div>
+    </div>
+    <div class="drawer-body">
+      <div class="values-group">
+        <div class="values-group-label">Relaciones Conmigo Mismo</div>
+        <div class="values-question">¿Qué tipo de persona quiero ser?</div>
+        <div id="selfList"></div>
+      </div>
+      <div class="values-group">
+        <div class="values-group-label">Relación con mi Familia</div>
+        <div id="familiaList"></div>
+      </div>
+      <div class="values-group">
+        <div class="values-group-label">Relaciones con mis Amigos</div>
+        <div id="amigosList"></div>
       </div>
     </div>
   </div>
@@ -631,6 +660,33 @@ function renderValuesTable(){
   });
 }
 
+// Drawer open/close
+window.openValuesDrawer = function(){
+  document.getElementById('drawerOverlay').classList.add('open');
+  document.body.style.overflow='hidden';
+};
+window.closeValuesDrawer = function(){
+  document.getElementById('drawerOverlay').classList.remove('open');
+  document.body.style.overflow='';
+};
+window.handleDrawerOverlayClick = function(e){
+  if(e.target===document.getElementById('drawerOverlay'))closeValuesDrawer();
+};
+
+// Update FAB badge with completed count
+function updateValuesBadge(){
+  if(!valuesData)return;
+  const total=valuesData.familia.length*3+valuesData.amigos.length*3; // 12
+  const done=(gStats.completedActivities||[]).filter(id=>id.startsWith('familia_')||id.startsWith('amigos_')).length;
+  const badge=document.getElementById('valuesFabBadge');
+  const prog=document.getElementById('drawerProgress');
+  if(badge){badge.textContent=`${done}/${total}`;badge.className='values-fab-badge'+(done>0?' show':'')}
+  if(prog)prog.textContent=`${done} / ${total} actividades`;
+}
+
+  updateValuesBadge();
+}
+
 // Value field change handlers (debounced save)
 window.onSelfChange=function(i,val){valuesData.self[i]=val;scheduleValuesSave()};
 window.onValorChange=function(section,vi,val){valuesData[section][vi].valor=val;scheduleValuesSave()};
@@ -651,6 +707,7 @@ window.completeActivity=async function(actId,xp){
   gStats.completedActivities.push(actId);
   const btn=document.getElementById(`btn_${actId}`);
   if(btn){btn.textContent='✓ Hecho';btn.classList.add('completed');btn.disabled=true}
+  updateValuesBadge();
   await addXP(xp,true,'check');
 };
 
