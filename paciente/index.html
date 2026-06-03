@@ -670,6 +670,7 @@ function renderValuesTable(){
       </div>`;
     }).join('');
   });
+  updateValuesBadge();
 }
 
 // Drawer open/close
@@ -694,9 +695,6 @@ function updateValuesBadge(){
   const prog=document.getElementById('drawerProgress');
   if(badge){badge.textContent=`${done}/${total}`;badge.className='values-fab-badge'+(done>0?' show':'')}
   if(prog)prog.textContent=`${done} / ${total} actividades`;
-}
-
-  updateValuesBadge();
 }
 
 // Value field change handlers (debounced save)
