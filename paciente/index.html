@@ -1,786 +1,739 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <meta name="theme-color" content="#0a0a0b">
-    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🧠</text></svg>">
-    <title>Mi Tablero</title>
-    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=Outfit:wght@300;500;700&display=swap" rel="stylesheet">
-    <style>
-        *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
-        :root{
-            --bg-primary:#0a0a0b;--bg-secondary:#141416;--bg-hover:#1a1a1e;
-            --text-primary:#e8e8e8;--text-secondary:#6b6b70;
-            --accent:#6c5ce7;--accent-glow:rgba(108,92,231,.3);
-            --accent-secondary:#00cec9;
-            --success:#00c853;--warning:#ff9100;--danger:#ff5252;
-            --border:#252529;
-            --daily-color:#fdcb6e;--daily-glow:rgba(253,203,110,.18);
-            --level-color:#636e72;--level-glow:rgba(99,110,114,.3);
-        }
-        body{font-family:'Outfit',sans-serif;background:var(--bg-primary);color:var(--text-primary);min-height:100vh;padding:20px 20px 80px;
-            background-image:radial-gradient(ellipse at top,rgba(108,92,231,.07) 0%,transparent 50%),radial-gradient(circle at 80% 80%,rgba(0,206,201,.04) 0%,transparent 40%)}
-        .container{max-width:760px;margin:0 auto}
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=no,viewport-fit=cover">
+<meta name="theme-color" content="#0a0a0b">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🧠</text></svg>">
+<title>Mi Tablero</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=Outfit:wght@300;500;700&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+:root{
+  --bg:#0a0a0b;--bg2:#141416;--bg3:#1a1a1e;
+  --txt:#e8e8e8;--txt2:#6b6b70;
+  --acc:#6c5ce7;--accg:rgba(108,92,231,.3);
+  --acc2:#00cec9;
+  --ok:#00c853;--warn:#ff9100;--err:#ff5252;
+  --brd:#252529;
+  --daily:#fdcb6e;--dailyg:rgba(253,203,110,.18);
+  --lvc:#636e72;--lvg:rgba(99,110,114,.3);
+}
+body{font-family:'Outfit',sans-serif;background:var(--bg);color:var(--txt);min-height:100vh;padding:20px 20px 80px;
+  background-image:radial-gradient(ellipse at top,rgba(108,92,231,.07) 0%,transparent 50%),radial-gradient(circle at 80% 80%,rgba(0,206,201,.04) 0%,transparent 40%)}
+.container{max-width:760px;margin:0 auto}
 
-        /* Loading */
-        .loading-overlay{position:fixed;inset:0;background:var(--bg-primary);display:flex;align-items:center;justify-content:center;z-index:999;transition:opacity .4s ease}
-        .loading-overlay.hidden{opacity:0;pointer-events:none}
-        .spinner{width:36px;height:36px;border:3px solid var(--border);border-top-color:var(--accent);border-radius:50%;animation:spin .8s linear infinite}
-        @keyframes spin{to{transform:rotate(360deg)}}
+/* Loading */
+.loading-overlay{position:fixed;inset:0;background:var(--bg);display:flex;align-items:center;justify-content:center;z-index:999;transition:opacity .4s}
+.loading-overlay.hidden{opacity:0;pointer-events:none}
+.spinner{width:36px;height:36px;border:3px solid var(--brd);border-top-color:var(--acc);border-radius:50%;animation:spin .8s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
 
-        /* Header */
-        .header{text-align:center;margin-bottom:24px;padding-top:8px}
-        .logo{font-family:'JetBrains Mono',monospace;font-size:1.5rem;font-weight:700;background:linear-gradient(135deg,var(--accent),var(--accent-secondary));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
-        .patient-display-name{font-size:1.15rem;font-weight:600;color:var(--text-primary);margin-top:6px}
-        .sync-status{display:inline-flex;align-items:center;gap:6px;font-family:'JetBrains Mono',monospace;font-size:.62rem;color:var(--text-secondary);margin-top:8px;padding:4px 12px;background:var(--bg-secondary);border-radius:20px}
-        .sync-dot{width:6px;height:6px;border-radius:50%;background:var(--success);transition:background .3s}
-        .sync-dot.syncing{background:var(--warning);animation:pulse 1s infinite}
-        @keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
+/* Header */
+.header{text-align:center;margin-bottom:22px;padding-top:8px}
+.logo{font-family:'JetBrains Mono',monospace;font-size:1.5rem;font-weight:700;background:linear-gradient(135deg,var(--acc),var(--acc2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.patient-display-name{font-size:1.15rem;font-weight:600;color:var(--txt);margin-top:6px}
+.sync-status{display:inline-flex;align-items:center;gap:6px;font-family:'JetBrains Mono',monospace;font-size:.62rem;color:var(--txt2);margin-top:8px;padding:4px 12px;background:var(--bg2);border-radius:20px}
+.sync-dot{width:6px;height:6px;border-radius:50%;background:var(--ok);transition:background .3s}
+.sync-dot.syncing{background:var(--warn);animation:pulse 1s infinite}
 
-        /* Level bar */
-        .level-bar-wrap{background:var(--bg-secondary);border:1px solid var(--border);border-radius:14px;padding:14px 18px;margin-bottom:20px}
-        .level-info{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px}
-        .level-name{font-family:'JetBrains Mono',monospace;font-size:.85rem;font-weight:700;color:var(--level-color);transition:color .4s}
-        .streak-badge{font-family:'JetBrains Mono',monospace;font-size:.8rem;background:rgba(255,145,0,.12);color:var(--warning);padding:3px 10px;border-radius:12px;border:1px solid rgba(255,145,0,.2)}
-        .xp-track{width:100%;height:7px;background:var(--bg-primary);border-radius:10px;overflow:hidden;margin-bottom:5px}
-        .xp-fill{height:100%;border-radius:10px;transition:width .5s ease,background .4s ease;background:linear-gradient(90deg,var(--level-color),var(--level-color)99)}
-        .xp-text{font-family:'JetBrains Mono',monospace;font-size:.62rem;color:var(--text-secondary);text-align:right}
+/* Level bar */
+.level-bar-wrap{background:var(--bg2);border:1px solid var(--brd);border-radius:14px;padding:14px 18px;margin-bottom:20px}
+.level-info{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px}
+.level-name{font-family:'JetBrains Mono',monospace;font-size:.85rem;font-weight:700;color:var(--lvc);transition:color .4s}
+.streak-badge{font-family:'JetBrains Mono',monospace;font-size:.78rem;background:rgba(255,145,0,.12);color:var(--warn);padding:3px 10px;border-radius:12px;border:1px solid rgba(255,145,0,.2)}
+.xp-track{width:100%;height:7px;background:var(--bg);border-radius:10px;overflow:hidden;margin-bottom:5px}
+.xp-fill{height:100%;border-radius:10px;transition:width .5s ease,background .4s;background:linear-gradient(90deg,var(--lvc),#636e7299)}
+.xp-text{font-family:'JetBrains Mono',monospace;font-size:.62rem;color:var(--txt2);text-align:right}
 
-        /* Error */
-        .error-screen{text-align:center;padding:80px 20px;display:none}
-        .error-screen.show{display:block}
-        .error-icon{font-size:4rem;margin-bottom:20px;opacity:.4}
-        .error-text{color:var(--text-secondary);font-size:1rem}
+/* Error */
+.error-screen{text-align:center;padding:80px 20px;display:none}
+.error-screen.show{display:block}
 
-        /* Section */
-        .section{background:var(--bg-secondary);border:1px solid var(--border);border-radius:16px;padding:22px;margin-bottom:20px}
-        .section-title{font-family:'JetBrains Mono',monospace;font-size:.9rem;font-weight:600;color:var(--accent);display:flex;align-items:center;gap:8px;margin-bottom:18px}
+/* Section */
+.section{background:var(--bg2);border:1px solid var(--brd);border-radius:16px;padding:22px;margin-bottom:20px}
+.section-title{font-family:'JetBrains Mono',monospace;font-size:.9rem;font-weight:600;color:var(--acc);display:flex;align-items:center;gap:8px;margin-bottom:18px}
 
-        /* Stats */
-        .stats-row{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:20px}
-        .stat-card{background:var(--bg-secondary);border:1px solid var(--border);border-radius:12px;padding:16px 12px;text-align:center}
-        .stat-value{font-family:'JetBrains Mono',monospace;font-size:1.6rem;font-weight:700;color:var(--accent);line-height:1}
-        .stat-label{font-size:.7rem;color:var(--text-secondary);text-transform:uppercase;letter-spacing:.5px;margin-top:4px}
+/* Stats */
+.stats-row{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:20px}
+.stat-card{background:var(--bg2);border:1px solid var(--brd);border-radius:12px;padding:16px 12px;text-align:center}
+.stat-value{font-family:'JetBrains Mono',monospace;font-size:1.6rem;font-weight:700;color:var(--acc);line-height:1}
+.stat-label{font-size:.7rem;color:var(--txt2);text-transform:uppercase;letter-spacing:.5px;margin-top:4px}
 
-        /* Phrase */
-        .phrase-card{background:linear-gradient(135deg,rgba(108,92,231,.12),rgba(0,206,201,.08));border:1px solid rgba(108,92,231,.3);border-radius:14px;padding:20px;margin-bottom:20px;font-style:italic;color:var(--text-secondary);font-size:.92rem;line-height:1.6;text-align:center}
+/* Phrase */
+.phrase-card{background:linear-gradient(135deg,rgba(108,92,231,.12),rgba(0,206,201,.08));border:1px solid rgba(108,92,231,.3);border-radius:14px;padding:20px;margin-bottom:20px;font-style:italic;color:var(--txt2);font-size:.9rem;line-height:1.6;text-align:center}
 
-        /* Daily */
-        .daily-section{border-color:rgba(253,203,110,.25);background:linear-gradient(135deg,rgba(253,203,110,.05) 0%,var(--bg-secondary) 60%)}
-        .daily-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
-        .daily-title{color:var(--daily-color)!important}
-        .daily-date-badge{font-family:'JetBrains Mono',monospace;font-size:.65rem;color:var(--text-secondary);background:var(--bg-primary);border:1px solid var(--border);padding:4px 10px;border-radius:20px}
-        .daily-progress-wrap{margin-bottom:16px}
-        .daily-progress-track{width:100%;height:6px;background:var(--bg-primary);border-radius:10px;overflow:hidden;margin-bottom:6px}
-        .daily-progress-fill{height:100%;background:linear-gradient(90deg,var(--daily-color),#e17055);border-radius:10px;transition:width .4s ease;width:0%}
-        .daily-progress-text{font-family:'JetBrains Mono',monospace;font-size:.65rem;color:var(--text-secondary);text-align:right}
-        .routine-list{display:flex;flex-direction:column;gap:8px;margin-bottom:16px}
-        .routine-task{display:flex;align-items:center;gap:12px;padding:12px 14px;background:var(--bg-primary);border:1px solid var(--border);border-radius:10px;cursor:pointer;transition:all .25s ease;user-select:none}
-        .routine-task:hover{border-color:var(--daily-color);background:rgba(253,203,110,.05)}
-        .routine-task.done{opacity:.45}
-        .routine-task.done:hover{opacity:.6;border-color:var(--border);background:var(--bg-primary)}
-        .routine-check{flex-shrink:0;width:22px;height:22px;border-radius:6px;border:2px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:.7rem;font-weight:700;color:var(--bg-primary);transition:all .2s ease}
-        .routine-check.checked{background:var(--daily-color);border-color:var(--daily-color)}
-        .routine-task-text{flex:1;font-size:.9rem;line-height:1.3;transition:all .2s}
-        .routine-task.done .routine-task-text{text-decoration:line-through}
-        .routine-task-delete{flex-shrink:0;background:transparent;border:none;color:var(--text-secondary);font-size:.75rem;cursor:pointer;padding:4px 6px;border-radius:4px;opacity:0;transition:all .15s;line-height:1}
-        .routine-task:hover .routine-task-delete{opacity:1}
-        .routine-task-delete:hover{color:var(--danger);background:rgba(255,82,82,.1);transform:none;box-shadow:none}
-        .routine-empty{text-align:center;padding:20px;color:var(--text-secondary);font-size:.85rem}
-        .daily-add-row{display:flex;gap:10px}
-        .daily-add-row input{flex:1;background:var(--bg-primary);border:1px solid var(--border);border-radius:8px;color:var(--text-primary);font-family:'Outfit',sans-serif;font-size:.9rem;padding:10px 14px;outline:none;transition:all .2s}
-        .daily-add-row input::placeholder{color:var(--text-secondary);font-size:.85rem}
-        .daily-add-row input:focus{border-color:var(--daily-color);box-shadow:0 0 0 3px var(--daily-glow)}
-        .daily-add-row button{background:var(--daily-color);border:none;border-radius:8px;color:#0a0a0b;font-family:'JetBrains Mono',monospace;font-size:1.2rem;font-weight:700;padding:10px 18px;cursor:pointer;transition:all .2s;line-height:1}
-        .daily-add-row button:hover{transform:translateY(-1px);box-shadow:0 4px 16px var(--daily-glow)}
-        .daily-add-row button:active{transform:scale(.97)}
+/* Daily */
+.daily-section{border-color:rgba(253,203,110,.25);background:linear-gradient(135deg,rgba(253,203,110,.05) 0%,var(--bg2) 60%)}
+.daily-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
+.daily-title{color:var(--daily)!important}
+.daily-date-badge{font-family:'JetBrains Mono',monospace;font-size:.65rem;color:var(--txt2);background:var(--bg);border:1px solid var(--brd);padding:4px 10px;border-radius:20px}
+.daily-progress-track{width:100%;height:6px;background:var(--bg);border-radius:10px;overflow:hidden;margin-bottom:6px}
+.daily-progress-fill{height:100%;background:linear-gradient(90deg,var(--daily),#e17055);border-radius:10px;transition:width .4s;width:0%}
+.daily-progress-text{font-family:'JetBrains Mono',monospace;font-size:.65rem;color:var(--txt2);text-align:right;margin-bottom:14px}
+.routine-list{display:flex;flex-direction:column;gap:8px;margin-bottom:16px}
+.routine-task{display:flex;align-items:center;gap:12px;padding:12px 14px;background:var(--bg);border:1px solid var(--brd);border-radius:10px;cursor:pointer;transition:all .25s;user-select:none}
+.routine-task:hover{border-color:var(--daily);background:rgba(253,203,110,.05)}
+.routine-task.done{opacity:.45}
+.routine-check{flex-shrink:0;width:22px;height:22px;border-radius:6px;border:2px solid var(--brd);display:flex;align-items:center;justify-content:center;font-size:.7rem;font-weight:700;color:var(--bg);transition:all .2s}
+.routine-check.checked{background:var(--daily);border-color:var(--daily)}
+.routine-task-text{flex:1;font-size:.9rem;line-height:1.3;transition:all .2s}
+.routine-task.done .routine-task-text{text-decoration:line-through}
+.routine-task-delete{flex-shrink:0;background:transparent;border:none;color:var(--txt2);font-size:.75rem;cursor:pointer;padding:4px 6px;border-radius:4px;opacity:0;transition:all .15s;line-height:1}
+.routine-task:hover .routine-task-delete{opacity:1}
+.routine-task-delete:hover{color:var(--err);background:rgba(255,82,82,.1);transform:none;box-shadow:none}
+.routine-empty{text-align:center;padding:20px;color:var(--txt2);font-size:.85rem}
+.daily-add-row{display:flex;gap:10px}
+.daily-add-row input{flex:1;background:var(--bg);border:1px solid var(--brd);border-radius:8px;color:var(--txt);font-family:'Outfit',sans-serif;font-size:.9rem;padding:10px 14px;outline:none;transition:all .2s}
+.daily-add-row input:focus{border-color:var(--daily);box-shadow:0 0 0 3px var(--dailyg)}
+.daily-add-row button{background:var(--daily);border:none;border-radius:8px;color:#0a0a0b;font-family:'JetBrains Mono',monospace;font-size:1.2rem;font-weight:700;padding:10px 18px;cursor:pointer;transition:all .2s;line-height:1}
+.daily-add-row button:hover{transform:translateY(-1px);box-shadow:0 4px 16px var(--dailyg)}
 
-        /* Filters */
-        .filter-row{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:18px}
-        .filter-btn{background:var(--bg-primary);border:1px solid var(--border);border-radius:20px;color:var(--text-secondary);font-family:'JetBrains Mono',monospace;font-size:.65rem;padding:6px 14px;cursor:pointer;transition:all .2s}
-        .filter-btn:hover{border-color:var(--accent);color:var(--text-primary);transform:none;box-shadow:none}
-        .filter-btn.active{background:var(--accent);border-color:var(--accent);color:white;box-shadow:0 2px 10px var(--accent-glow)}
+/* ── Values Table ── */
+.values-section{border-color:rgba(0,206,201,.2);background:linear-gradient(135deg,rgba(0,206,201,.04) 0%,var(--bg2) 70%)}
+.values-title{color:var(--acc2)!important}
+.values-group{margin-bottom:22px}
+.values-group:last-child{margin-bottom:0}
+.values-group-label{font-family:'JetBrains Mono',monospace;font-size:.78rem;font-weight:700;color:var(--acc2);text-transform:uppercase;letter-spacing:.8px;margin-bottom:10px;padding-bottom:6px;border-bottom:1px solid rgba(0,206,201,.2)}
+.values-question{font-size:.8rem;color:var(--txt2);margin-bottom:10px}
+.self-row{display:flex;align-items:center;gap:10px;margin-bottom:8px}
+.self-prefix{font-size:.8rem;color:var(--txt2);white-space:nowrap;flex-shrink:0}
+.self-input{flex:1;background:var(--bg);border:1px solid var(--brd);border-radius:8px;color:var(--txt);font-family:'Outfit',sans-serif;font-size:.88rem;padding:8px 12px;outline:none;transition:all .2s}
+.self-input:focus{border-color:var(--acc2);box-shadow:0 0 0 3px rgba(0,206,201,.15)}
+.valor-block{background:var(--bg);border:1px solid var(--brd);border-radius:10px;padding:14px;margin-bottom:12px}
+.valor-block:last-child{margin-bottom:0}
+.valor-header{display:flex;align-items:center;gap:8px;margin-bottom:10px}
+.valor-prefix{font-family:'JetBrains Mono',monospace;font-size:.7rem;color:var(--acc2);font-weight:700;white-space:nowrap}
+.valor-input{flex:1;background:var(--bg2);border:1px solid var(--brd);border-radius:6px;color:var(--txt);font-family:'Outfit',sans-serif;font-size:.85rem;padding:6px 10px;outline:none;transition:all .2s}
+.valor-input:focus{border-color:var(--acc2);box-shadow:0 0 0 2px rgba(0,206,201,.15)}
+.act-row{display:flex;align-items:center;gap:8px;margin-bottom:8px}
+.act-row:last-child{margin-bottom:0}
+.act-num{font-family:'JetBrains Mono',monospace;font-size:.65rem;color:var(--txt2);flex-shrink:0;width:18px}
+.act-input{flex:1;background:var(--bg2);border:1px solid var(--brd);border-radius:6px;color:var(--txt);font-family:'Outfit',sans-serif;font-size:.85rem;padding:7px 10px;outline:none;transition:all .2s}
+.act-input:focus{border-color:var(--acc2);box-shadow:0 0 0 2px rgba(0,206,201,.15)}
+.act-xp-badge{font-family:'JetBrains Mono',monospace;font-size:.65rem;color:var(--ok);background:rgba(0,200,83,.1);border:1px solid rgba(0,200,83,.2);padding:4px 8px;border-radius:8px;white-space:nowrap;flex-shrink:0}
+.act-done-btn{flex-shrink:0;background:transparent;border:1px solid var(--brd);border-radius:6px;color:var(--txt2);font-size:.7rem;padding:5px 9px;cursor:pointer;transition:all .2s;white-space:nowrap;font-family:'JetBrains Mono',monospace}
+.act-done-btn:hover{border-color:var(--ok);color:var(--ok);transform:none;box-shadow:none}
+.act-done-btn.completed{background:rgba(0,200,83,.1);border-color:var(--ok);color:var(--ok);cursor:default}
+.act-done-btn.completed:hover{transform:none;box-shadow:none}
 
-        /* Cards */
-        .cards-grid{display:flex;flex-direction:column;gap:12px}
-        .thought-card{background:var(--bg-primary);border:1px solid var(--border);border-radius:12px;padding:18px;transition:all .3s ease;cursor:pointer;position:relative}
-        .thought-card:hover{border-color:rgba(108,92,231,.4)}
-        .thought-card.priority-alta{border-left:3px solid var(--danger)}
-        .thought-card.priority-media{border-left:3px solid var(--warning)}
-        .thought-card.priority-baja{border-left:3px solid var(--success)}
-        .thought-card.read{opacity:.55}
-        .card-top{display:flex;align-items:center;gap:8px;margin-bottom:10px}
-        .priority-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0}
-        .priority-dot.alta{background:var(--danger)}.priority-dot.media{background:var(--warning)}.priority-dot.baja{background:var(--success)}
-        .cat-tag{font-size:.6rem;padding:2px 8px;border-radius:4px;font-family:'JetBrains Mono',monospace}
-        .cat-tag.cuerpo{background:rgba(255,107,107,.2);color:#ff6b6b}.cat-tag.errores{background:rgba(255,145,0,.2);color:#ff9100}
-        .cat-tag.emociones{background:rgba(0,206,201,.2);color:#00cec9}.cat-tag.relaciones{background:rgba(108,92,231,.2);color:#6c5ce7}
-        .cat-tag.autoestima{background:rgba(253,203,110,.2);color:#fdcb6e}.cat-tag.general{background:rgba(99,110,114,.2);color:#636e72}
-        .read-badge{margin-left:auto;font-family:'JetBrains Mono',monospace;font-size:.58rem;color:var(--success);border:1px solid rgba(0,200,83,.3);padding:2px 8px;border-radius:4px;flex-shrink:0}
-        .card-text{font-size:.92rem;line-height:1.6;color:var(--text-primary);margin-bottom:12px}
-        .card-action{display:flex;justify-content:flex-end}
-        .read-btn{background:transparent;border:1px solid var(--border);border-radius:6px;color:var(--text-secondary);font-family:'JetBrains Mono',monospace;font-size:.65rem;padding:6px 12px;cursor:pointer;transition:all .2s}
-        .read-btn:hover{border-color:var(--success);color:var(--success);transform:none;box-shadow:none}
-        .read-btn.unread-btn:hover{border-color:var(--text-secondary);color:var(--text-primary)}
+/* Filters */
+.filter-row{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:18px}
+.filter-btn{background:var(--bg);border:1px solid var(--brd);border-radius:20px;color:var(--txt2);font-family:'JetBrains Mono',monospace;font-size:.65rem;padding:6px 14px;cursor:pointer;transition:all .2s}
+.filter-btn:hover{border-color:var(--acc);color:var(--txt);transform:none;box-shadow:none}
+.filter-btn.active{background:var(--acc);border-color:var(--acc);color:white;box-shadow:0 2px 10px var(--accg)}
 
-        /* Achievements section */
-        .achievements-section{padding:0;overflow:hidden}
-        .achievements-toggle{display:flex;align-items:center;justify-content:space-between;padding:22px;cursor:pointer;transition:background .2s}
-        .achievements-toggle:hover{background:var(--bg-hover)}
-        .achievements-title{color:#fdcb6e!important;margin-bottom:0!important}
-        .achievements-count{font-family:'JetBrains Mono',monospace;font-size:.7rem;color:var(--text-secondary);background:var(--bg-primary);padding:2px 8px;border-radius:10px;margin-left:8px}
-        .chevron{font-size:.7rem;color:var(--text-secondary);transition:transform .3s}
-        .chevron.open{transform:rotate(180deg)}
-        .achievements-body{padding:0 22px 22px;display:none}
-        .achievements-body.open{display:block}
-        .achievements-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px}
-        .achievement-card{background:var(--bg-primary);border:1px solid var(--border);border-radius:10px;padding:14px;text-align:center;transition:all .2s}
-        .achievement-card.unlocked{border-color:rgba(253,203,110,.35);background:rgba(253,203,110,.05)}
-        .achievement-card.locked{opacity:.45}
-        .achievement-card-icon{font-size:1.6rem;margin-bottom:6px}
-        .achievement-card-name{font-family:'JetBrains Mono',monospace;font-size:.68rem;font-weight:700;color:var(--text-primary);margin-bottom:4px}
-        .achievement-card-desc{font-size:.72rem;color:var(--text-secondary);line-height:1.3}
-        .achievement-card.unlocked .achievement-card-name{color:var(--daily-color)}
-        .achievement-card-xp{font-family:'JetBrains Mono',monospace;font-size:.65rem;color:var(--success);margin-top:6px;font-weight:700}
+/* Cards */
+.cards-grid{display:flex;flex-direction:column;gap:12px}
+.thought-card{background:var(--bg);border:1px solid var(--brd);border-radius:12px;padding:18px;transition:all .3s;cursor:pointer}
+.thought-card:hover{border-color:rgba(108,92,231,.4)}
+.thought-card.priority-alta{border-left:3px solid var(--err)}
+.thought-card.priority-media{border-left:3px solid var(--warn)}
+.thought-card.priority-baja{border-left:3px solid var(--ok)}
+.thought-card.read{opacity:.55}
+.card-top{display:flex;align-items:center;gap:8px;margin-bottom:10px}
+.priority-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0}
+.priority-dot.alta{background:var(--err)}.priority-dot.media{background:var(--warn)}.priority-dot.baja{background:var(--ok)}
+.cat-tag{font-size:.6rem;padding:2px 8px;border-radius:4px;font-family:'JetBrains Mono',monospace}
+.cat-tag.cuerpo{background:rgba(255,107,107,.2);color:#ff6b6b}.cat-tag.errores{background:rgba(255,145,0,.2);color:#ff9100}
+.cat-tag.emociones{background:rgba(0,206,201,.2);color:#00cec9}.cat-tag.relaciones{background:rgba(108,92,231,.2);color:#6c5ce7}
+.cat-tag.autoestima{background:rgba(253,203,110,.2);color:#fdcb6e}.cat-tag.general{background:rgba(99,110,114,.2);color:#636e72}
+.read-badge{margin-left:auto;font-family:'JetBrains Mono',monospace;font-size:.58rem;color:var(--ok);border:1px solid rgba(0,200,83,.3);padding:2px 8px;border-radius:4px}
+.card-text{font-size:.92rem;line-height:1.6;margin-bottom:12px}
+.card-action{display:flex;justify-content:flex-end}
+.read-btn{background:transparent;border:1px solid var(--brd);border-radius:6px;color:var(--txt2);font-family:'JetBrains Mono',monospace;font-size:.65rem;padding:6px 12px;cursor:pointer;transition:all .2s}
+.read-btn:hover{border-color:var(--ok);color:var(--ok);transform:none;box-shadow:none}
+.read-btn.unread-btn:hover{border-color:var(--txt2);color:var(--txt)}
 
-        /* Empty state */
-        .empty-state{text-align:center;padding:40px 20px;color:var(--text-secondary)}
-        .empty-state-icon{font-size:2.5rem;opacity:.3;margin-bottom:10px}
-        .empty-state-text{font-size:.85rem}
+/* Achievements */
+.achievements-section{padding:0;overflow:hidden}
+.achievements-toggle{display:flex;align-items:center;justify-content:space-between;padding:22px;cursor:pointer;transition:background .2s;border-radius:16px}
+.achievements-toggle:hover{background:var(--bg3)}
+.achievements-title{color:#fdcb6e!important;margin-bottom:0!important}
+.achievements-count{font-family:'JetBrains Mono',monospace;font-size:.7rem;color:var(--txt2);background:var(--bg);padding:2px 8px;border-radius:10px;margin-left:8px}
+.chevron{font-size:.7rem;color:var(--txt2);transition:transform .3s}
+.chevron.open{transform:rotate(180deg)}
+.achievements-body{padding:0 22px 22px;display:none}
+.achievements-body.open{display:block}
+.achievements-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px}
+.achievement-card{background:var(--bg);border:1px solid var(--brd);border-radius:10px;padding:14px;text-align:center;transition:all .2s}
+.achievement-card.unlocked{border-color:rgba(253,203,110,.35);background:rgba(253,203,110,.05)}
+.achievement-card.locked{opacity:.4}
+.achievement-card-icon{font-size:1.6rem;margin-bottom:6px}
+.achievement-card-name{font-family:'JetBrains Mono',monospace;font-size:.68rem;font-weight:700;margin-bottom:4px}
+.achievement-card.unlocked .achievement-card-name{color:var(--daily)}
+.achievement-card-desc{font-size:.72rem;color:var(--txt2);line-height:1.3}
+.achievement-card-xp{font-family:'JetBrains Mono',monospace;font-size:.65rem;color:var(--ok);margin-top:6px;font-weight:700}
 
-        /* XP Popup */
-        .xp-popup{position:fixed;top:70px;left:50%;transform:translateX(-50%) translateY(0);background:var(--level-color);color:#0a0a0b;font-family:'JetBrains Mono',monospace;font-weight:800;font-size:1rem;padding:8px 22px;border-radius:20px;pointer-events:none;opacity:0;z-index:600;transition:opacity .3s,transform .4s;white-space:nowrap}
-        .xp-popup.show{opacity:1;transform:translateX(-50%) translateY(-14px)}
+/* Empty */
+.empty-state{text-align:center;padding:36px 20px;color:var(--txt2)}
+.empty-state-icon{font-size:2.5rem;opacity:.3;margin-bottom:10px}
 
-        /* Victory popup */
-        .victory-popup{position:fixed;bottom:30px;left:50%;transform:translateX(-50%) translateY(20px);background:linear-gradient(135deg,rgba(253,203,110,.95),rgba(225,112,85,.9));color:#0a0a0b;font-family:'JetBrains Mono',monospace;font-weight:700;font-size:.85rem;padding:14px 24px;border-radius:14px;pointer-events:none;opacity:0;z-index:600;transition:opacity .4s,transform .4s;text-align:center;white-space:nowrap;box-shadow:0 8px 32px rgba(253,203,110,.3)}
-        .victory-popup.show{opacity:1;transform:translateX(-50%) translateY(0)}
+/* Popups */
+.xp-popup{position:fixed;top:70px;left:50%;transform:translateX(-50%) translateY(0);background:var(--lvc);color:#0a0a0b;font-family:'JetBrains Mono',monospace;font-weight:800;font-size:1rem;padding:8px 22px;border-radius:20px;pointer-events:none;opacity:0;z-index:600;transition:opacity .3s,transform .4s;white-space:nowrap}
+.xp-popup.show{opacity:1;transform:translateX(-50%) translateY(-14px)}
+.victory-popup{position:fixed;bottom:28px;left:50%;transform:translateX(-50%) translateY(20px);background:linear-gradient(135deg,rgba(253,203,110,.96),rgba(225,112,85,.92));color:#0a0a0b;font-family:'JetBrains Mono',monospace;font-weight:700;font-size:.82rem;padding:14px 24px;border-radius:14px;pointer-events:none;opacity:0;z-index:600;transition:opacity .4s,transform .4s;text-align:center;white-space:nowrap;box-shadow:0 8px 32px rgba(253,203,110,.3)}
+.victory-popup.show{opacity:1;transform:translateX(-50%) translateY(0)}
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.85);display:flex;align-items:center;justify-content:center;z-index:800;opacity:0;pointer-events:none;transition:opacity .3s;padding:20px}
+.modal-overlay.show{opacity:1;pointer-events:auto}
+.achieve-popup{background:var(--bg2);border:1px solid rgba(253,203,110,.4);border-radius:20px;padding:32px 28px;max-width:320px;width:100%;text-align:center;transform:scale(.85);transition:transform .3s}
+.modal-overlay.show .achieve-popup{transform:scale(1)}
+.achieve-popup-label{font-family:'JetBrains Mono',monospace;font-size:.62rem;color:var(--daily);letter-spacing:2px;margin-bottom:14px}
+.achieve-popup-icon{font-size:3.5rem;margin-bottom:10px}
+.achieve-popup-name{font-family:'JetBrains Mono',monospace;font-size:1.1rem;font-weight:700;margin-bottom:6px}
+.achieve-popup-desc{font-size:.85rem;color:var(--txt2);line-height:1.5;margin-bottom:12px}
+.achieve-popup-xp{font-family:'JetBrains Mono',monospace;font-size:.9rem;color:var(--ok);font-weight:700;margin-bottom:20px}
+.popup-btn{background:var(--daily);border:none;border-radius:10px;color:#0a0a0b;font-family:'JetBrains Mono',monospace;font-size:.8rem;font-weight:700;padding:12px 28px;cursor:pointer;transition:all .2s}
+.popup-btn:hover{transform:translateY(-2px);box-shadow:0 4px 16px var(--dailyg)}
+.levelup-popup{background:var(--bg2);border-radius:20px;padding:36px 28px;max-width:320px;width:100%;text-align:center;transform:scale(.85);transition:transform .3s;position:relative;overflow:hidden}
+.modal-overlay.show .levelup-popup{transform:scale(1)}
+.levelup-glow{position:absolute;inset:0;pointer-events:none;opacity:.1}
+.levelup-label{font-family:'JetBrains Mono',monospace;font-size:.62rem;letter-spacing:2px;text-transform:uppercase;margin-bottom:14px;color:var(--lvc)}
+.levelup-icon-big{font-size:4rem;margin-bottom:10px}
+.levelup-name{font-family:'JetBrains Mono',monospace;font-size:1.3rem;font-weight:800;margin-bottom:8px;color:var(--lvc)}
+.levelup-desc{font-size:.88rem;color:var(--txt2);line-height:1.5;margin-bottom:22px}
+.levelup-btn{border:none;border-radius:10px;color:#0a0a0b;font-family:'JetBrains Mono',monospace;font-size:.8rem;font-weight:700;padding:12px 28px;cursor:pointer;transition:all .2s;background:var(--lvc)}
+.levelup-btn:hover{transform:translateY(-2px)}
 
-        /* Achievement overlay */
-        .modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.85);display:flex;align-items:center;justify-content:center;z-index:800;opacity:0;pointer-events:none;transition:opacity .3s;padding:20px}
-        .modal-overlay.show{opacity:1;pointer-events:auto}
-        .achieve-popup{background:var(--bg-secondary);border:1px solid rgba(253,203,110,.4);border-radius:20px;padding:32px 28px;max-width:320px;width:100%;text-align:center;transform:scale(.85);transition:transform .3s}
-        .modal-overlay.show .achieve-popup{transform:scale(1)}
-        .achieve-popup-label{font-family:'JetBrains Mono',monospace;font-size:.65rem;color:var(--daily-color);letter-spacing:2px;text-transform:uppercase;margin-bottom:14px}
-        .achieve-popup-icon{font-size:3.5rem;margin-bottom:10px}
-        .achieve-popup-name{font-family:'JetBrains Mono',monospace;font-size:1.1rem;font-weight:700;color:var(--text-primary);margin-bottom:6px}
-        .achieve-popup-desc{font-size:.85rem;color:var(--text-secondary);line-height:1.5;margin-bottom:12px}
-        .achieve-popup-xp{font-family:'JetBrains Mono',monospace;font-size:.9rem;color:var(--success);font-weight:700;margin-bottom:20px}
-        .popup-btn{background:var(--daily-color);border:none;border-radius:10px;color:#0a0a0b;font-family:'JetBrains Mono',monospace;font-size:.8rem;font-weight:700;padding:12px 28px;cursor:pointer;transition:all .2s}
-        .popup-btn:hover{transform:translateY(-2px);box-shadow:0 4px 16px var(--daily-glow)}
-
-        /* Level up overlay */
-        .levelup-popup{background:var(--bg-secondary);border-radius:20px;padding:36px 28px;max-width:320px;width:100%;text-align:center;transform:scale(.85);transition:transform .3s;position:relative;overflow:hidden}
-        .modal-overlay.show .levelup-popup{transform:scale(1)}
-        .levelup-glow{position:absolute;inset:0;pointer-events:none;opacity:.12}
-        .levelup-label{font-family:'JetBrains Mono',monospace;font-size:.65rem;letter-spacing:2px;text-transform:uppercase;margin-bottom:14px;color:var(--level-color)}
-        .levelup-icon-big{font-size:4rem;margin-bottom:10px}
-        .levelup-name{font-family:'JetBrains Mono',monospace;font-size:1.3rem;font-weight:800;margin-bottom:8px;color:var(--level-color)}
-        .levelup-desc{font-size:.88rem;color:var(--text-secondary);line-height:1.5;margin-bottom:22px}
-        .levelup-btn{border:none;border-radius:10px;color:#0a0a0b;font-family:'JetBrains Mono',monospace;font-size:.8rem;font-weight:700;padding:12px 28px;cursor:pointer;transition:all .2s;background:var(--level-color)}
-        .levelup-btn:hover{transform:translateY(-2px)}
-
-        @media(max-width:480px){
-            body{padding:14px 14px 80px}
-            .stats-row{gap:8px}.stat-value{font-size:1.3rem}
-            .achievements-grid{grid-template-columns:repeat(2,1fr)}
-        }
-    </style>
+@media(max-width:480px){body{padding:14px 14px 80px}.stats-row{gap:8px}.stat-value{font-size:1.3rem}.achievements-grid{grid-template-columns:repeat(2,1fr)}.act-row{flex-wrap:wrap}}
+</style>
 </head>
 <body>
 
-<!-- Loading -->
 <div class="loading-overlay" id="loadingOverlay"><div class="spinner"></div></div>
-
-<!-- XP Popup -->
 <div class="xp-popup" id="xpPopup"></div>
-
-<!-- Victory Popup -->
 <div class="victory-popup" id="victoryPopup"></div>
 
-<!-- Achievement overlay -->
+<!-- Achievement popup -->
 <div class="modal-overlay" id="achievementOverlay">
-    <div class="achieve-popup">
-        <div class="achieve-popup-label">🏆 Logro desbloqueado</div>
-        <div class="achieve-popup-icon" id="achievPopupIcon"></div>
-        <div class="achieve-popup-name" id="achievPopupName"></div>
-        <div class="achieve-popup-desc" id="achievPopupDesc"></div>
-        <div class="achieve-popup-xp" id="achievPopupXp"></div>
-        <button class="popup-btn" onclick="hideAchievementPopup()">¡Genial!</button>
-    </div>
+  <div class="achieve-popup">
+    <div class="achieve-popup-label">🏆 Logro desbloqueado</div>
+    <div class="achieve-popup-icon" id="achievPopupIcon"></div>
+    <div class="achieve-popup-name" id="achievPopupName"></div>
+    <div class="achieve-popup-desc" id="achievPopupDesc"></div>
+    <div class="achieve-popup-xp" id="achievPopupXp"></div>
+    <button class="popup-btn" onclick="hideAchievementPopup()">¡Genial!</button>
+  </div>
 </div>
 
-<!-- Level up overlay -->
+<!-- Level up popup -->
 <div class="modal-overlay" id="levelupOverlay">
-    <div class="levelup-popup" id="levelupPopup">
-        <div class="levelup-glow" id="levelupGlow"></div>
-        <div class="levelup-label" id="levelupLabel">¡NUEVO NIVEL!</div>
-        <div class="levelup-icon-big" id="levelupIconBig"></div>
-        <div class="levelup-name" id="levelupName"></div>
-        <div class="levelup-desc">Has alcanzado un nuevo nivel en tu camino. Sigue adelante.</div>
-        <button class="levelup-btn" id="levelupBtn" onclick="hideLevelupPopup()">¡Seguir adelante!</button>
-    </div>
+  <div class="levelup-popup">
+    <div class="levelup-glow" id="levelupGlow"></div>
+    <div class="levelup-label" id="levelupLabel">¡NUEVO NIVEL!</div>
+    <div class="levelup-icon-big" id="levelupIconBig"></div>
+    <div class="levelup-name" id="levelupName"></div>
+    <div class="levelup-desc">Has alcanzado un nuevo nivel en tu camino. Sigue adelante.</div>
+    <button class="levelup-btn" id="levelupBtn" onclick="hideLevelupPopup()">¡Seguir adelante!</button>
+  </div>
 </div>
 
 <div class="container">
-    <div class="error-screen" id="errorScreen">
-        <div class="error-icon">🔍</div>
-        <p class="error-text">No se encontró este tablero.<br>Verifica el enlace.</p>
+  <div class="error-screen" id="errorScreen">
+    <div style="font-size:4rem;opacity:.4;margin-bottom:16px">🔍</div>
+    <p style="color:var(--txt2)">No se encontró este tablero.<br>Verifica el enlace.</p>
+  </div>
+
+  <div id="mainContent" style="display:none">
+    <header class="header">
+      <div class="logo">🧠 PanelKit</div>
+      <div class="patient-display-name" id="patientDisplayName">…</div>
+      <div class="sync-status"><div class="sync-dot" id="syncDot"></div><span id="syncText">Conectando...</span></div>
+    </header>
+
+    <!-- Level bar -->
+    <div class="level-bar-wrap">
+      <div class="level-info">
+        <span class="level-name" id="levelName">🌱 Semilla</span>
+        <span class="streak-badge" id="streakBadge">🔥 0 días</span>
+      </div>
+      <div class="xp-track"><div class="xp-fill" id="xpFill"></div></div>
+      <div class="xp-text" id="xpText">0 / 100 XP</div>
     </div>
 
-    <div id="mainContent" style="display:none">
-
-        <!-- Header -->
-        <header class="header">
-            <div class="logo">🧠 PanelKit</div>
-            <div class="patient-display-name" id="patientDisplayName">…</div>
-            <div class="sync-status">
-                <div class="sync-dot" id="syncDot"></div>
-                <span id="syncText">Conectando...</span>
-            </div>
-        </header>
-
-        <!-- Level Bar -->
-        <div class="level-bar-wrap">
-            <div class="level-info">
-                <span class="level-name" id="levelName">🌱 Semilla</span>
-                <span class="streak-badge" id="streakBadge">🔥 0 días</span>
-            </div>
-            <div class="xp-track">
-                <div class="xp-fill" id="xpFill"></div>
-            </div>
-            <div class="xp-text" id="xpText">0 / 100 XP</div>
-        </div>
-
-        <!-- Daily Routine -->
-        <div class="section daily-section">
-            <div class="daily-header">
-                <div class="section-title daily-title"><span>☀️</span> Rutina de Hoy</div>
-                <div class="daily-date-badge" id="dailyDateBadge">—</div>
-            </div>
-            <div class="daily-progress-wrap">
-                <div class="daily-progress-track"><div class="daily-progress-fill" id="routineProgressFill"></div></div>
-                <div class="daily-progress-text" id="routineProgressText">0 / 0 completadas</div>
-            </div>
-            <div class="routine-list" id="routineList">
-                <div class="routine-empty">Agrega tareas a tu rutina diaria ↓</div>
-            </div>
-            <div class="daily-add-row">
-                <input type="text" id="routineInput" placeholder="+ Agregar tarea a mi rutina..." autocomplete="off" maxlength="120">
-                <button onclick="addRoutineTask()">+</button>
-            </div>
-        </div>
-
-        <!-- Stats -->
-        <div class="stats-row">
-            <div class="stat-card"><div class="stat-value" id="statTotal">0</div><div class="stat-label">Tarjetas</div></div>
-            <div class="stat-card"><div class="stat-value" id="statRead">0</div><div class="stat-label">Leídas</div></div>
-            <div class="stat-card"><div class="stat-value" id="statPriority">0</div><div class="stat-label">Prioritarias</div></div>
-        </div>
-
-        <!-- Phrase -->
-        <div class="phrase-card" id="phraseCard"></div>
-
-        <!-- Cards -->
-        <div class="section">
-            <div class="section-title"><span>📝</span> Mis Tarjetas</div>
-            <div class="filter-row" id="filterRow"></div>
-            <div class="cards-grid" id="cardsGrid"></div>
-        </div>
-
-        <!-- Achievements -->
-        <div class="section achievements-section">
-            <div class="achievements-toggle" onclick="toggleAchievements()">
-                <div class="section-title achievements-title">
-                    <span>🏆</span> Logros
-                    <span class="achievements-count" id="achievementsCount">0/13</span>
-                </div>
-                <span class="chevron" id="chevron">▼</span>
-            </div>
-            <div class="achievements-body" id="achievementsBody">
-                <div class="achievements-grid" id="achievementsGrid"></div>
-            </div>
-        </div>
-
+    <!-- Daily Routine -->
+    <div class="section daily-section">
+      <div class="daily-header">
+        <div class="section-title daily-title"><span>☀️</span> Rutina de Hoy</div>
+        <div class="daily-date-badge" id="dailyDateBadge">—</div>
+      </div>
+      <div class="daily-progress-track"><div class="daily-progress-fill" id="routineProgressFill"></div></div>
+      <div class="daily-progress-text" id="routineProgressText">0 / 0 completadas</div>
+      <div class="routine-list" id="routineList"><div class="routine-empty">Agrega tareas a tu rutina ↓</div></div>
+      <div class="daily-add-row">
+        <input type="text" id="routineInput" placeholder="+ Agregar tarea a mi rutina..." autocomplete="off" maxlength="120">
+        <button onclick="addRoutineTask()">+</button>
+      </div>
     </div>
+
+    <!-- Tabla de Valores -->
+    <div class="section values-section">
+      <div class="section-title values-title"><span>🌿</span> Mis Valores</div>
+
+      <!-- Conmigo mismo -->
+      <div class="values-group">
+        <div class="values-group-label">Relaciones Conmigo Mismo</div>
+        <div class="values-question">¿Qué tipo de persona quiero ser?</div>
+        <div id="selfList"></div>
+      </div>
+
+      <!-- Familia -->
+      <div class="values-group">
+        <div class="values-group-label">Relación con mi Familia</div>
+        <div id="familiaList"></div>
+      </div>
+
+      <!-- Amigos -->
+      <div class="values-group">
+        <div class="values-group-label">Relaciones con mis Amigos</div>
+        <div id="amigosList"></div>
+      </div>
+    </div>
+
+    <!-- Stats -->
+    <div class="stats-row">
+      <div class="stat-card"><div class="stat-value" id="statTotal">0</div><div class="stat-label">Tarjetas</div></div>
+      <div class="stat-card"><div class="stat-value" id="statRead">0</div><div class="stat-label">Leídas</div></div>
+      <div class="stat-card"><div class="stat-value" id="statPriority">0</div><div class="stat-label">Prioritarias</div></div>
+    </div>
+
+    <!-- Phrase -->
+    <div class="phrase-card" id="phraseCard"></div>
+
+    <!-- Cards -->
+    <div class="section">
+      <div class="section-title"><span>📝</span> Mis Tarjetas</div>
+      <div class="filter-row" id="filterRow"></div>
+      <div class="cards-grid" id="cardsGrid"></div>
+    </div>
+
+    <!-- Achievements -->
+    <div class="section achievements-section">
+      <div class="achievements-toggle" onclick="toggleAchievements()">
+        <div class="section-title achievements-title"><span>🏆</span> Logros <span class="achievements-count" id="achievementsCount">0/13</span></div>
+        <span class="chevron" id="chevron">▼</span>
+      </div>
+      <div class="achievements-body" id="achievementsBody">
+        <div class="achievements-grid" id="achievementsGrid"></div>
+      </div>
+    </div>
+  </div>
 </div>
 
 <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.8.1/firebase-app.js";
-    import {
-        getFirestore, collection, doc,
-        getDoc, setDoc, deleteDoc, updateDoc,
-        onSnapshot, query, orderBy
-    } from "https://www.gstatic.com/firebasejs/11.8.1/firebase-firestore.js";
+import { initializeApp } from "https://www.gstatic.com/firebasejs/11.8.1/firebase-app.js";
+import { getFirestore,collection,doc,getDoc,setDoc,deleteDoc,updateDoc,onSnapshot,query,orderBy } from "https://www.gstatic.com/firebasejs/11.8.1/firebase-firestore.js";
 
-    // ── Firebase ──────────────────────────────────────────────────────────
-    const firebaseConfig = {
-        apiKey: "AIzaSyDetXdN-ujotpEY7HNJMQB2JEOYooLxpkk",
-        authDomain: "todo-hetcraft.firebaseapp.com",
-        projectId: "todo-hetcraft",
-        storageBucket: "todo-hetcraft.firebasestorage.app",
-        messagingSenderId: "225738970824",
-        appId: "1:225738970824:web:f3a5c8432a9c3c6595f7fd"
-    };
-    const app = initializeApp(firebaseConfig);
-    const db  = getFirestore(app);
+const firebaseConfig={apiKey:"AIzaSyDetXdN-ujotpEY7HNJMQB2JEOYooLxpkk",authDomain:"todo-hetcraft.firebaseapp.com",projectId:"todo-hetcraft",storageBucket:"todo-hetcraft.firebasestorage.app",messagingSenderId:"225738970824",appId:"1:225738970824:web:f3a5c8432a9c3c6595f7fd"};
+const app=initializeApp(firebaseConfig);
+const db=getFirestore(app);
 
-    // ── Phrases ───────────────────────────────────────────────────────────
-    const PHRASES = [
-        "Cada pequeño paso hacia adelante es una victoria. Estás haciendo más de lo que crees.",
-        "Los pensamientos no son hechos. Puedes observarlos sin que te definan.",
-        "Hoy no tiene que ser perfecto para ser valioso.",
-        "Tu historia no termina en tu peor momento.",
-        "Mereces el mismo cuidado que le das a los demás.",
-        "El progreso no es lineal, y eso está bien.",
-        "Respirar ya es un acto de valentía algunos días.",
-        "No tienes que tenerlo todo resuelto hoy.",
-        "Eres más fuerte que los pensamientos que intentan convencerte de lo contrario.",
-        "Cada día que eliges seguir adelante es un acto de coraje.",
-        "Tu mente puede mentirte; tu esfuerzo habla más fuerte que ella.",
-        "Está bien pedir ayuda. Está bien no estar bien.",
-        "Lo que sientes es válido. Y también puede cambiar.",
-        "Eres un trabajo en progreso, y eso es suficiente.",
-    ];
+// ── Config (loaded per patient) ────────────────────────────────────────────
+const DEF_CFG={xpRoutineTask:10,xpCardRead:15,xpAllRoutinesBonus:50,xpToLevel1:100};
+let config={...DEF_CFG};
 
-    // ── Levels ────────────────────────────────────────────────────────────
-    const LEVELS = [
-        { name: '🌱 Semilla',  min: 0,    max: 99,   color: '#636e72', glow: 'rgba(99,110,114,.3)'   },
-        { name: '🌿 Brote',    min: 100,  max: 499,  color: '#00b894', glow: 'rgba(0,184,148,.3)'    },
-        { name: '🌳 Árbol',    min: 500,  max: 1499, color: '#6c5ce7', glow: 'rgba(108,92,231,.3)'   },
-        { name: '✨ Luz',       min: 1500, max: 99999,color: '#fdcb6e', glow: 'rgba(253,203,110,.3)' },
-    ];
+function getLevels(){
+  const l=config.xpToLevel1;
+  return[
+    {name:'🌱 Semilla',min:0,   color:'#636e72',glow:'rgba(99,110,114,.3)'},
+    {name:'🌿 Brote',  min:l,   color:'#00b894',glow:'rgba(0,184,148,.3)'},
+    {name:'🌳 Árbol',  min:l*5, color:'#6c5ce7',glow:'rgba(108,92,231,.3)'},
+    {name:'✨ Luz',     min:l*15,color:'#fdcb6e',glow:'rgba(253,203,110,.3)'},
+  ];
+}
 
-    // ── Achievements ──────────────────────────────────────────────────────
-    const ACHIEVEMENTS = [
-        { id:'first_task',  icon:'🌱', name:'Primer Paso',        desc:'Completa tu primera tarea de rutina',    xp:20,  check: s => s.totalTasksDone >= 1    },
-        { id:'first_card',  icon:'📖', name:'Primera Lectura',    desc:'Lee tu primera tarjeta reflexiva',       xp:15,  check: s => s.totalCardsRead >= 1    },
-        { id:'day_done',    icon:'☀️', name:'Un Día a la Vez',    desc:'Completa todas tus rutinas un día',      xp:30,  check: s => s.streak >= 1            },
-        { id:'streak_3',    icon:'🔥', name:'En Marcha',          desc:'3 días consecutivos de rutina',          xp:50,  check: s => s.streak >= 3            },
-        { id:'streak_7',    icon:'💪', name:'Semana Fuerte',      desc:'7 días consecutivos de rutina',          xp:100, check: s => s.streak >= 7            },
-        { id:'streak_10',   icon:'🏆', name:'Inquebrantable',     desc:'10 días consecutivos de rutina',         xp:150, check: s => s.streak >= 10           },
-        { id:'streak_30',   icon:'🌟', name:'Un Mes de Luz',      desc:'30 días consecutivos de rutina',         xp:300, check: s => s.streak >= 30           },
-        { id:'tasks_10',    icon:'📈', name:'Constante',          desc:'Completa 10 tareas en total',            xp:40,  check: s => s.totalTasksDone >= 10   },
-        { id:'tasks_50',    icon:'💎', name:'Dedicación',         desc:'Completa 50 tareas en total',            xp:100, check: s => s.totalTasksDone >= 50   },
-        { id:'cards_5',     icon:'💡', name:'Reflexivo',          desc:'Lee 5 tarjetas reflexivas',              xp:50,  check: s => s.totalCardsRead >= 5    },
-        { id:'level_2',     icon:'🌿', name:'Creciendo',          desc:'Alcanza el nivel Brote',                 xp:0,   check: s => s.level >= 1             },
-        { id:'level_3',     icon:'🌳', name:'Raíces Fuertes',     desc:'Alcanza el nivel Árbol',                 xp:0,   check: s => s.level >= 2             },
-        { id:'level_4',     icon:'✨', name:'Transformación',     desc:'Alcanza el nivel Luz',                   xp:0,   check: s => s.level >= 3             },
-    ];
+// ── Achievements ──────────────────────────────────────────────────────────
+const ACHIEVEMENTS=[
+  {id:'first_task', icon:'🌱',name:'Primer Paso',       desc:'Completa tu primera tarea',         xp:20, check:s=>s.totalTasksDone>=1},
+  {id:'first_card', icon:'📖',name:'Primera Lectura',   desc:'Lee tu primera tarjeta',             xp:15, check:s=>s.totalCardsRead>=1},
+  {id:'first_act',  icon:'💚',name:'Primer Compromiso', desc:'Completa tu primera actividad de valores',xp:25, check:s=>s.completedActivities&&s.completedActivities.length>=1},
+  {id:'day_done',   icon:'☀️',name:'Un Día a la Vez',  desc:'Completa todas tus rutinas un día',  xp:30, check:s=>s.streak>=1},
+  {id:'streak_3',   icon:'🔥',name:'En Marcha',         desc:'3 días consecutivos',               xp:50, check:s=>s.streak>=3},
+  {id:'streak_7',   icon:'💪',name:'Semana Fuerte',     desc:'7 días consecutivos',               xp:100,check:s=>s.streak>=7},
+  {id:'streak_10',  icon:'🏆',name:'Inquebrantable',    desc:'10 días consecutivos',              xp:150,check:s=>s.streak>=10},
+  {id:'streak_30',  icon:'🌟',name:'Un Mes de Luz',     desc:'30 días consecutivos',              xp:300,check:s=>s.streak>=30},
+  {id:'tasks_10',   icon:'📈',name:'Constante',         desc:'10 tareas completadas en total',    xp:40, check:s=>s.totalTasksDone>=10},
+  {id:'tasks_50',   icon:'💎',name:'Dedicación',        desc:'50 tareas completadas en total',    xp:100,check:s=>s.totalTasksDone>=50},
+  {id:'cards_5',    icon:'💡',name:'Reflexivo',         desc:'Lee 5 tarjetas',                    xp:50, check:s=>s.totalCardsRead>=5},
+  {id:'level_2',    icon:'🌿',name:'Creciendo',         desc:'Alcanza el nivel Brote',            xp:0,  check:s=>s.level>=1},
+  {id:'level_3',    icon:'🌳',name:'Raíces Fuertes',    desc:'Alcanza el nivel Árbol',            xp:0,  check:s=>s.level>=2},
+];
 
-    // ── Default gamification state ─────────────────────────────────────────
-    const DEFAULT_STATS = {
-        xp: 0, level: 0, streak: 0,
-        lastStreakDate: null, allBonusDate: null,
-        achievements: [], totalTasksDone: 0, totalCardsRead: 0
-    };
+const DEF_GSTATS={xp:0,level:0,streak:0,lastStreakDate:null,allBonusDate:null,achievements:[],totalTasksDone:0,totalCardsRead:0,completedActivities:[]};
 
-    // ── Globals ────────────────────────────────────────────────────────────
-    const slug = window.location.search.slice(1);
-    let cards = [], routineTasks = [], activeFilter = 'all';
-    let gStats = { ...DEFAULT_STATS };
-    let gamificationLoaded = false;
-    let achievementQueue = [];
-    let showingAchievement = false;
+// ── Values prefixes ───────────────────────────────────────────────────────
+const V_PREFIXES={familia:['Ser un hijo','Ser un hermano'],amigos:['Ser un amigo','']};
 
-    const TODAY = new Date().toISOString().split('T')[0];
+// ── Globals ───────────────────────────────────────────────────────────────
+const slug=window.location.search.slice(1);
+let cards=[],routineTasks=[],valuesData=null,activeFilter='all';
+let gStats={...DEF_GSTATS},gamLoaded=false,achieveQueue=[],showingAchieve=false;
+const TODAY=new Date().toISOString().split('T')[0];
+let saveValuesTimeout=null;
 
-    // ── DOM ────────────────────────────────────────────────────────────────
-    const loadingOverlay    = document.getElementById('loadingOverlay');
-    const errorScreen       = document.getElementById('errorScreen');
-    const mainContent       = document.getElementById('mainContent');
-    const patientDispName   = document.getElementById('patientDisplayName');
-    const syncDot           = document.getElementById('syncDot');
-    const syncText          = document.getElementById('syncText');
-    const dailyDateBadge    = document.getElementById('dailyDateBadge');
-    const routineProgressFill = document.getElementById('routineProgressFill');
-    const routineProgressText = document.getElementById('routineProgressText');
-    const routineList       = document.getElementById('routineList');
-    const routineInput      = document.getElementById('routineInput');
-    const statTotal         = document.getElementById('statTotal');
-    const statRead          = document.getElementById('statRead');
-    const statPriority      = document.getElementById('statPriority');
-    const phraseCard        = document.getElementById('phraseCard');
-    const filterRow         = document.getElementById('filterRow');
-    const cardsGrid         = document.getElementById('cardsGrid');
+// ── DOM ───────────────────────────────────────────────────────────────────
+const loadingOverlay=document.getElementById('loadingOverlay');
+const errorScreen=document.getElementById('errorScreen');
+const mainContent=document.getElementById('mainContent');
+const patientDisplayName=document.getElementById('patientDisplayName');
+const syncDot=document.getElementById('syncDot');
+const syncText=document.getElementById('syncText');
 
-    // ── Helpers ────────────────────────────────────────────────────────────
-    function esc(t){ const d=document.createElement('div');d.textContent=t;return d.innerHTML }
-    function setSyncing(on){ syncDot.className='sync-dot'+(on?' syncing':''); syncText.textContent=on?'Guardando…':'Sincronizado' }
-    function yesterday(){ const d=new Date();d.setDate(d.getDate()-1);return d.toISOString().split('T')[0] }
-    function formatDate(iso){ const[y,m,d]=iso.split('-');const mo=['ene','feb','mar','abr','may','jun','jul','ago','sep','oct','nov','dic'];return `${d} ${mo[m-1]} ${y}` }
+// ── Utils ─────────────────────────────────────────────────────────────────
+function esc(t){const d=document.createElement('div');d.textContent=t;return d.innerHTML}
+function setSyncing(on){syncDot.className='sync-dot'+(on?' syncing':'');syncText.textContent=on?'Guardando…':'Sincronizado'}
+function yesterday(){const d=new Date();d.setDate(d.getDate()-1);return d.toISOString().split('T')[0]}
+function formatDate(iso){const[y,m,d]=iso.split('-');const mo=['ene','feb','mar','abr','may','jun','jul','ago','sep','oct','nov','dic'];return `${d} ${mo[m-1]} ${y}`}
 
-    // ── Sounds ────────────────────────────────────────────────────────────
-    function playSound(type){
-        try{
-            const ctx=new(window.AudioContext||window.webkitAudioContext)();
-            const now=ctx.currentTime;
-            const note=(freq,start,dur,vol=.3)=>{
-                const o=ctx.createOscillator(),g=ctx.createGain();
-                o.connect(g);g.connect(ctx.destination);
-                o.frequency.value=freq;o.type='sine';
-                g.gain.setValueAtTime(vol,now+start);
-                g.gain.exponentialRampToValueAtTime(.001,now+start+dur);
-                o.start(now+start);o.stop(now+start+dur);
-            };
-            if(type==='check'){note(600,0,.15);note(800,.18,.15)}
-            else if(type==='achievement'){[523,659,784,1047].forEach((f,i)=>note(f,i*.12,.25,.35))}
-            else if(type==='victory'){[523,659,784,659,784,1047].forEach((f,i)=>note(f,i*.13,.2,.35))}
-            else if(type==='levelup'){[392,523,659,784,1047].forEach((f,i)=>note(f,i*.1,.22,.4))}
-        }catch(e){}
-    }
+// ── Sounds ────────────────────────────────────────────────────────────────
+function playSound(type){
+  try{
+    const ctx=new(window.AudioContext||window.webkitAudioContext)();
+    const now=ctx.currentTime;
+    const note=(f,s,d,v=.3)=>{const o=ctx.createOscillator(),g=ctx.createGain();o.connect(g);g.connect(ctx.destination);o.frequency.value=f;g.gain.setValueAtTime(v,now+s);g.gain.exponentialRampToValueAtTime(.001,now+s+d);o.start(now+s);o.stop(now+s+d)};
+    if(type==='check'){note(600,0,.15);note(800,.18,.15)}
+    else if(type==='achievement'){[523,659,784,1047].forEach((f,i)=>note(f,i*.12,.25,.35))}
+    else if(type==='victory'){[523,659,784,659,784,1047].forEach((f,i)=>note(f,i*.13,.2,.35))}
+    else if(type==='levelup'){[392,523,659,784,1047].forEach((f,i)=>note(f,i*.1,.22,.4))}
+  }catch(e){}
+}
 
-    // ── localStorage helpers ───────────────────────────────────────────────
-    const DAILY_KEY   = `routine_done_${slug}`;
-    const XP_DONE_KEY = `xp_given_${slug}`;
+// ── localStorage helpers ──────────────────────────────────────────────────
+const DAILY_KEY=`routine_done_${slug}`;
+const XP_KEY=`xp_given_${slug}`;
+function getTodayDone(){try{const s=JSON.parse(localStorage.getItem(DAILY_KEY)||'{}');if(s.date!==TODAY)return[];return Array.isArray(s.ids)?s.ids:[]}catch{return[]}}
+function setTodayDone(ids){localStorage.setItem(DAILY_KEY,JSON.stringify({date:TODAY,ids}))}
+function getTodayXpGiven(){try{const s=JSON.parse(localStorage.getItem(XP_KEY)||'{}');if(s.date!==TODAY)return[];return Array.isArray(s.ids)?s.ids:[]}catch{return[]}}
+function addToXpGiven(id){const g=getTodayXpGiven();if(!g.includes(id)){g.push(id);localStorage.setItem(XP_KEY,JSON.stringify({date:TODAY,ids:g}))}}
 
-    function getTodayDone(){
-        try{ const s=JSON.parse(localStorage.getItem(DAILY_KEY)||'{}');if(s.date!==TODAY)return[];return Array.isArray(s.ids)?s.ids:[] }catch{return[]}
-    }
-    function setTodayDone(ids){ localStorage.setItem(DAILY_KEY,JSON.stringify({date:TODAY,ids})) }
+// ── XP popup ──────────────────────────────────────────────────────────────
+function showXpPopup(amt){
+  const LEVELS=getLevels();
+  const p=document.getElementById('xpPopup');
+  p.textContent=`+${amt} XP`;
+  p.style.background=LEVELS[gStats.level]?.color||'#636e72';
+  p.classList.remove('show');void p.offsetWidth;p.classList.add('show');
+  setTimeout(()=>p.classList.remove('show'),1800);
+}
 
-    function getTodayXpGiven(){
-        try{ const s=JSON.parse(localStorage.getItem(XP_DONE_KEY)||'{}');if(s.date!==TODAY)return[];return Array.isArray(s.ids)?s.ids:[] }catch{return[]}
-    }
-    function addToXpGiven(id){ const g=getTodayXpGiven();if(!g.includes(id)){g.push(id);localStorage.setItem(XP_DONE_KEY,JSON.stringify({date:TODAY,ids:g}))} }
+// ── Victory popup ─────────────────────────────────────────────────────────
+function showVictoryPopup(xp,streak){
+  const p=document.getElementById('victoryPopup');
+  p.innerHTML=`🎉 ¡Rutina completada! +${xp} XP · Racha: ${streak} día${streak!==1?'s':''}`;
+  p.classList.remove('show');void p.offsetWidth;p.classList.add('show');
+  setTimeout(()=>p.classList.remove('show'),3500);
+}
 
-    // ── XP popup ──────────────────────────────────────────────────────────
-    function showXpPopup(amount){
-        const p=document.getElementById('xpPopup');
-        p.textContent=`+${amount} XP`;
-        p.style.background=LEVELS[gStats.level].color;
-        p.classList.remove('show');
-        void p.offsetWidth;
-        p.classList.add('show');
-        setTimeout(()=>p.classList.remove('show'),1800);
-    }
+// ── Achievement queue ─────────────────────────────────────────────────────
+window.hideAchievementPopup=function(){document.getElementById('achievementOverlay').classList.remove('show');showingAchieve=false;setTimeout(drainAchieve,400)};
+function drainAchieve(){
+  if(achieveQueue.length===0||showingAchieve)return;
+  const a=achieveQueue.shift();showingAchieve=true;
+  document.getElementById('achievPopupIcon').textContent=a.icon;
+  document.getElementById('achievPopupName').textContent=a.name;
+  document.getElementById('achievPopupDesc').textContent=a.desc;
+  document.getElementById('achievPopupXp').textContent=a.xp>0?`+${a.xp} XP`:'';
+  document.getElementById('achievementOverlay').classList.add('show');
+  playSound('achievement');
+}
 
-    // ── Victory popup ─────────────────────────────────────────────────────
-    function showVictoryPopup(bonusXP, streak){
-        const p=document.getElementById('victoryPopup');
-        p.innerHTML=`🎉 ¡Rutina completada! +${bonusXP} XP · Racha: ${streak} día${streak!==1?'s':''}`;
-        p.classList.remove('show');
-        void p.offsetWidth;
-        p.classList.add('show');
-        setTimeout(()=>p.classList.remove('show'),3500);
-    }
+// ── Level up popup ────────────────────────────────────────────────────────
+function showLevelupPopup(level){
+  const parts=level.name.split(' ');
+  document.getElementById('levelupIconBig').textContent=parts[0];
+  document.getElementById('levelupName').textContent=level.name;
+  document.getElementById('levelupName').style.color=level.color;
+  document.getElementById('levelupLabel').style.color=level.color;
+  document.getElementById('levelupBtn').style.background=level.color;
+  document.getElementById('levelupGlow').style.background=`radial-gradient(circle at center,${level.color},transparent 70%)`;
+  document.getElementById('levelupOverlay').classList.add('show');
+}
+window.hideLevelupPopup=function(){document.getElementById('levelupOverlay').classList.remove('show')};
 
-    // ── Achievement popup queue ───────────────────────────────────────────
-    window.hideAchievementPopup = function(){
-        document.getElementById('achievementOverlay').classList.remove('show');
-        showingAchievement=false;
-        setTimeout(drainAchievementQueue,400);
-    };
+// ── Gamification save/load ────────────────────────────────────────────────
+async function saveGam(){try{await setDoc(doc(db,'panelkit_gamification',slug),{...gStats})}catch(e){}}
 
-    function drainAchievementQueue(){
-        if(achievementQueue.length===0||showingAchievement)return;
-        const a=achievementQueue.shift();
-        showingAchievement=true;
-        document.getElementById('achievPopupIcon').textContent=a.icon;
-        document.getElementById('achievPopupName').textContent=a.name;
-        document.getElementById('achievPopupDesc').textContent=a.desc;
-        document.getElementById('achievPopupXp').textContent=a.xp>0?`+${a.xp} XP`:'';
-        document.getElementById('achievementOverlay').classList.add('show');
-        playSound('achievement');
-    }
+function updateGamUI(){
+  const LEVELS=getLevels();
+  const lv=LEVELS[gStats.level]||LEVELS[0];
+  const next=LEVELS[gStats.level+1];
+  document.documentElement.style.setProperty('--lvc',lv.color);
+  document.documentElement.style.setProperty('--lvg',lv.glow);
+  const nm=document.getElementById('levelName');nm.textContent=lv.name;nm.style.color=lv.color;
+  document.getElementById('streakBadge').textContent=`🔥 ${gStats.streak} día${gStats.streak!==1?'s':''}`;
+  const inLv=gStats.xp-lv.min;const needed=next?next.min-lv.min:1;
+  const pct=next?Math.min((inLv/needed)*100,100):100;
+  const fill=document.getElementById('xpFill');fill.style.width=pct+'%';fill.style.background=`linear-gradient(90deg,${lv.color},${lv.color}88)`;
+  document.getElementById('xpText').textContent=next?`${gStats.xp} / ${next.min} XP`:`${gStats.xp} XP · ✨ Nivel Máximo`;
+  document.getElementById('achievementsCount').textContent=`${gStats.achievements.length}/${ACHIEVEMENTS.length}`;
+}
 
-    // ── Level up popup ────────────────────────────────────────────────────
-    function showLevelupPopup(level){
-        const parts=level.name.split(' ');
-        document.getElementById('levelupIconBig').textContent=parts[0];
-        document.getElementById('levelupName').textContent=level.name;
-        document.getElementById('levelupName').style.color=level.color;
-        document.getElementById('levelupLabel').style.color=level.color;
-        document.getElementById('levelupBtn').style.background=level.color;
-        document.getElementById('levelupGlow').style.background=`radial-gradient(circle at center,${level.color},transparent 70%)`;
-        document.getElementById('levelupOverlay').classList.add('show');
-    }
+async function addXP(amt,popup=true,sound=null){
+  if(!gamLoaded)return;
+  const LEVELS=getLevels();
+  const oldLv=gStats.level;
+  gStats.xp+=amt;
+  for(let i=LEVELS.length-1;i>=0;i--){if(gStats.xp>=LEVELS[i].min){gStats.level=i;break}}
+  if(popup)showXpPopup(amt);
+  if(sound)playSound(sound);
+  await saveGam();
+  if(gStats.level>oldLv){playSound('levelup');showLevelupPopup(LEVELS[gStats.level])}
+  updateGamUI();
+  await checkAchievements();
+}
 
-    window.hideLevelupPopup = function(){
-        document.getElementById('levelupOverlay').classList.remove('show');
-    };
+async function checkAchievements(){
+  const newOnes=ACHIEVEMENTS.filter(a=>!gStats.achievements.includes(a.id)&&a.check(gStats));
+  if(!newOnes.length)return;
+  newOnes.forEach(a=>gStats.achievements.push(a.id));
+  const bonus=newOnes.reduce((s,a)=>s+a.xp,0);
+  if(bonus>0){
+    const LEVELS=getLevels();
+    gStats.xp+=bonus;
+    for(let i=LEVELS.length-1;i>=0;i--){if(gStats.xp>=LEVELS[i].min){gStats.level=i;break}}
+  }
+  await saveGam();updateGamUI();renderAchievements();
+  newOnes.forEach(a=>achieveQueue.push(a));drainAchieve();
+}
 
-    // ── Gamification: save ─────────────────────────────────────────────────
-    async function saveGamification(){
-        try{ await setDoc(doc(db,'panelkit_gamification',slug),{...gStats}) }catch(e){ console.error(e) }
-    }
+function renderAchievements(){
+  document.getElementById('achievementsGrid').innerHTML=ACHIEVEMENTS.map(a=>{
+    const u=gStats.achievements.includes(a.id);
+    return`<div class="achievement-card ${u?'unlocked':'locked'}">
+      <div class="achievement-card-icon">${a.icon}</div>
+      <div class="achievement-card-name">${a.name}</div>
+      <div class="achievement-card-desc">${u?a.desc:'???'}</div>
+      ${u&&a.xp>0?`<div class="achievement-card-xp">+${a.xp} XP</div>`:''}
+    </div>`;
+  }).join('');
+}
 
-    // ── Gamification: updateUI ─────────────────────────────────────────────
-    function updateGamificationUI(){
-        const lv=LEVELS[gStats.level];
-        const next=LEVELS[gStats.level+1];
-        document.documentElement.style.setProperty('--level-color',lv.color);
-        document.documentElement.style.setProperty('--level-glow',lv.glow);
-        const nm=document.getElementById('levelName');
-        nm.textContent=lv.name; nm.style.color=lv.color;
-        const sb=document.getElementById('streakBadge');
-        sb.textContent=`🔥 ${gStats.streak} día${gStats.streak!==1?'s':''}`;
-        const inLv=gStats.xp-lv.min;
-        const needed=next?next.min-lv.min:1;
-        const pct=next?Math.min((inLv/needed)*100,100):100;
-        document.getElementById('xpFill').style.width=pct+'%';
-        document.getElementById('xpFill').style.background=`linear-gradient(90deg,${lv.color},${lv.color}88)`;
-        document.getElementById('xpText').textContent=next?`${gStats.xp} / ${next.min} XP`:`${gStats.xp} XP · ✨ Nivel Máximo`;
-        document.getElementById('achievementsCount').textContent=`${gStats.achievements.length}/${ACHIEVEMENTS.length}`;
-    }
+window.toggleAchievements=function(){document.getElementById('achievementsBody').classList.toggle('open');document.getElementById('chevron').classList.toggle('open')};
 
-    // ── Gamification: addXP ────────────────────────────────────────────────
-    async function addXP(amount, popup=true, sound=null){
-        if(!gamificationLoaded) return;
-        const oldLevel=gStats.level;
-        gStats.xp+=amount;
-        for(let i=LEVELS.length-1;i>=0;i--){ if(gStats.xp>=LEVELS[i].min){ gStats.level=i; break } }
-        if(popup) showXpPopup(amount);
-        if(sound) playSound(sound);
-        await saveGamification();
-        if(gStats.level>oldLevel){ playSound('levelup'); showLevelupPopup(LEVELS[gStats.level]) }
-        updateGamificationUI();
-        await checkAchievements();
-    }
+async function loadGam(){
+  try{const d=await getDoc(doc(db,'panelkit_gamification',slug));gStats=d.exists()?{...DEF_GSTATS,...d.data()}:{...DEF_GSTATS};if(!d.exists())await saveGam()}catch(e){gStats={...DEF_GSTATS}}
+  if(!gStats.completedActivities)gStats.completedActivities=[];
+  gamLoaded=true;updateGamUI();renderAchievements();
+}
 
-    // ── Gamification: checkAchievements ────────────────────────────────────
-    async function checkAchievements(){
-        const newOnes=ACHIEVEMENTS.filter(a=>!gStats.achievements.includes(a.id)&&a.check(gStats));
-        if(newOnes.length===0) return;
-        newOnes.forEach(a=>gStats.achievements.push(a.id));
-        const bonus=newOnes.reduce((s,a)=>s+a.xp,0);
-        if(bonus>0){
-            gStats.xp+=bonus;
-            for(let i=LEVELS.length-1;i>=0;i--){ if(gStats.xp>=LEVELS[i].min){ gStats.level=i; break } }
-        }
-        await saveGamification();
-        updateGamificationUI();
-        renderAchievements();
-        newOnes.forEach(a=>achievementQueue.push(a));
-        drainAchievementQueue();
-    }
+// ── All done check (streak + bonus) ──────────────────────────────────────
+async function checkAllDone(){
+  if(!gamLoaded||routineTasks.length===0)return;
+  const done=getTodayDone();
+  if(!routineTasks.every(t=>done.includes(t.id))||gStats.allBonusDate===TODAY)return;
+  const yest=yesterday();
+  let newStreak;
+  if(gStats.lastStreakDate===yest)newStreak=gStats.streak+1;
+  else if(gStats.lastStreakDate===TODAY)return;
+  else newStreak=1;
+  const mult=Math.min(Math.floor(newStreak/7)+1,5);
+  const bonusXP=config.xpAllRoutinesBonus*mult;
+  gStats.streak=newStreak;gStats.lastStreakDate=TODAY;gStats.allBonusDate=TODAY;
+  playSound('victory');showVictoryPopup(bonusXP,newStreak);
+  await addXP(bonusXP,false,null);updateGamUI();
+}
 
-    // ── Gamification: load ─────────────────────────────────────────────────
-    async function loadGamification(){
-        try{
-            const d=await getDoc(doc(db,'panelkit_gamification',slug));
-            gStats=d.exists()?{...DEFAULT_STATS,...d.data()}:{...DEFAULT_STATS};
-            if(!d.exists()) await saveGamification();
-        }catch(e){ gStats={...DEFAULT_STATS} }
-        gamificationLoaded=true;
-        updateGamificationUI();
-        renderAchievements();
-    }
+// ── Routine ───────────────────────────────────────────────────────────────
+function renderRoutine(){
+  const done=getTodayDone().filter(id=>routineTasks.some(t=>t.id===id));
+  const total=routineTasks.length;const completed=done.length;
+  const pct=total===0?0:Math.round((completed/total)*100);
+  document.getElementById('routineProgressFill').style.width=pct+'%';
+  document.getElementById('routineProgressText').textContent=`${completed} / ${total} completadas`;
+  const sorted=[...routineTasks].sort((a,b)=>{const ad=done.includes(a.id),bd=done.includes(b.id);if(ad!==bd)return ad?1:-1;return(a.createdAt||0)-(b.createdAt||0)});
+  const el=document.getElementById('routineList');
+  if(!sorted.length){el.innerHTML=`<div class="routine-empty">Agrega tareas a tu rutina diaria ↓</div>`;return}
+  el.innerHTML=sorted.map(task=>{const isDone=done.includes(task.id);return`<div class="routine-task ${isDone?'done':''}" onclick="toggleRoutineTask('${task.id}')"><div class="routine-check ${isDone?'checked':''}">${isDone?'✓':''}</div><span class="routine-task-text">${esc(task.text)}</span><button class="routine-task-delete" onclick="deleteRoutineTask('${task.id}',event)">✕</button></div>`}).join('');
+  checkAllDone();
+}
 
-    // ── Achievements render ───────────────────────────────────────────────
-    function renderAchievements(){
-        const grid=document.getElementById('achievementsGrid');
-        grid.innerHTML=ACHIEVEMENTS.map(a=>{
-            const u=gStats.achievements.includes(a.id);
-            return`<div class="achievement-card ${u?'unlocked':'locked'}">
-                <div class="achievement-card-icon">${a.icon}</div>
-                <div class="achievement-card-name">${a.name}</div>
-                <div class="achievement-card-desc">${u?a.desc:'???'}</div>
-                ${u&&a.xp>0?`<div class="achievement-card-xp">+${a.xp} XP</div>`:''}
-            </div>`;
-        }).join('');
-    }
+window.toggleRoutineTask=async function(id){
+  const done=getTodayDone();const idx=done.indexOf(id);
+  if(idx===-1){done.push(id);setTodayDone(done);const given=getTodayXpGiven();if(!given.includes(id)){addToXpGiven(id);gStats.totalTasksDone++;await addXP(config.xpRoutineTask,true,'check')}}
+  else{done.splice(idx,1);setTodayDone(done)}
+  renderRoutine();
+};
 
-    window.toggleAchievements = function(){
-        const body=document.getElementById('achievementsBody');
-        const chevron=document.getElementById('chevron');
-        body.classList.toggle('open');
-        chevron.classList.toggle('open');
-    };
+window.addRoutineTask=async function(){
+  const input=document.getElementById('routineInput');const text=input.value.trim();if(!text){input.focus();return}
+  setSyncing(true);const id=Date.now().toString(36)+Math.random().toString(36).substr(2,5);
+  await setDoc(doc(db,`panelkit_routine_${slug}`,id),{text,createdAt:Date.now()});
+  input.value='';setSyncing(false);
+};
 
-    // ── Check all done (streak + bonus) ───────────────────────────────────
-    async function checkAllDone(){
-        if(!gamificationLoaded||routineTasks.length===0) return;
-        const done=getTodayDone();
-        const allDone=routineTasks.every(t=>done.includes(t.id));
-        if(!allDone||gStats.allBonusDate===TODAY) return;
+window.deleteRoutineTask=async function(id,event){
+  event.stopPropagation();setSyncing(true);
+  await deleteDoc(doc(db,`panelkit_routine_${slug}`,id));
+  setTodayDone(getTodayDone().filter(d=>d!==id));setSyncing(false);
+};
 
-        const yest=yesterday();
-        let newStreak;
-        if(gStats.lastStreakDate===yest) newStreak=gStats.streak+1;
-        else if(gStats.lastStreakDate===TODAY) return;
-        else newStreak=1;
+function listenRoutine(){
+  const q=query(collection(db,`panelkit_routine_${slug}`),orderBy('createdAt','asc'));
+  onSnapshot(q,snap=>{routineTasks=snap.docs.map(d=>({id:d.id,...d.data()}));renderRoutine()});
+}
 
-        const mult=Math.min(Math.floor(newStreak/7)+1,5);
-        const bonusXP=50*mult;
+// ── Values Table ──────────────────────────────────────────────────────────
+function getDefaultValues(){
+  const makeActs=()=>[{text:'',xp:10},{text:'',xp:10},{text:'',xp:10}];
+  return{self:Array(5).fill(''),familia:[{valor:'',act:makeActs()},{valor:'',act:makeActs()}],amigos:[{valor:'',act:makeActs()},{valor:'',act:makeActs()}]};
+}
 
-        gStats.streak=newStreak;
-        gStats.lastStreakDate=TODAY;
-        gStats.allBonusDate=TODAY;
+function mergeValues(data){
+  const def=getDefaultValues();const makeActs=()=>[{text:'',xp:10},{text:'',xp:10},{text:'',xp:10}];
+  return{
+    self:Array.isArray(data.self)&&data.self.length>=5?data.self:def.self,
+    familia:(data.familia||def.familia).map(v=>({valor:v.valor||'',act:(v.act||makeActs()).map(a=>({text:a.text||'',xp:a.xp??10}))})),
+    amigos:(data.amigos||def.amigos).map(v=>({valor:v.valor||'',act:(v.act||makeActs()).map(a=>({text:a.text||'',xp:a.xp??10}))})
+    )};
+}
 
-        playSound('victory');
-        showVictoryPopup(bonusXP,newStreak);
-        await addXP(bonusXP,false,null);
-        updateGamificationUI();
-    }
+async function loadValues(){
+  try{const d=await getDoc(doc(db,'panelkit_values',slug));valuesData=d.exists()?mergeValues(d.data()):getDefaultValues()}
+  catch(e){valuesData=getDefaultValues()}
+  renderValuesTable();
+}
 
-    // ── Routine ───────────────────────────────────────────────────────────
-    function renderRoutine(){
-        const done=getTodayDone().filter(id=>routineTasks.some(t=>t.id===id));
-        const total=routineTasks.length;
-        const completed=done.length;
-        const pct=total===0?0:Math.round((completed/total)*100);
-        routineProgressFill.style.width=pct+'%';
-        routineProgressText.textContent=`${completed} / ${total} completadas`;
+function renderValuesTable(){
+  if(!valuesData)return;
+  // Self
+  document.getElementById('selfList').innerHTML=valuesData.self.map((txt,i)=>`
+    <div class="self-row">
+      <span class="self-prefix">Una persona que...</span>
+      <input class="self-input" type="text" value="${esc(txt)}" placeholder="escribe aquí..." oninput="onSelfChange(${i},this.value)" maxlength="200">
+    </div>`).join('');
 
-        const sorted=[...routineTasks].sort((a,b)=>{
-            const ad=done.includes(a.id),bd=done.includes(b.id);
-            if(ad!==bd)return ad?1:-1;
-            return(a.createdAt||0)-(b.createdAt||0);
-        });
+  // Familia + Amigos
+  ['familia','amigos'].forEach(section=>{
+    const prefixes=V_PREFIXES[section];
+    document.getElementById(`${section}List`).innerHTML=valuesData[section].map((blk,vi)=>{
+      const prefix=prefixes[vi];
+      const actId=`${section}_${vi}`;
+      return`<div class="valor-block">
+        <div class="valor-header">
+          ${prefix?`<span class="valor-prefix">${prefix}...</span>`:'<span class="valor-prefix" style="color:var(--txt2)">VALOR:</span>'}
+          <input class="valor-input" type="text" value="${esc(blk.valor)}" placeholder="completa aquí..." oninput="onValorChange('${section}',${vi},this.value)" maxlength="200">
+        </div>
+        ${blk.act.map((a,ai)=>{
+          const aId=`${actId}_${ai}`;
+          const done=gStats.completedActivities.includes(aId);
+          return`<div class="act-row">
+            <span class="act-num">${ai+1}.</span>
+            <input class="act-input" type="text" value="${esc(a.text)}" placeholder="Actividad ${ai+1}..." oninput="onActChange('${section}',${vi},${ai},this.value)" maxlength="200">
+            <span class="act-xp-badge">+${a.xp} XP</span>
+            <button class="act-done-btn ${done?'completed':''}" id="btn_${aId}" onclick="completeActivity('${aId}',${a.xp})" ${done?'disabled':''}>
+              ${done?'✓ Hecho':'Completar'}
+            </button>
+          </div>`;
+        }).join('')}
+      </div>`;
+    }).join('');
+  });
+}
 
-        if(sorted.length===0){ routineList.innerHTML=`<div class="routine-empty">Agrega tareas a tu rutina diaria ↓</div>`;return }
+// Value field change handlers (debounced save)
+window.onSelfChange=function(i,val){valuesData.self[i]=val;scheduleValuesSave()};
+window.onValorChange=function(section,vi,val){valuesData[section][vi].valor=val;scheduleValuesSave()};
+window.onActChange=function(section,vi,ai,val){valuesData[section][vi].act[ai].text=val;scheduleValuesSave()};
 
-        routineList.innerHTML=sorted.map(task=>{
-            const isDone=done.includes(task.id);
-            return`<div class="routine-task ${isDone?'done':''}" onclick="toggleRoutineTask('${task.id}')">
-                <div class="routine-check ${isDone?'checked':''}">${isDone?'✓':''}</div>
-                <span class="routine-task-text">${esc(task.text)}</span>
-                <button class="routine-task-delete" onclick="deleteRoutineTask('${task.id}',event)" title="Eliminar">✕</button>
-            </div>`;
-        }).join('');
+function scheduleValuesSave(){
+  clearTimeout(saveValuesTimeout);
+  saveValuesTimeout=setTimeout(async()=>{
+    setSyncing(true);
+    await setDoc(doc(db,'panelkit_values',slug),valuesData);
+    setSyncing(false);
+  },1500);
+}
 
-        checkAllDone();
-    }
+// Complete activity → earn XP (once)
+window.completeActivity=async function(actId,xp){
+  if(gStats.completedActivities.includes(actId))return;
+  gStats.completedActivities.push(actId);
+  const btn=document.getElementById(`btn_${actId}`);
+  if(btn){btn.textContent='✓ Hecho';btn.classList.add('completed');btn.disabled=true}
+  await addXP(xp,true,'check');
+};
 
-    window.toggleRoutineTask = async function(id){
-        const done=getTodayDone();
-        const idx=done.indexOf(id);
-        if(idx===-1){
-            done.push(id);
-            setTodayDone(done);
-            const given=getTodayXpGiven();
-            if(!given.includes(id)){
-                addToXpGiven(id);
-                gStats.totalTasksDone++;
-                await addXP(10,true,'check');
-            }
-        }else{
-            done.splice(idx,1);
-            setTodayDone(done);
-        }
-        renderRoutine();
-    };
+// ── Cards ─────────────────────────────────────────────────────────────────
+function renderCards(){
+  const pOrder={alta:0,media:1,baja:2};
+  const filtered=activeFilter==='all'?cards:cards.filter(c=>c.category===activeFilter);
+  const sorted=[...filtered].sort((a,b)=>{if(a.read!==b.read)return a.read?1:-1;return(pOrder[a.priority]??3)-(pOrder[b.priority]??3)});
+  if(!sorted.length){document.getElementById('cardsGrid').innerHTML=`<div class="empty-state"><div class="empty-state-icon">📭</div><p>${activeFilter==='all'?'Sin tarjetas aún':'Nada en esta categoría'}</p></div>`;return}
+  document.getElementById('cardsGrid').innerHTML=sorted.map(card=>`
+    <div class="thought-card priority-${card.priority} ${card.read?'read':''}" onclick="toggleRead('${card.id}',${card.read})">
+      <div class="card-top"><div class="priority-dot ${card.priority}"></div><span class="cat-tag ${card.category}">${card.category}</span>${card.read?'<span class="read-badge">leído</span>':''}</div>
+      <div class="card-text">${esc(card.text)}</div>
+      <div class="card-action"><button class="read-btn ${card.read?'unread-btn':''}" onclick="toggleRead('${card.id}',${card.read});event.stopPropagation()">${card.read?'↩ No leído':'✓ Marcar leído'}</button></div>
+    </div>`).join('');
+}
 
-    window.addRoutineTask = async function(){
-        const text=routineInput.value.trim();
-        if(!text){ routineInput.focus();return }
-        setSyncing(true);
-        const id=Date.now().toString(36)+Math.random().toString(36).substr(2,5);
-        await setDoc(doc(db,`panelkit_routine_${slug}`,id),{text,createdAt:Date.now()});
-        routineInput.value='';
-        setSyncing(false);
-    };
+window.toggleRead=async function(cardId,currentRead){
+  setSyncing(true);
+  await updateDoc(doc(db,`panelkit_cards_${slug}`,cardId),{read:!currentRead});
+  if(!currentRead){gStats.totalCardsRead++;await addXP(config.xpCardRead,true,'check')}
+  setSyncing(false);
+};
 
-    window.deleteRoutineTask = async function(id,event){
-        event.stopPropagation();
-        setSyncing(true);
-        await deleteDoc(doc(db,`panelkit_routine_${slug}`,id));
-        const done=getTodayDone().filter(d=>d!==id);
-        setTodayDone(done);
-        setSyncing(false);
-    };
+function renderFilters(){
+  const cats=['all',...new Set(cards.map(c=>c.category))];
+  const labels={all:'Todas',cuerpo:'Cuerpo',errores:'Errores',emociones:'Emociones',relaciones:'Relaciones',autoestima:'Autoestima',general:'General'};
+  document.getElementById('filterRow').innerHTML=cats.map(cat=>`<button class="filter-btn ${activeFilter===cat?'active':''}" onclick="setFilter('${cat}')">${labels[cat]||cat}</button>`).join('');
+}
+window.setFilter=function(cat){activeFilter=cat;renderFilters();renderCards()};
 
-    function listenRoutine(){
-        const q=query(collection(db,`panelkit_routine_${slug}`),orderBy('createdAt','asc'));
-        onSnapshot(q,snap=>{
-            routineTasks=snap.docs.map(d=>({id:d.id,...d.data()}));
-            renderRoutine();
-        });
-    }
+function updateStats(){
+  document.getElementById('statTotal').textContent=cards.length;
+  document.getElementById('statRead').textContent=cards.filter(c=>c.read).length;
+  document.getElementById('statPriority').textContent=cards.filter(c=>c.priority==='alta').length;
+}
 
-    // ── Cards ─────────────────────────────────────────────────────────────
-    function renderCards(){
-        const pOrder={alta:0,media:1,baja:2};
-        const filtered=activeFilter==='all'?cards:cards.filter(c=>c.category===activeFilter);
-        const sorted=[...filtered].sort((a,b)=>{
-            if(a.read!==b.read)return a.read?1:-1;
-            return(pOrder[a.priority]??3)-(pOrder[b.priority]??3);
-        });
+function listenCards(){
+  const q=query(collection(db,`panelkit_cards_${slug}`),orderBy('createdAt','desc'));
+  onSnapshot(q,snap=>{cards=snap.docs.map(d=>({id:d.id,...d.data()}));updateStats();renderFilters();renderCards();setSyncing(false)});
+}
 
-        if(sorted.length===0){
-            cardsGrid.innerHTML=`<div class="empty-state"><div class="empty-state-icon">📭</div><p class="empty-state-text">${activeFilter==='all'?'Sin tarjetas aún':'Nada en esta categoría'}</p></div>`;
-            return;
-        }
+// ── Init ──────────────────────────────────────────────────────────────────
+const PHRASES=[
+  "Cada pequeño paso hacia adelante es una victoria. Estás haciendo más de lo que crees.",
+  "Los pensamientos no son hechos. Puedes observarlos sin que te definan.",
+  "Hoy no tiene que ser perfecto para ser valioso.",
+  "Tu historia no termina en tu peor momento.",
+  "Mereces el mismo cuidado que le das a los demás.",
+  "El progreso no es lineal, y eso está bien.",
+  "No tienes que tenerlo todo resuelto hoy.",
+  "Eres más fuerte que los pensamientos que intentan convencerte de lo contrario.",
+  "Cada día que eliges seguir adelante es un acto de coraje.",
+  "Lo que sientes es válido. Y también puede cambiar.",
+  "Eres un trabajo en progreso, y eso es suficiente.",
+];
 
-        cardsGrid.innerHTML=sorted.map(card=>`
-            <div class="thought-card priority-${card.priority} ${card.read?'read':''}" onclick="toggleRead('${card.id}',${card.read})">
-                <div class="card-top">
-                    <div class="priority-dot ${card.priority}"></div>
-                    <span class="cat-tag ${card.category}">${card.category}</span>
-                    ${card.read?'<span class="read-badge">leído</span>':''}
-                </div>
-                <div class="card-text">${esc(card.text)}</div>
-                <div class="card-action">
-                    <button class="read-btn ${card.read?'unread-btn':''}" onclick="toggleRead('${card.id}',${card.read});event.stopPropagation()">
-                        ${card.read?'↩ Marcar no leído':'✓ Marcar leído'}
-                    </button>
-                </div>
-            </div>`).join('');
-    }
+async function loadPatient(){
+  if(!slug){showError();return}
+  try{
+    const pd=await getDoc(doc(db,'panelkit_patients',slug));
+    if(!pd.exists()){showError();return}
+    const patient=pd.data();
+    patientDisplayName.textContent=patient.name||slug;
+    document.title=`${patient.name} — PanelKit`;
+    document.getElementById('dailyDateBadge').textContent=formatDate(TODAY);
+    const doy=Math.floor((new Date()-new Date(new Date().getFullYear(),0,0))/86400000);
+    document.getElementById('phraseCard').textContent='"'+PHRASES[doy%PHRASES.length]+'"';
+    // Load config first (affects XP calculations)
+    try{const cd=await getDoc(doc(db,'panelkit_config',slug));if(cd.exists())config={...DEF_CFG,...cd.data()}}catch(e){}
+    mainContent.style.display='block';setSyncing(false);
+    await loadGam();
+    await loadValues();
+    listenRoutine();
+    listenCards();
+  }catch(err){console.error(err);showError()}
+  finally{loadingOverlay.classList.add('hidden')}
+}
 
-    window.toggleRead = async function(cardId, currentRead){
-        setSyncing(true);
-        await updateDoc(doc(db,`panelkit_cards_${slug}`,cardId),{read:!currentRead});
-        if(!currentRead){
-            gStats.totalCardsRead++;
-            await addXP(15,true,'check');
-        }
-        setSyncing(false);
-    };
+function showError(){loadingOverlay.classList.add('hidden');errorScreen.classList.add('show')}
 
-    function renderFilters(){
-        const cats=['all',...new Set(cards.map(c=>c.category))];
-        const labels={all:'Todas',cuerpo:'Cuerpo',errores:'Errores',emociones:'Emociones',relaciones:'Relaciones',autoestima:'Autoestima',general:'General'};
-        filterRow.innerHTML=cats.map(cat=>`<button class="filter-btn ${activeFilter===cat?'active':''}" onclick="setFilter('${cat}')">${labels[cat]||cat}</button>`).join('');
-    }
-
-    window.setFilter = function(cat){ activeFilter=cat; renderFilters(); renderCards() };
-
-    function updateStats(){
-        statTotal.textContent=cards.length;
-        statRead.textContent=cards.filter(c=>c.read).length;
-        statPriority.textContent=cards.filter(c=>c.priority==='alta').length;
-    }
-
-    function listenCards(){
-        const q=query(collection(db,`panelkit_cards_${slug}`),orderBy('createdAt','desc'));
-        onSnapshot(q,snap=>{
-            cards=snap.docs.map(d=>({id:d.id,...d.data()}));
-            updateStats(); renderFilters(); renderCards(); setSyncing(false);
-        });
-    }
-
-    // ── Init ──────────────────────────────────────────────────────────────
-    async function loadPatient(){
-        if(!slug){ showError(); return }
-        try{
-            const pd=await getDoc(doc(db,'panelkit_patients',slug));
-            if(!pd.exists()){ showError(); return }
-            const patient=pd.data();
-            patientDispName.textContent=patient.name||slug;
-            document.title=`${patient.name} — PanelKit`;
-            dailyDateBadge.textContent=formatDate(TODAY);
-            const doy=Math.floor((new Date()-new Date(new Date().getFullYear(),0,0))/86400000);
-            phraseCard.textContent='"'+PHRASES[doy%PHRASES.length]+'"';
-            mainContent.style.display='block';
-            setSyncing(false);
-            await loadGamification();
-            listenRoutine();
-            listenCards();
-        }catch(err){ console.error(err); showError() }
-        finally{ loadingOverlay.classList.add('hidden') }
-    }
-
-    function showError(){
-        loadingOverlay.classList.add('hidden');
-        errorScreen.classList.add('show');
-    }
-
-    routineInput.addEventListener('keypress',e=>{ if(e.key==='Enter') addRoutineTask() });
-
-    loadPatient();
+document.getElementById('routineInput').addEventListener('keypress',e=>{if(e.key==='Enter')addRoutineTask()});
+loadPatient();
 </script>
 </body>
 </html>
