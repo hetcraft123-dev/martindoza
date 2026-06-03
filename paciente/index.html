@@ -540,8 +540,20 @@ function renderAchievements(){
 
 window.toggleAchievements=function(){document.getElementById('achievementsBody').classList.toggle('open');document.getElementById('chevron').classList.toggle('open')};
 
+// ── Timeout wrapper para operaciones Firebase ─────────────────────────────
+function withTimeout(promise, ms=8000){
+  return Promise.race([
+    promise,
+    new Promise((_,rej)=>setTimeout(()=>rej(new Error('timeout')),ms))
+  ]);
+}
+
 async function loadGam(){
-  try{const d=await getDoc(doc(db,'panelkit_gamification',slug));gStats=d.exists()?{...DEF_GSTATS,...d.data()}:{...DEF_GSTATS};if(!d.exists())await saveGam()}catch(e){gStats={...DEF_GSTATS}}
+  try{
+    const d=await withTimeout(getDoc(doc(db,'panelkit_gamification',slug)));
+    gStats=d.exists()?{...DEF_GSTATS,...d.data()}:{...DEF_GSTATS};
+    if(!d.exists()) saveGam(); // fire-and-forget, no await
+  }catch(e){gStats={...DEF_GSTATS}}
   if(!gStats.completedActivities)gStats.completedActivities=[];
   gamLoaded=true;updateGamUI();renderAchievements();
 }
@@ -618,7 +630,7 @@ function mergeValues(data){
 }
 
 async function loadValues(){
-  try{const d=await getDoc(doc(db,'panelkit_values',slug));valuesData=d.exists()?mergeValues(d.data()):getDefaultValues()}
+  try{const d=await withTimeout(getDoc(doc(db,'panelkit_values',slug)));valuesData=d.exists()?mergeValues(d.data()):getDefaultValues()}
   catch(e){valuesData=getDefaultValues()}
   renderValuesTable();
 }
@@ -767,24 +779,44 @@ const PHRASES=[
 
 async function loadPatient(){
   if(!slug){showError();return}
+
+  // Kill-switch: si Firebase tarda más de 12s, mostrar error y liberar la UI
+  const killswitch=setTimeout(()=>{
+    console.warn('Firebase timeout — mostrando UI con defaults');
+    loadingOverlay.classList.add('hidden');
+    if(mainContent.style.display==='none') showError();
+  },12000);
+
   try{
-    const pd=await getDoc(doc(db,'panelkit_patients',slug));
-    if(!pd.exists()){showError();return}
+    const pd=await withTimeout(getDoc(doc(db,'panelkit_patients',slug)));
+    if(!pd.exists()){clearTimeout(killswitch);showError();return}
     const patient=pd.data();
     patientDisplayName.textContent=patient.name||slug;
     document.title=`${patient.name} — PanelKit`;
     document.getElementById('dailyDateBadge').textContent=formatDate(TODAY);
     const doy=Math.floor((new Date()-new Date(new Date().getFullYear(),0,0))/86400000);
     document.getElementById('phraseCard').textContent='"'+PHRASES[doy%PHRASES.length]+'"';
-    // Load config first (affects XP calculations)
-    try{const cd=await getDoc(doc(db,'panelkit_config',slug));if(cd.exists())config={...DEF_CFG,...cd.data()}}catch(e){}
+    // Config (non-blocking si falla)
+    try{const cd=await withTimeout(getDoc(doc(db,'panelkit_config',slug)),5000);if(cd.exists())config={...DEF_CFG,...cd.data()}}catch(e){}
     mainContent.style.display='block';setSyncing(false);
     await loadGam();
     await loadValues();
     listenRoutine();
     listenCards();
-  }catch(err){console.error(err);showError()}
-  finally{loadingOverlay.classList.add('hidden')}
+  }catch(err){
+    console.error(err);
+    if(err.message==='timeout'){
+      // Timeout: mostrar UI con defaults en lugar de error
+      mainContent.style.display='block';
+      gamLoaded=true;updateGamUI();renderAchievements();
+      valuesData=getDefaultValues();renderValuesTable();
+    } else {
+      showError();
+    }
+  }finally{
+    clearTimeout(killswitch);
+    loadingOverlay.classList.add('hidden');
+  }
 }
 
 function showError(){loadingOverlay.classList.add('hidden');errorScreen.classList.add('show')}
