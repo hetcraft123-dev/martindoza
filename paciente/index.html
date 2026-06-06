@@ -19,7 +19,7 @@
   --daily:#fdcb6e;--dailyg:rgba(253,203,110,.18);
   --lvc:#636e72;--lvg:rgba(99,110,114,.3);
 }
-body{font-family:'Outfit',sans-serif;background:var(--bg);color:var(--txt);min-height:100vh;padding:20px 20px 80px;
+body{font-family:'Outfit',sans-serif;background:var(--bg);color:var(--txt);min-height:100vh;padding:20px 20px 120px;
   background-image:radial-gradient(ellipse at top,rgba(108,92,231,.07) 0%,transparent 50%),radial-gradient(circle at 80% 80%,rgba(0,206,201,.04) 0%,transparent 40%)}
 .container{max-width:760px;margin:0 auto}
 
@@ -78,7 +78,7 @@ body{font-family:'Outfit',sans-serif;background:var(--bg);color:var(--txt);min-h
 .routine-task.done{opacity:.45}
 .routine-check{flex-shrink:0;width:22px;height:22px;border-radius:6px;border:2px solid var(--brd);display:flex;align-items:center;justify-content:center;font-size:.7rem;font-weight:700;color:var(--bg);transition:all .2s}
 .routine-check.checked{background:var(--daily);border-color:var(--daily)}
-.routine-task-text{flex:1;font-size:.9rem;line-height:1.3;transition:all .2s}
+.routine-task-text{flex:1;font-size:.9rem;line-height:1.3}
 .routine-task.done .routine-task-text{text-decoration:line-through}
 .routine-task-delete{flex-shrink:0;background:transparent;border:none;color:var(--txt2);font-size:.75rem;cursor:pointer;padding:4px 6px;border-radius:4px;opacity:0;transition:all .15s;line-height:1}
 .routine-task:hover .routine-task-delete{opacity:1}
@@ -89,52 +89,6 @@ body{font-family:'Outfit',sans-serif;background:var(--bg);color:var(--txt);min-h
 .daily-add-row input:focus{border-color:var(--daily);box-shadow:0 0 0 3px var(--dailyg)}
 .daily-add-row button{background:var(--daily);border:none;border-radius:8px;color:#0a0a0b;font-family:'JetBrains Mono',monospace;font-size:1.2rem;font-weight:700;padding:10px 18px;cursor:pointer;transition:all .2s;line-height:1}
 .daily-add-row button:hover{transform:translateY(-1px);box-shadow:0 4px 16px var(--dailyg)}
-
-/* ── Values FAB ── */
-.values-fab{position:fixed;bottom:28px;right:24px;width:56px;height:56px;border-radius:50%;background:linear-gradient(135deg,#00cec9,#00b894);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:1.5rem;box-shadow:0 4px 22px rgba(0,206,201,.45);z-index:300;transition:all .25s;padding:0;line-height:1}
-.values-fab:hover{transform:scale(1.12);box-shadow:0 6px 30px rgba(0,206,201,.55)}
-.values-fab:active{transform:scale(.96)}
-.values-fab-badge{position:absolute;top:-5px;right:-5px;background:var(--ok);color:white;font-family:'JetBrains Mono',monospace;font-size:.52rem;font-weight:800;padding:2px 6px;border-radius:10px;border:2px solid var(--bg);white-space:nowrap;display:none}
-.values-fab-badge.show{display:block}
-
-/* ── Values Drawer ── */
-.drawer-overlay{position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:700;opacity:0;pointer-events:none;transition:opacity .3s}
-.drawer-overlay.open{opacity:1;pointer-events:auto}
-.values-drawer{position:fixed;bottom:0;left:0;right:0;height:88vh;background:var(--bg2);border-radius:20px 20px 0 0;z-index:701;transform:translateY(100%);transition:transform .35s cubic-bezier(.32,.72,0,1);display:flex;flex-direction:column;overflow:hidden;max-width:900px;margin:0 auto}
-.drawer-overlay.open .values-drawer{transform:translateY(0)}
-.drawer-handle{width:38px;height:4px;background:var(--brd);border-radius:2px;margin:12px auto 0;flex-shrink:0}
-.drawer-header{display:flex;align-items:center;justify-content:space-between;padding:14px 22px 12px;border-bottom:1px solid var(--brd);flex-shrink:0}
-.drawer-title{font-family:'JetBrains Mono',monospace;font-size:.92rem;font-weight:700;color:var(--acc2);display:flex;align-items:center;gap:8px}
-.drawer-progress{font-family:'JetBrains Mono',monospace;font-size:.65rem;color:var(--txt2);background:var(--bg);padding:3px 10px;border-radius:12px}
-.drawer-close{background:transparent;border:none;color:var(--txt2);font-size:1.4rem;cursor:pointer;padding:4px;line-height:1;transition:color .2s}
-.drawer-close:hover{color:var(--txt);transform:none;box-shadow:none}
-.drawer-body{overflow-y:auto;flex:1;padding:20px 22px 48px;-webkit-overflow-scrolling:touch}
-
-/* ── Values content (inside drawer) ── */
-.values-group{margin-bottom:24px}
-.values-group:last-child{margin-bottom:0}
-.values-group-label{font-family:'JetBrains Mono',monospace;font-size:.75rem;font-weight:700;color:var(--acc2);text-transform:uppercase;letter-spacing:.8px;margin-bottom:10px;padding-bottom:6px;border-bottom:1px solid rgba(0,206,201,.2)}
-.values-question{font-size:.8rem;color:var(--txt2);margin-bottom:10px}
-.self-row{display:flex;align-items:center;gap:10px;margin-bottom:8px}
-.self-prefix{font-size:.8rem;color:var(--txt2);white-space:nowrap;flex-shrink:0}
-.self-input{flex:1;background:var(--bg);border:1px solid var(--brd);border-radius:8px;color:var(--txt);font-family:'Outfit',sans-serif;font-size:.88rem;padding:8px 12px;outline:none;transition:all .2s}
-.self-input:focus{border-color:var(--acc2);box-shadow:0 0 0 3px rgba(0,206,201,.15)}
-.valor-block{background:var(--bg);border:1px solid var(--brd);border-radius:10px;padding:14px;margin-bottom:10px}
-.valor-block:last-child{margin-bottom:0}
-.valor-header{display:flex;align-items:center;gap:8px;margin-bottom:10px}
-.valor-prefix{font-family:'JetBrains Mono',monospace;font-size:.68rem;color:var(--acc2);font-weight:700;white-space:nowrap}
-.valor-input{flex:1;background:var(--bg2);border:1px solid var(--brd);border-radius:6px;color:var(--txt);font-family:'Outfit',sans-serif;font-size:.85rem;padding:6px 10px;outline:none;transition:all .2s}
-.valor-input:focus{border-color:var(--acc2);box-shadow:0 0 0 2px rgba(0,206,201,.15)}
-.act-row{display:flex;align-items:center;gap:8px;margin-bottom:8px}
-.act-row:last-child{margin-bottom:0}
-.act-num{font-family:'JetBrains Mono',monospace;font-size:.65rem;color:var(--txt2);flex-shrink:0;width:18px}
-.act-input{flex:1;background:var(--bg2);border:1px solid var(--brd);border-radius:6px;color:var(--txt);font-family:'Outfit',sans-serif;font-size:.85rem;padding:7px 10px;outline:none;transition:all .2s}
-.act-input:focus{border-color:var(--acc2);box-shadow:0 0 0 2px rgba(0,206,201,.15)}
-.act-xp-badge{font-family:'JetBrains Mono',monospace;font-size:.62rem;color:var(--ok);background:rgba(0,200,83,.1);border:1px solid rgba(0,200,83,.2);padding:3px 8px;border-radius:8px;white-space:nowrap;flex-shrink:0}
-.act-done-btn{flex-shrink:0;background:transparent;border:1px solid var(--brd);border-radius:6px;color:var(--txt2);font-size:.68rem;padding:5px 9px;cursor:pointer;transition:all .2s;white-space:nowrap;font-family:'JetBrains Mono',monospace}
-.act-done-btn:hover{border-color:var(--ok);color:var(--ok);transform:none;box-shadow:none}
-.act-done-btn.completed{background:rgba(0,200,83,.1);border-color:var(--ok);color:var(--ok);cursor:default}
-.act-done-btn.completed:hover{transform:none;box-shadow:none}
 
 /* Filters */
 .filter-row{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:18px}
@@ -175,7 +129,7 @@ body{font-family:'Outfit',sans-serif;background:var(--bg);color:var(--txt);min-h
 .achievements-body{padding:0 22px 22px;display:none}
 .achievements-body.open{display:block}
 .achievements-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px}
-.achievement-card{background:var(--bg);border:1px solid var(--brd);border-radius:10px;padding:14px;text-align:center;transition:all .2s}
+.achievement-card{background:var(--bg);border:1px solid var(--brd);border-radius:10px;padding:14px;text-align:center}
 .achievement-card.unlocked{border-color:rgba(253,203,110,.35);background:rgba(253,203,110,.05)}
 .achievement-card.locked{opacity:.4}
 .achievement-card-icon{font-size:1.6rem;margin-bottom:6px}
@@ -183,6 +137,111 @@ body{font-family:'Outfit',sans-serif;background:var(--bg);color:var(--txt);min-h
 .achievement-card.unlocked .achievement-card-name{color:var(--daily)}
 .achievement-card-desc{font-size:.72rem;color:var(--txt2);line-height:1.3}
 .achievement-card-xp{font-family:'JetBrains Mono',monospace;font-size:.65rem;color:var(--ok);margin-top:6px;font-weight:700}
+
+/* ── Minecraft FAB Group ── */
+@keyframes mc-float{
+  0%,100%{transform:translateY(0px) rotate(-2deg)}
+  50%{transform:translateY(-13px) rotate(2deg)}
+}
+@keyframes star-pop{
+  0%{transform:scale(1) rotate(0)}
+  20%{transform:scale(1.9) rotate(22deg)}
+  55%{transform:scale(.8) rotate(-12deg)}
+  80%{transform:scale(1.15) rotate(5deg)}
+  100%{transform:scale(1) rotate(0)}
+}
+.fab-group{position:fixed;bottom:28px;right:22px;display:flex;flex-direction:column;align-items:center;gap:18px;z-index:300}
+.fab-item{display:flex;flex-direction:column;align-items:center;gap:5px}
+.fab-label{font-family:'JetBrains Mono',monospace;font-size:.48rem;color:rgba(200,200,200,.55);text-transform:uppercase;letter-spacing:.8px;white-space:nowrap;background:rgba(0,0,0,.35);padding:2px 7px;border-radius:4px;pointer-events:none}
+.values-fab,.metas-fab{position:relative;width:54px;height:54px;border-radius:50%;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:1.45rem;padding:0;line-height:1;transition:filter .2s}
+.values-fab{background:linear-gradient(135deg,#00cec9,#00b894);box-shadow:0 4px 20px rgba(0,206,201,.4);animation:mc-float 2.2s ease-in-out infinite}
+.values-fab:hover{filter:brightness(1.15)}
+.metas-fab{background:linear-gradient(135deg,#6c5ce7,#a29bfe);box-shadow:0 4px 20px rgba(108,92,231,.4);animation:mc-float 2.6s ease-in-out infinite .4s}
+.metas-fab:hover{filter:brightness(1.15)}
+.fab-badge{position:absolute;top:-4px;right:-4px;background:var(--ok);color:white;font-family:'JetBrains Mono',monospace;font-size:.5rem;font-weight:800;padding:2px 5px;border-radius:10px;border:2px solid var(--bg);white-space:nowrap;display:none}
+.fab-badge.show{display:block}
+
+/* ── Drawers (shared base) ── */
+.drawer-overlay{position:fixed;inset:0;background:rgba(0,0,0,.72);z-index:700;opacity:0;pointer-events:none;transition:opacity .3s}
+.drawer-overlay.open{opacity:1;pointer-events:auto}
+.bottom-drawer{position:fixed;bottom:0;left:0;right:0;height:88vh;background:var(--bg2);border-radius:20px 20px 0 0;z-index:701;transform:translateY(100%);transition:transform .35s cubic-bezier(.32,.72,0,1);display:flex;flex-direction:column;overflow:hidden;max-width:860px;margin:0 auto}
+.drawer-overlay.open .bottom-drawer{transform:translateY(0)}
+.drawer-handle{width:38px;height:4px;background:var(--brd);border-radius:2px;margin:12px auto 0;flex-shrink:0}
+.drawer-header{display:flex;align-items:center;justify-content:space-between;padding:14px 22px 12px;border-bottom:1px solid var(--brd);flex-shrink:0}
+.drawer-title{font-family:'JetBrains Mono',monospace;font-size:.92rem;font-weight:700;display:flex;align-items:center;gap:8px}
+.drawer-title.green{color:var(--acc2)}
+.drawer-title.purple{color:#a29bfe}
+.drawer-meta-row{display:flex;align-items:center;gap:10px}
+.drawer-progress-badge{font-family:'JetBrains Mono',monospace;font-size:.65rem;color:var(--txt2);background:var(--bg);padding:3px 10px;border-radius:12px}
+.drawer-close{background:transparent;border:none;color:var(--txt2);font-size:1.4rem;cursor:pointer;padding:4px;line-height:1;transition:color .2s}
+.drawer-close:hover{color:var(--txt);transform:none;box-shadow:none}
+.drawer-body{overflow-y:auto;flex:1;padding:20px 20px 48px;-webkit-overflow-scrolling:touch}
+
+/* ── Values content ── */
+.values-group{margin-bottom:24px}
+.values-group:last-child{margin-bottom:0}
+.values-group-label{font-family:'JetBrains Mono',monospace;font-size:.75rem;font-weight:700;color:var(--acc2);text-transform:uppercase;letter-spacing:.8px;margin-bottom:10px;padding-bottom:6px;border-bottom:1px solid rgba(0,206,201,.2)}
+.values-question{font-size:.8rem;color:var(--txt2);margin-bottom:10px}
+.self-row{display:flex;align-items:center;gap:10px;margin-bottom:8px}
+.self-prefix{font-size:.8rem;color:var(--txt2);white-space:nowrap;flex-shrink:0}
+.self-input{flex:1;background:var(--bg);border:1px solid var(--brd);border-radius:8px;color:var(--txt);font-family:'Outfit',sans-serif;font-size:.88rem;padding:8px 12px;outline:none;transition:all .2s}
+.self-input:focus{border-color:var(--acc2);box-shadow:0 0 0 3px rgba(0,206,201,.15)}
+.valor-block{background:var(--bg);border:1px solid var(--brd);border-radius:10px;padding:14px;margin-bottom:10px}
+.valor-block:last-child{margin-bottom:0}
+.valor-header{display:flex;align-items:center;gap:8px;margin-bottom:10px}
+.valor-prefix{font-family:'JetBrains Mono',monospace;font-size:.68rem;color:var(--acc2);font-weight:700;white-space:nowrap}
+.valor-input{flex:1;background:var(--bg2);border:1px solid var(--brd);border-radius:6px;color:var(--txt);font-family:'Outfit',sans-serif;font-size:.85rem;padding:6px 10px;outline:none;transition:all .2s}
+.valor-input:focus{border-color:var(--acc2);box-shadow:0 0 0 2px rgba(0,206,201,.15)}
+.act-row{display:flex;align-items:center;gap:8px;margin-bottom:8px}
+.act-row:last-child{margin-bottom:0}
+.act-num{font-family:'JetBrains Mono',monospace;font-size:.65rem;color:var(--txt2);flex-shrink:0;width:18px}
+.act-input{flex:1;background:var(--bg2);border:1px solid var(--brd);border-radius:6px;color:var(--txt);font-family:'Outfit',sans-serif;font-size:.85rem;padding:7px 10px;outline:none;transition:all .2s}
+.act-input:focus{border-color:var(--acc2);box-shadow:0 0 0 2px rgba(0,206,201,.15)}
+.act-xp-badge{font-family:'JetBrains Mono',monospace;font-size:.62rem;color:var(--ok);background:rgba(0,200,83,.1);border:1px solid rgba(0,200,83,.2);padding:3px 8px;border-radius:8px;white-space:nowrap;flex-shrink:0}
+.act-done-btn{flex-shrink:0;background:transparent;border:1px solid var(--brd);border-radius:6px;color:var(--txt2);font-size:.68rem;padding:5px 9px;cursor:pointer;transition:all .2s;white-space:nowrap;font-family:'JetBrains Mono',monospace}
+.act-done-btn:hover{border-color:var(--ok);color:var(--ok);transform:none;box-shadow:none}
+.act-done-btn.completed{background:rgba(0,200,83,.1);border-color:var(--ok);color:var(--ok);cursor:default}
+.act-done-btn.completed:hover{transform:none;box-shadow:none}
+
+/* ── Metas content ── */
+.metas-add-btn{width:100%;background:transparent;border:1px dashed rgba(162,155,254,.4);border-radius:10px;color:#a29bfe;font-family:'JetBrains Mono',monospace;font-size:.78rem;padding:12px;cursor:pointer;transition:all .2s;margin-bottom:16px}
+.metas-add-btn:hover{background:rgba(108,92,231,.08);border-color:#a29bfe;transform:none;box-shadow:none}
+.meta-card{background:var(--bg);border:1px solid var(--brd);border-radius:14px;padding:18px;margin-bottom:16px;transition:border-color .2s}
+.meta-card:last-child{margin-bottom:0}
+.meta-card-header{display:flex;align-items:center;gap:10px;margin-bottom:14px}
+.meta-title-input{flex:1;background:transparent;border:none;border-bottom:1px solid var(--brd);color:var(--txt);font-family:'Outfit',sans-serif;font-size:1rem;font-weight:600;padding:4px 2px;outline:none;transition:border-color .2s}
+.meta-title-input:focus{border-bottom-color:#a29bfe}
+.meta-title-input::placeholder{color:var(--txt2)}
+.meta-delete-btn{background:transparent;border:none;color:var(--txt2);font-size:.85rem;cursor:pointer;padding:4px 6px;border-radius:4px;transition:all .15s;flex-shrink:0}
+.meta-delete-btn:hover{color:var(--err);background:rgba(255,82,82,.1);transform:none;box-shadow:none}
+/* Progress bar */
+.meta-progress-wrap{margin-bottom:14px}
+.meta-progress-track{width:100%;height:5px;background:var(--bg2);border-radius:10px;overflow:hidden;margin-bottom:4px}
+.meta-progress-fill{height:100%;background:linear-gradient(90deg,#6c5ce7,#a29bfe);border-radius:10px;transition:width .5s ease;width:0%}
+.meta-progress-text{font-family:'JetBrains Mono',monospace;font-size:.62rem;color:var(--txt2)}
+/* Steps */
+.steps-list{display:flex;flex-direction:column;gap:6px;margin-bottom:12px}
+.step-row{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:8px;transition:all .2s;border:1px solid transparent;cursor:pointer}
+.step-row.step-done{opacity:.45;cursor:default}
+.step-row.step-current{border-color:rgba(162,155,254,.35);background:rgba(108,92,231,.06)}
+.step-row.step-future{opacity:.55;cursor:default}
+.step-num-badge{width:26px;height:26px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'JetBrains Mono',monospace;font-size:.65rem;font-weight:700;flex-shrink:0;transition:all .2s}
+.step-num-badge.done{background:var(--ok);color:var(--bg)}
+.step-num-badge.current{background:linear-gradient(135deg,#6c5ce7,#a29bfe);color:white}
+.step-num-badge.future{background:var(--bg2);color:var(--txt2);border:1px solid var(--brd)}
+.step-text{flex:1;font-size:.88rem;line-height:1.3}
+.step-row.step-done .step-text{text-decoration:line-through}
+.step-row.step-current .step-text{color:var(--txt);font-weight:500}
+.step-delete-btn{background:transparent;border:none;color:var(--txt2);font-size:.7rem;cursor:pointer;padding:3px 5px;border-radius:4px;opacity:0;transition:all .15s;flex-shrink:0}
+.steps-list:hover .step-delete-btn{opacity:.6}
+.step-delete-btn:hover{color:var(--err);opacity:1;background:rgba(255,82,82,.1);transform:none;box-shadow:none}
+.step-add-row{display:flex;gap:8px}
+.step-add-input{flex:1;background:var(--bg2);border:1px solid var(--brd);border-radius:8px;color:var(--txt);font-family:'Outfit',sans-serif;font-size:.85rem;padding:8px 12px;outline:none;transition:all .2s}
+.step-add-input:focus{border-color:#a29bfe;box-shadow:0 0 0 2px rgba(108,92,231,.2)}
+.step-add-input::placeholder{color:var(--txt2);font-size:.82rem}
+.step-add-btn{background:linear-gradient(135deg,#6c5ce7,#a29bfe);border:none;border-radius:8px;color:white;font-family:'JetBrains Mono',monospace;font-size:1rem;font-weight:700;padding:8px 16px;cursor:pointer;transition:all .2s;line-height:1}
+.step-add-btn:hover{transform:translateY(-1px);box-shadow:0 4px 14px var(--accg)}
+.steps-empty{font-size:.82rem;color:var(--txt2);padding:8px 0;font-style:italic}
 
 /* Empty */
 .empty-state{text-align:center;padding:36px 20px;color:var(--txt2)}
@@ -214,7 +273,51 @@ body{font-family:'Outfit',sans-serif;background:var(--bg);color:var(--txt);min-h
 .levelup-btn{border:none;border-radius:10px;color:#0a0a0b;font-family:'JetBrains Mono',monospace;font-size:.8rem;font-weight:700;padding:12px 28px;cursor:pointer;transition:all .2s;background:var(--lvc)}
 .levelup-btn:hover{transform:translateY(-2px)}
 
-@media(max-width:480px){body{padding:14px 14px 80px}.stats-row{gap:8px}.stat-value{font-size:1.3rem}.achievements-grid{grid-template-columns:repeat(2,1fr)}.act-row{flex-wrap:wrap}}
+
+/* ── Metas / Plan de trabajo ── */
+.metas-section{border-color:rgba(253,203,110,.18);background:linear-gradient(135deg,rgba(253,203,110,.04) 0%,var(--bg2) 70%)}
+.metas-title{color:#fdcb6e!important}
+.metas-header-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px}
+.add-meta-btn{background:rgba(253,203,110,.12);border:1px solid rgba(253,203,110,.28);border-radius:8px;color:#fdcb6e;font-family:'JetBrains Mono',monospace;font-size:.7rem;padding:8px 14px;cursor:pointer;transition:all .2s}
+.add-meta-btn:hover{background:rgba(253,203,110,.22);transform:none;box-shadow:none}
+.meta-card{background:var(--bg);border:1px solid var(--brd);border-radius:12px;padding:18px;margin-bottom:14px;transition:border-color .2s}
+.meta-card:last-child{margin-bottom:0}
+.meta-card:hover{border-color:rgba(253,203,110,.22)}
+.meta-card.all-done{border-color:rgba(253,203,110,.45)}
+.completed-banner{font-family:'JetBrains Mono',monospace;font-size:.66rem;color:#fdcb6e;background:rgba(253,203,110,.1);border:1px solid rgba(253,203,110,.2);border-radius:6px;padding:5px 12px;text-align:center;margin-bottom:12px;display:none}
+.meta-card.all-done .completed-banner{display:block}
+.meta-card-header{display:flex;align-items:center;gap:10px;margin-bottom:8px}
+.meta-title-input{flex:1;background:transparent;border:none;border-bottom:1px solid var(--brd);color:var(--txt);font-family:'Outfit',sans-serif;font-size:1rem;font-weight:600;padding:4px 0;outline:none;transition:border-color .2s;min-width:0}
+.meta-title-input:focus{border-bottom-color:#fdcb6e}
+.meta-title-input::placeholder{color:var(--txt2);font-weight:400;font-size:.9rem}
+.meta-counter{font-family:'JetBrains Mono',monospace;font-size:.75rem;color:var(--txt2);white-space:nowrap;flex-shrink:0}
+.meta-counter.done-all{color:#fdcb6e;font-weight:700}
+.meta-delete-btn{background:transparent;border:none;color:var(--txt2);font-size:.82rem;cursor:pointer;padding:4px;border-radius:4px;opacity:.5;flex-shrink:0;transition:all .15s}
+.meta-delete-btn:hover{color:var(--err);opacity:1;transform:none;box-shadow:none}
+.meta-progress-track{width:100%;height:4px;background:var(--bg2);border-radius:10px;overflow:hidden;margin-bottom:14px}
+.meta-progress-fill{height:100%;background:linear-gradient(90deg,#fdcb6e,#e17055);border-radius:10px;transition:width .5s ease}
+.meta-steps{display:flex;flex-direction:column;gap:2px;margin-bottom:14px}
+.meta-step{display:flex;align-items:center;gap:10px;padding:7px 4px;border-bottom:1px solid rgba(255,255,255,.03);transition:opacity .3s}
+.meta-step:last-child{border-bottom:none}
+.meta-step.done-step{opacity:.6}
+.star-btn{background:transparent;border:none;cursor:pointer;font-size:1.75rem;line-height:1;padding:0;color:rgba(255,255,255,.15);transition:color .3s,text-shadow .3s;flex-shrink:0}
+.star-btn.done{color:#fdcb6e;text-shadow:0 0 14px rgba(253,203,110,.7)}
+.star-btn:hover:not(.done){color:rgba(253,203,110,.45)}
+.star-btn.popping{animation:star-pop .5s ease forwards}
+.step-num{font-family:'JetBrains Mono',monospace;font-size:.62rem;color:var(--txt2);flex-shrink:0;width:18px;text-align:right}
+.step-text{flex:1;font-size:.9rem;color:var(--txt);transition:all .25s;line-height:1.3}
+.done-step .step-text{text-decoration:line-through;color:var(--txt2)}
+.step-delete{background:transparent;border:none;color:var(--txt2);font-size:.75rem;cursor:pointer;padding:3px 7px;border-radius:4px;opacity:0;transition:all .15s;flex-shrink:0}
+.meta-step:hover .step-delete{opacity:1}
+.step-delete:hover{color:var(--err);transform:none;box-shadow:none}
+.meta-add-step{display:flex;gap:8px}
+.meta-add-step input{flex:1;background:var(--bg2);border:1px solid var(--brd);border-radius:8px;color:var(--txt);font-family:'Outfit',sans-serif;font-size:.85rem;padding:9px 12px;outline:none;transition:all .2s}
+.meta-add-step input:focus{border-color:#fdcb6e;box-shadow:0 0 0 3px rgba(253,203,110,.1)}
+.meta-add-step input::placeholder{color:var(--txt2);font-size:.8rem}
+.meta-add-step button{background:rgba(253,203,110,.15);border:1px solid rgba(253,203,110,.28);border-radius:8px;color:#fdcb6e;font-size:1.1rem;font-weight:700;padding:9px 16px;cursor:pointer;transition:all .2s;font-family:'JetBrains Mono',monospace}
+.meta-add-step button:hover{background:rgba(253,203,110,.25);transform:none;box-shadow:none}
+.metas-empty{text-align:center;padding:28px;color:var(--txt2);font-size:.85rem}
+@media(max-width:480px){body{padding:14px 14px 120px}.stats-row{gap:8px}.stat-value{font-size:1.3rem}.achievements-grid{grid-template-columns:repeat(2,1fr)}}
 </style>
 </head>
 <body>
@@ -242,94 +345,36 @@ body{font-family:'Outfit',sans-serif;background:var(--bg);color:var(--txt);min-h
     <div class="levelup-label" id="levelupLabel">¡NUEVO NIVEL!</div>
     <div class="levelup-icon-big" id="levelupIconBig"></div>
     <div class="levelup-name" id="levelupName"></div>
-    <div class="levelup-desc">Has alcanzado un nuevo nivel en tu camino. Sigue adelante.</div>
+    <div class="levelup-desc">Has alcanzado un nuevo nivel en tu camino.</div>
     <button class="levelup-btn" id="levelupBtn" onclick="hideLevelupPopup()">¡Seguir adelante!</button>
   </div>
 </div>
 
-<div class="container">
-  <div class="error-screen" id="errorScreen">
-    <div style="font-size:4rem;opacity:.4;margin-bottom:16px">🔍</div>
-    <p style="color:var(--txt2)">No se encontró este tablero.<br>Verifica el enlace.</p>
+<!-- ── FAB Group (Minecraft float) ── -->
+<div class="fab-group">
+  <div class="fab-item">
+    <span class="fab-label">Hoja de valores</span>
+    <button class="values-fab" onclick="openDrawer('values')">
+      🌿<span class="fab-badge" id="valuesBadge"></span>
+    </button>
   </div>
-
-  <div id="mainContent" style="display:none">
-    <header class="header">
-      <div class="logo">🧠 PanelKit</div>
-      <div class="patient-display-name" id="patientDisplayName">…</div>
-      <div class="sync-status"><div class="sync-dot" id="syncDot"></div><span id="syncText">Conectando...</span></div>
-    </header>
-
-    <!-- Level bar -->
-    <div class="level-bar-wrap">
-      <div class="level-info">
-        <span class="level-name" id="levelName">🌱 Semilla</span>
-        <span class="streak-badge" id="streakBadge">🔥 0 días</span>
-      </div>
-      <div class="xp-track"><div class="xp-fill" id="xpFill"></div></div>
-      <div class="xp-text" id="xpText">0 / 100 XP</div>
-    </div>
-
-    <!-- Daily Routine -->
-    <div class="section daily-section">
-      <div class="daily-header">
-        <div class="section-title daily-title"><span>☀️</span> Rutina de Hoy</div>
-        <div class="daily-date-badge" id="dailyDateBadge">—</div>
-      </div>
-      <div class="daily-progress-track"><div class="daily-progress-fill" id="routineProgressFill"></div></div>
-      <div class="daily-progress-text" id="routineProgressText">0 / 0 completadas</div>
-      <div class="routine-list" id="routineList"><div class="routine-empty">Agrega tareas a tu rutina ↓</div></div>
-      <div class="daily-add-row">
-        <input type="text" id="routineInput" placeholder="+ Agregar tarea a mi rutina..." autocomplete="off" maxlength="120">
-        <button onclick="addRoutineTask()">+</button>
-      </div>
-    </div>
-
-    <!-- Stats -->
-    <div class="stats-row">
-      <div class="stat-card"><div class="stat-value" id="statTotal">0</div><div class="stat-label">Tarjetas</div></div>
-      <div class="stat-card"><div class="stat-value" id="statRead">0</div><div class="stat-label">Leídas</div></div>
-      <div class="stat-card"><div class="stat-value" id="statPriority">0</div><div class="stat-label">Prioritarias</div></div>
-    </div>
-
-    <!-- Phrase -->
-    <div class="phrase-card" id="phraseCard"></div>
-
-    <!-- Cards -->
-    <div class="section">
-      <div class="section-title"><span>📝</span> Mis Tarjetas</div>
-      <div class="filter-row" id="filterRow"></div>
-      <div class="cards-grid" id="cardsGrid"></div>
-    </div>
-
-    <!-- Achievements -->
-    <div class="section achievements-section">
-      <div class="achievements-toggle" onclick="toggleAchievements()">
-        <div class="section-title achievements-title"><span>🏆</span> Logros <span class="achievements-count" id="achievementsCount">0/13</span></div>
-        <span class="chevron" id="chevron">▼</span>
-      </div>
-      <div class="achievements-body" id="achievementsBody">
-        <div class="achievements-grid" id="achievementsGrid"></div>
-      </div>
-    </div>
+  <div class="fab-item">
+    <span class="fab-label">Mis metas</span>
+    <button class="metas-fab" onclick="openDrawer('metas')">
+      🎯<span class="fab-badge" id="metasBadge"></span>
+    </button>
   </div>
 </div>
 
-<!-- Values FAB -->
-<button class="values-fab" onclick="openValuesDrawer()" title="Mis Valores">
-  🌿
-  <span class="values-fab-badge" id="valuesFabBadge"></span>
-</button>
-
-<!-- Values Drawer -->
-<div class="drawer-overlay" id="drawerOverlay" onclick="handleDrawerOverlayClick(event)">
-  <div class="values-drawer" id="valuesDrawer">
+<!-- ── Values Drawer ── -->
+<div class="drawer-overlay" id="valuesOverlay" onclick="handleOverlayClick(event,'values')">
+  <div class="bottom-drawer">
     <div class="drawer-handle"></div>
     <div class="drawer-header">
-      <div class="drawer-title"><span>🌿</span> Mis Valores</div>
-      <div style="display:flex;align-items:center;gap:10px">
-        <span class="drawer-progress" id="drawerProgress">0 / 12 actividades</span>
-        <button class="drawer-close" onclick="closeValuesDrawer()">×</button>
+      <div class="drawer-title green">🌿 Hoja de Valores</div>
+      <div class="drawer-meta-row">
+        <span class="drawer-progress-badge" id="valuesProgress">0 / 12</span>
+        <button class="drawer-close" onclick="closeDrawer('values')">×</button>
       </div>
     </div>
     <div class="drawer-body">
@@ -350,6 +395,86 @@ body{font-family:'Outfit',sans-serif;background:var(--bg);color:var(--txt);min-h
   </div>
 </div>
 
+<!-- ── Metas Drawer ── -->
+<div class="drawer-overlay" id="metasOverlay" onclick="handleOverlayClick(event,'metas')">
+  <div class="bottom-drawer">
+    <div class="drawer-handle"></div>
+    <div class="drawer-header">
+      <div class="drawer-title purple">🎯 Mis Metas</div>
+      <div class="drawer-meta-row">
+        <span class="drawer-progress-badge" id="metasProgress">0 metas</span>
+        <button class="drawer-close" onclick="closeDrawer('metas')">×</button>
+      </div>
+    </div>
+    <div class="drawer-body">
+      <button class="metas-add-btn" onclick="addGoal()">+ Nueva meta</button>
+      <div id="metasList"></div>
+    </div>
+  </div>
+</div>
+
+<div class="container">
+  <div class="error-screen" id="errorScreen">
+    <div style="font-size:4rem;opacity:.4;margin-bottom:16px">🔍</div>
+    <p style="color:var(--txt2)">No se encontró este tablero.<br>Verifica el enlace.</p>
+  </div>
+
+  <div id="mainContent" style="display:none">
+    <header class="header">
+      <div class="logo">🧠 PanelKit</div>
+      <div class="patient-display-name" id="patientDisplayName">…</div>
+      <div class="sync-status"><div class="sync-dot" id="syncDot"></div><span id="syncText">Conectando...</span></div>
+    </header>
+
+    <div class="level-bar-wrap">
+      <div class="level-info">
+        <span class="level-name" id="levelName">🌱 Semilla</span>
+        <span class="streak-badge" id="streakBadge">🔥 0 días</span>
+      </div>
+      <div class="xp-track"><div class="xp-fill" id="xpFill"></div></div>
+      <div class="xp-text" id="xpText">0 / 100 XP</div>
+    </div>
+
+    <div class="section daily-section">
+      <div class="daily-header">
+        <div class="section-title daily-title"><span>☀️</span> Rutina de Hoy</div>
+        <div class="daily-date-badge" id="dailyDateBadge">—</div>
+      </div>
+      <div class="daily-progress-track"><div class="daily-progress-fill" id="routineProgressFill"></div></div>
+      <div class="daily-progress-text" id="routineProgressText">0 / 0 completadas</div>
+      <div class="routine-list" id="routineList"><div class="routine-empty">Agrega tareas a tu rutina ↓</div></div>
+      <div class="daily-add-row">
+        <input type="text" id="routineInput" placeholder="+ Agregar tarea a mi rutina..." autocomplete="off" maxlength="120">
+        <button onclick="addRoutineTask()">+</button>
+      </div>
+    </div>
+
+    <div class="stats-row">
+      <div class="stat-card"><div class="stat-value" id="statTotal">0</div><div class="stat-label">Tarjetas</div></div>
+      <div class="stat-card"><div class="stat-value" id="statRead">0</div><div class="stat-label">Leídas</div></div>
+      <div class="stat-card"><div class="stat-value" id="statPriority">0</div><div class="stat-label">Prioritarias</div></div>
+    </div>
+
+    <div class="phrase-card" id="phraseCard"></div>
+
+    <div class="section">
+      <div class="section-title"><span>📝</span> Mis Tarjetas</div>
+      <div class="filter-row" id="filterRow"></div>
+      <div class="cards-grid" id="cardsGrid"></div>
+    </div>
+
+    <div class="section achievements-section">
+      <div class="achievements-toggle" onclick="toggleAchievements()">
+        <div class="section-title achievements-title"><span>🏆</span> Logros <span class="achievements-count" id="achievementsCount">0/13</span></div>
+        <span class="chevron" id="chevron">▼</span>
+      </div>
+      <div class="achievements-body" id="achievementsBody">
+        <div class="achievements-grid" id="achievementsGrid"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/11.8.1/firebase-app.js";
 import { getFirestore,collection,doc,getDoc,setDoc,deleteDoc,updateDoc,onSnapshot,query,orderBy } from "https://www.gstatic.com/firebasejs/11.8.1/firebase-firestore.js";
@@ -358,48 +483,38 @@ const firebaseConfig={apiKey:"AIzaSyDetXdN-ujotpEY7HNJMQB2JEOYooLxpkk",authDomai
 const app=initializeApp(firebaseConfig);
 const db=getFirestore(app);
 
-// ── Config (loaded per patient) ────────────────────────────────────────────
+// ── Config ────────────────────────────────────────────────────────────────
 const DEF_CFG={xpRoutineTask:10,xpCardRead:15,xpAllRoutinesBonus:50,xpToLevel1:100};
 let config={...DEF_CFG};
-
-function getLevels(){
-  const l=config.xpToLevel1;
-  return[
-    {name:'🌱 Semilla',min:0,   color:'#636e72',glow:'rgba(99,110,114,.3)'},
-    {name:'🌿 Brote',  min:l,   color:'#00b894',glow:'rgba(0,184,148,.3)'},
-    {name:'🌳 Árbol',  min:l*5, color:'#6c5ce7',glow:'rgba(108,92,231,.3)'},
-    {name:'✨ Luz',     min:l*15,color:'#fdcb6e',glow:'rgba(253,203,110,.3)'},
-  ];
-}
+function getLevels(){const l=config.xpToLevel1;return[{name:'🌱 Semilla',min:0,color:'#636e72',glow:'rgba(99,110,114,.3)'},{name:'🌿 Brote',min:l,color:'#00b894',glow:'rgba(0,184,148,.3)'},{name:'🌳 Árbol',min:l*5,color:'#6c5ce7',glow:'rgba(108,92,231,.3)'},{name:'✨ Luz',min:l*15,color:'#fdcb6e',glow:'rgba(253,203,110,.3)'}]}
 
 // ── Achievements ──────────────────────────────────────────────────────────
 const ACHIEVEMENTS=[
-  {id:'first_task', icon:'🌱',name:'Primer Paso',       desc:'Completa tu primera tarea',         xp:20, check:s=>s.totalTasksDone>=1},
-  {id:'first_card', icon:'📖',name:'Primera Lectura',   desc:'Lee tu primera tarjeta',             xp:15, check:s=>s.totalCardsRead>=1},
-  {id:'first_act',  icon:'💚',name:'Primer Compromiso', desc:'Completa tu primera actividad de valores',xp:25, check:s=>s.completedActivities&&s.completedActivities.length>=1},
-  {id:'day_done',   icon:'☀️',name:'Un Día a la Vez',  desc:'Completa todas tus rutinas un día',  xp:30, check:s=>s.streak>=1},
-  {id:'streak_3',   icon:'🔥',name:'En Marcha',         desc:'3 días consecutivos',               xp:50, check:s=>s.streak>=3},
-  {id:'streak_7',   icon:'💪',name:'Semana Fuerte',     desc:'7 días consecutivos',               xp:100,check:s=>s.streak>=7},
-  {id:'streak_10',  icon:'🏆',name:'Inquebrantable',    desc:'10 días consecutivos',              xp:150,check:s=>s.streak>=10},
-  {id:'streak_30',  icon:'🌟',name:'Un Mes de Luz',     desc:'30 días consecutivos',              xp:300,check:s=>s.streak>=30},
-  {id:'tasks_10',   icon:'📈',name:'Constante',         desc:'10 tareas completadas en total',    xp:40, check:s=>s.totalTasksDone>=10},
-  {id:'tasks_50',   icon:'💎',name:'Dedicación',        desc:'50 tareas completadas en total',    xp:100,check:s=>s.totalTasksDone>=50},
-  {id:'cards_5',    icon:'💡',name:'Reflexivo',         desc:'Lee 5 tarjetas',                    xp:50, check:s=>s.totalCardsRead>=5},
-  {id:'level_2',    icon:'🌿',name:'Creciendo',         desc:'Alcanza el nivel Brote',            xp:0,  check:s=>s.level>=1},
-  {id:'level_3',    icon:'🌳',name:'Raíces Fuertes',    desc:'Alcanza el nivel Árbol',            xp:0,  check:s=>s.level>=2},
+  {id:'first_task', icon:'🌱',name:'Primer Paso',       desc:'Completa tu primera tarea',            xp:20, check:s=>s.totalTasksDone>=1},
+  {id:'first_card', icon:'📖',name:'Primera Lectura',   desc:'Lee tu primera tarjeta',               xp:15, check:s=>s.totalCardsRead>=1},
+  {id:'first_act',  icon:'💚',name:'Primer Compromiso', desc:'Completa tu primera actividad de valores',xp:25,check:s=>s.completedActivities&&s.completedActivities.length>=1},
+  {id:'first_step', icon:'🎯',name:'En Camino',         desc:'Completa tu primer paso de una meta',  xp:25, check:s=>s.completedSteps&&s.completedSteps.length>=1},
+  {id:'goal_done',  icon:'🏅',name:'Meta Cumplida',     desc:'Completa todos los pasos de una meta', xp:80, check:s=>s.completedGoals&&s.completedGoals>=1},
+  {id:'day_done',   icon:'☀️',name:'Un Día a la Vez',  desc:'Completa todas tus rutinas un día',    xp:30, check:s=>s.streak>=1},
+  {id:'streak_3',   icon:'🔥',name:'En Marcha',         desc:'3 días consecutivos',                  xp:50, check:s=>s.streak>=3},
+  {id:'streak_7',   icon:'💪',name:'Semana Fuerte',     desc:'7 días consecutivos',                  xp:100,check:s=>s.streak>=7},
+  {id:'streak_10',  icon:'🏆',name:'Inquebrantable',    desc:'10 días consecutivos',                 xp:150,check:s=>s.streak>=10},
+  {id:'streak_30',  icon:'🌟',name:'Un Mes de Luz',     desc:'30 días consecutivos',                 xp:300,check:s=>s.streak>=30},
+  {id:'tasks_10',   icon:'📈',name:'Constante',         desc:'10 tareas completadas en total',       xp:40, check:s=>s.totalTasksDone>=10},
+  {id:'cards_5',    icon:'💡',name:'Reflexivo',         desc:'Lee 5 tarjetas',                       xp:50, check:s=>s.totalCardsRead>=5},
+  {id:'level_2',    icon:'🌿',name:'Creciendo',         desc:'Alcanza el nivel Brote',               xp:0,  check:s=>s.level>=1},
+  {id:'level_3',    icon:'🌳',name:'Raíces Fuertes',    desc:'Alcanza el nivel Árbol',               xp:0,  check:s=>s.level>=2},
 ];
 
-const DEF_GSTATS={xp:0,level:0,streak:0,lastStreakDate:null,allBonusDate:null,achievements:[],totalTasksDone:0,totalCardsRead:0,completedActivities:[]};
-
-// ── Values prefixes ───────────────────────────────────────────────────────
+const DEF_GSTATS={xp:0,level:0,streak:0,lastStreakDate:null,allBonusDate:null,achievements:[],totalTasksDone:0,totalCardsRead:0,completedActivities:[],completedSteps:[],completedGoals:0};
 const V_PREFIXES={familia:['Ser un hijo','Ser un hermano'],amigos:['Ser un amigo','']};
 
-// ── Globals ───────────────────────────────────────────────────────────────
+// ── State ─────────────────────────────────────────────────────────────────
 const slug=window.location.search.slice(1);
-let cards=[],routineTasks=[],valuesData=null,activeFilter='all';
+let cards=[],routineTasks=[],valuesData=null,metasData={goals:[]},activeFilter='all';
 let gStats={...DEF_GSTATS},gamLoaded=false,achieveQueue=[],showingAchieve=false;
 const TODAY=new Date().toISOString().split('T')[0];
-let saveValuesTimeout=null;
+let saveValuesTimeout=null,saveMetasTimeout=null;
 
 // ── DOM ───────────────────────────────────────────────────────────────────
 const loadingOverlay=document.getElementById('loadingOverlay');
@@ -414,411 +529,238 @@ function esc(t){const d=document.createElement('div');d.textContent=t;return d.i
 function setSyncing(on){syncDot.className='sync-dot'+(on?' syncing':'');syncText.textContent=on?'Guardando…':'Sincronizado'}
 function yesterday(){const d=new Date();d.setDate(d.getDate()-1);return d.toISOString().split('T')[0]}
 function formatDate(iso){const[y,m,d]=iso.split('-');const mo=['ene','feb','mar','abr','may','jun','jul','ago','sep','oct','nov','dic'];return `${d} ${mo[m-1]} ${y}`}
+function uid(){return Date.now().toString(36)+Math.random().toString(36).substr(2,5)}
+function withTimeout(promise,ms=8000){return Promise.race([promise,new Promise((_,rej)=>setTimeout(()=>rej(new Error('timeout')),ms))])}
 
 // ── Sounds ────────────────────────────────────────────────────────────────
 function playSound(type){
-  try{
-    const ctx=new(window.AudioContext||window.webkitAudioContext)();
-    const now=ctx.currentTime;
+  try{const ctx=new(window.AudioContext||window.webkitAudioContext)();const now=ctx.currentTime;
     const note=(f,s,d,v=.3)=>{const o=ctx.createOscillator(),g=ctx.createGain();o.connect(g);g.connect(ctx.destination);o.frequency.value=f;g.gain.setValueAtTime(v,now+s);g.gain.exponentialRampToValueAtTime(.001,now+s+d);o.start(now+s);o.stop(now+s+d)};
     if(type==='check'){note(600,0,.15);note(800,.18,.15)}
     else if(type==='achievement'){[523,659,784,1047].forEach((f,i)=>note(f,i*.12,.25,.35))}
     else if(type==='victory'){[523,659,784,659,784,1047].forEach((f,i)=>note(f,i*.13,.2,.35))}
     else if(type==='levelup'){[392,523,659,784,1047].forEach((f,i)=>note(f,i*.1,.22,.4))}
-  }catch(e){}
-}
+    else if(type==='goal'){[523,659,784,1047,1047,784].forEach((f,i)=>note(f,i*.15,.3,.4))}
+  }catch(e){}}
 
-// ── localStorage helpers ──────────────────────────────────────────────────
-const DAILY_KEY=`routine_done_${slug}`;
-const XP_KEY=`xp_given_${slug}`;
+// ── localStorage ──────────────────────────────────────────────────────────
+const DAILY_KEY=`routine_done_${slug}`;const XP_KEY=`xp_given_${slug}`;
 function getTodayDone(){try{const s=JSON.parse(localStorage.getItem(DAILY_KEY)||'{}');if(s.date!==TODAY)return[];return Array.isArray(s.ids)?s.ids:[]}catch{return[]}}
 function setTodayDone(ids){localStorage.setItem(DAILY_KEY,JSON.stringify({date:TODAY,ids}))}
 function getTodayXpGiven(){try{const s=JSON.parse(localStorage.getItem(XP_KEY)||'{}');if(s.date!==TODAY)return[];return Array.isArray(s.ids)?s.ids:[]}catch{return[]}}
 function addToXpGiven(id){const g=getTodayXpGiven();if(!g.includes(id)){g.push(id);localStorage.setItem(XP_KEY,JSON.stringify({date:TODAY,ids:g}))}}
 
-// ── XP popup ──────────────────────────────────────────────────────────────
-function showXpPopup(amt){
-  const LEVELS=getLevels();
-  const p=document.getElementById('xpPopup');
-  p.textContent=`+${amt} XP`;
-  p.style.background=LEVELS[gStats.level]?.color||'#636e72';
-  p.classList.remove('show');void p.offsetWidth;p.classList.add('show');
-  setTimeout(()=>p.classList.remove('show'),1800);
-}
+// ── Drawers ───────────────────────────────────────────────────────────────
+window.openDrawer=function(name){document.getElementById(name+'Overlay').classList.add('open');document.body.style.overflow='hidden'};
+window.closeDrawer=function(name){document.getElementById(name+'Overlay').classList.remove('open');document.body.style.overflow=''};
+window.handleOverlayClick=function(e,name){if(e.target===document.getElementById(name+'Overlay'))closeDrawer(name)};
 
-// ── Victory popup ─────────────────────────────────────────────────────────
-function showVictoryPopup(xp,streak){
-  const p=document.getElementById('victoryPopup');
-  p.innerHTML=`🎉 ¡Rutina completada! +${xp} XP · Racha: ${streak} día${streak!==1?'s':''}`;
-  p.classList.remove('show');void p.offsetWidth;p.classList.add('show');
-  setTimeout(()=>p.classList.remove('show'),3500);
-}
+// ── XP / Level UI ─────────────────────────────────────────────────────────
+function showXpPopup(amt){const LEVELS=getLevels();const p=document.getElementById('xpPopup');p.textContent=`+${amt} XP`;p.style.background=LEVELS[gStats.level]?.color||'#636e72';p.classList.remove('show');void p.offsetWidth;p.classList.add('show');setTimeout(()=>p.classList.remove('show'),1800)}
+function showVictoryPopup(xp,streak){const p=document.getElementById('victoryPopup');p.innerHTML=`🎉 ¡Rutina completada! +${xp} XP · Racha: ${streak} día${streak!==1?'s':''}`;p.classList.remove('show');void p.offsetWidth;p.classList.add('show');setTimeout(()=>p.classList.remove('show'),3500)}
 
-// ── Achievement queue ─────────────────────────────────────────────────────
+// ── Achievement popups ────────────────────────────────────────────────────
 window.hideAchievementPopup=function(){document.getElementById('achievementOverlay').classList.remove('show');showingAchieve=false;setTimeout(drainAchieve,400)};
-function drainAchieve(){
-  if(achieveQueue.length===0||showingAchieve)return;
-  const a=achieveQueue.shift();showingAchieve=true;
-  document.getElementById('achievPopupIcon').textContent=a.icon;
-  document.getElementById('achievPopupName').textContent=a.name;
-  document.getElementById('achievPopupDesc').textContent=a.desc;
-  document.getElementById('achievPopupXp').textContent=a.xp>0?`+${a.xp} XP`:'';
-  document.getElementById('achievementOverlay').classList.add('show');
-  playSound('achievement');
-}
-
-// ── Level up popup ────────────────────────────────────────────────────────
-function showLevelupPopup(level){
-  const parts=level.name.split(' ');
-  document.getElementById('levelupIconBig').textContent=parts[0];
-  document.getElementById('levelupName').textContent=level.name;
-  document.getElementById('levelupName').style.color=level.color;
-  document.getElementById('levelupLabel').style.color=level.color;
-  document.getElementById('levelupBtn').style.background=level.color;
-  document.getElementById('levelupGlow').style.background=`radial-gradient(circle at center,${level.color},transparent 70%)`;
-  document.getElementById('levelupOverlay').classList.add('show');
-}
+function drainAchieve(){if(achieveQueue.length===0||showingAchieve)return;const a=achieveQueue.shift();showingAchieve=true;document.getElementById('achievPopupIcon').textContent=a.icon;document.getElementById('achievPopupName').textContent=a.name;document.getElementById('achievPopupDesc').textContent=a.desc;document.getElementById('achievPopupXp').textContent=a.xp>0?`+${a.xp} XP`:'';document.getElementById('achievementOverlay').classList.add('show');playSound('achievement')}
+function showLevelupPopup(level){const parts=level.name.split(' ');document.getElementById('levelupIconBig').textContent=parts[0];document.getElementById('levelupName').textContent=level.name;document.getElementById('levelupName').style.color=level.color;document.getElementById('levelupLabel').style.color=level.color;document.getElementById('levelupBtn').style.background=level.color;document.getElementById('levelupGlow').style.background=`radial-gradient(circle at center,${level.color},transparent 70%)`;document.getElementById('levelupOverlay').classList.add('show')}
 window.hideLevelupPopup=function(){document.getElementById('levelupOverlay').classList.remove('show')};
 
-// ── Gamification save/load ────────────────────────────────────────────────
+// ── Gamification ──────────────────────────────────────────────────────────
 async function saveGam(){try{await setDoc(doc(db,'panelkit_gamification',slug),{...gStats})}catch(e){}}
 
-function updateGamUI(){
-  const LEVELS=getLevels();
-  const lv=LEVELS[gStats.level]||LEVELS[0];
-  const next=LEVELS[gStats.level+1];
-  document.documentElement.style.setProperty('--lvc',lv.color);
-  document.documentElement.style.setProperty('--lvg',lv.glow);
+function updateGamUI(){const LEVELS=getLevels();const lv=LEVELS[gStats.level]||LEVELS[0];const next=LEVELS[gStats.level+1];
+  document.documentElement.style.setProperty('--lvc',lv.color);document.documentElement.style.setProperty('--lvg',lv.glow);
   const nm=document.getElementById('levelName');nm.textContent=lv.name;nm.style.color=lv.color;
   document.getElementById('streakBadge').textContent=`🔥 ${gStats.streak} día${gStats.streak!==1?'s':''}`;
-  const inLv=gStats.xp-lv.min;const needed=next?next.min-lv.min:1;
-  const pct=next?Math.min((inLv/needed)*100,100):100;
+  const inLv=gStats.xp-lv.min;const needed=next?next.min-lv.min:1;const pct=next?Math.min((inLv/needed)*100,100):100;
   const fill=document.getElementById('xpFill');fill.style.width=pct+'%';fill.style.background=`linear-gradient(90deg,${lv.color},${lv.color}88)`;
   document.getElementById('xpText').textContent=next?`${gStats.xp} / ${next.min} XP`:`${gStats.xp} XP · ✨ Nivel Máximo`;
-  document.getElementById('achievementsCount').textContent=`${gStats.achievements.length}/${ACHIEVEMENTS.length}`;
-}
+  document.getElementById('achievementsCount').textContent=`${gStats.achievements.length}/${ACHIEVEMENTS.length}`}
 
-async function addXP(amt,popup=true,sound=null){
-  if(!gamLoaded)return;
-  const LEVELS=getLevels();
-  const oldLv=gStats.level;
-  gStats.xp+=amt;
+async function addXP(amt,popup=true,sound=null){if(!gamLoaded)return;const LEVELS=getLevels();const oldLv=gStats.level;gStats.xp+=amt;
   for(let i=LEVELS.length-1;i>=0;i--){if(gStats.xp>=LEVELS[i].min){gStats.level=i;break}}
-  if(popup)showXpPopup(amt);
-  if(sound)playSound(sound);
-  await saveGam();
-  if(gStats.level>oldLv){playSound('levelup');showLevelupPopup(LEVELS[gStats.level])}
-  updateGamUI();
-  await checkAchievements();
-}
+  if(popup)showXpPopup(amt);if(sound)playSound(sound);
+  await saveGam();if(gStats.level>oldLv){playSound('levelup');showLevelupPopup(LEVELS[gStats.level])}
+  updateGamUI();await checkAchievements()}
 
-async function checkAchievements(){
-  const newOnes=ACHIEVEMENTS.filter(a=>!gStats.achievements.includes(a.id)&&a.check(gStats));
-  if(!newOnes.length)return;
-  newOnes.forEach(a=>gStats.achievements.push(a.id));
-  const bonus=newOnes.reduce((s,a)=>s+a.xp,0);
-  if(bonus>0){
-    const LEVELS=getLevels();
-    gStats.xp+=bonus;
-    for(let i=LEVELS.length-1;i>=0;i--){if(gStats.xp>=LEVELS[i].min){gStats.level=i;break}}
-  }
-  await saveGam();updateGamUI();renderAchievements();
-  newOnes.forEach(a=>achieveQueue.push(a));drainAchieve();
-}
+async function checkAchievements(){const newOnes=ACHIEVEMENTS.filter(a=>!gStats.achievements.includes(a.id)&&a.check(gStats));if(!newOnes.length)return;
+  newOnes.forEach(a=>gStats.achievements.push(a.id));const bonus=newOnes.reduce((s,a)=>s+a.xp,0);
+  if(bonus>0){const LEVELS=getLevels();gStats.xp+=bonus;for(let i=LEVELS.length-1;i>=0;i--){if(gStats.xp>=LEVELS[i].min){gStats.level=i;break}}}
+  await saveGam();updateGamUI();renderAchievements();newOnes.forEach(a=>achieveQueue.push(a));drainAchieve()}
 
-function renderAchievements(){
-  document.getElementById('achievementsGrid').innerHTML=ACHIEVEMENTS.map(a=>{
-    const u=gStats.achievements.includes(a.id);
-    return`<div class="achievement-card ${u?'unlocked':'locked'}">
-      <div class="achievement-card-icon">${a.icon}</div>
-      <div class="achievement-card-name">${a.name}</div>
-      <div class="achievement-card-desc">${u?a.desc:'???'}</div>
-      ${u&&a.xp>0?`<div class="achievement-card-xp">+${a.xp} XP</div>`:''}
-    </div>`;
-  }).join('');
-}
+function renderAchievements(){document.getElementById('achievementsGrid').innerHTML=ACHIEVEMENTS.map(a=>{const u=gStats.achievements.includes(a.id);return`<div class="achievement-card ${u?'unlocked':'locked'}"><div class="achievement-card-icon">${a.icon}</div><div class="achievement-card-name">${a.name}</div><div class="achievement-card-desc">${u?a.desc:'???'}</div>${u&&a.xp>0?`<div class="achievement-card-xp">+${a.xp} XP</div>`:''}</div>`}).join('')}
 
 window.toggleAchievements=function(){document.getElementById('achievementsBody').classList.toggle('open');document.getElementById('chevron').classList.toggle('open')};
 
-// ── Timeout wrapper para operaciones Firebase ─────────────────────────────
-function withTimeout(promise, ms=8000){
-  return Promise.race([
-    promise,
-    new Promise((_,rej)=>setTimeout(()=>rej(new Error('timeout')),ms))
-  ]);
-}
-
 async function loadGam(){
-  try{
-    const d=await withTimeout(getDoc(doc(db,'panelkit_gamification',slug)));
-    gStats=d.exists()?{...DEF_GSTATS,...d.data()}:{...DEF_GSTATS};
-    if(!d.exists()) saveGam(); // fire-and-forget, no await
-  }catch(e){gStats={...DEF_GSTATS}}
+  try{const d=await withTimeout(getDoc(doc(db,'panelkit_gamification',slug)));gStats=d.exists()?{...DEF_GSTATS,...d.data()}:{...DEF_GSTATS};if(!d.exists())saveGam()}
+  catch(e){gStats={...DEF_GSTATS}}
   if(!gStats.completedActivities)gStats.completedActivities=[];
-  gamLoaded=true;updateGamUI();renderAchievements();
-}
+  if(!gStats.completedSteps)gStats.completedSteps=[];
+  if(!gStats.completedGoals)gStats.completedGoals=0;
+  gamLoaded=true;updateGamUI();renderAchievements()}
 
-// ── All done check (streak + bonus) ──────────────────────────────────────
-async function checkAllDone(){
-  if(!gamLoaded||routineTasks.length===0)return;
-  const done=getTodayDone();
-  if(!routineTasks.every(t=>done.includes(t.id))||gStats.allBonusDate===TODAY)return;
-  const yest=yesterday();
-  let newStreak;
-  if(gStats.lastStreakDate===yest)newStreak=gStats.streak+1;
-  else if(gStats.lastStreakDate===TODAY)return;
-  else newStreak=1;
-  const mult=Math.min(Math.floor(newStreak/7)+1,5);
-  const bonusXP=config.xpAllRoutinesBonus*mult;
+// ── Streak check ──────────────────────────────────────────────────────────
+async function checkAllDone(){if(!gamLoaded||routineTasks.length===0)return;const done=getTodayDone();if(!routineTasks.every(t=>done.includes(t.id))||gStats.allBonusDate===TODAY)return;
+  const yest=yesterday();let newStreak;if(gStats.lastStreakDate===yest)newStreak=gStats.streak+1;else if(gStats.lastStreakDate===TODAY)return;else newStreak=1;
+  const mult=Math.min(Math.floor(newStreak/7)+1,5);const bonusXP=config.xpAllRoutinesBonus*mult;
   gStats.streak=newStreak;gStats.lastStreakDate=TODAY;gStats.allBonusDate=TODAY;
-  playSound('victory');showVictoryPopup(bonusXP,newStreak);
-  await addXP(bonusXP,false,null);updateGamUI();
-}
+  playSound('victory');showVictoryPopup(bonusXP,newStreak);await addXP(bonusXP,false,null);updateGamUI()}
 
 // ── Routine ───────────────────────────────────────────────────────────────
-function renderRoutine(){
-  const done=getTodayDone().filter(id=>routineTasks.some(t=>t.id===id));
-  const total=routineTasks.length;const completed=done.length;
-  const pct=total===0?0:Math.round((completed/total)*100);
-  document.getElementById('routineProgressFill').style.width=pct+'%';
-  document.getElementById('routineProgressText').textContent=`${completed} / ${total} completadas`;
+function renderRoutine(){const done=getTodayDone().filter(id=>routineTasks.some(t=>t.id===id));const total=routineTasks.length;const completed=done.length;const pct=total===0?0:Math.round((completed/total)*100);
+  document.getElementById('routineProgressFill').style.width=pct+'%';document.getElementById('routineProgressText').textContent=`${completed} / ${total} completadas`;
   const sorted=[...routineTasks].sort((a,b)=>{const ad=done.includes(a.id),bd=done.includes(b.id);if(ad!==bd)return ad?1:-1;return(a.createdAt||0)-(b.createdAt||0)});
   const el=document.getElementById('routineList');
   if(!sorted.length){el.innerHTML=`<div class="routine-empty">Agrega tareas a tu rutina diaria ↓</div>`;return}
   el.innerHTML=sorted.map(task=>{const isDone=done.includes(task.id);return`<div class="routine-task ${isDone?'done':''}" onclick="toggleRoutineTask('${task.id}')"><div class="routine-check ${isDone?'checked':''}">${isDone?'✓':''}</div><span class="routine-task-text">${esc(task.text)}</span><button class="routine-task-delete" onclick="deleteRoutineTask('${task.id}',event)">✕</button></div>`}).join('');
-  checkAllDone();
-}
+  checkAllDone()}
 
-window.toggleRoutineTask=async function(id){
-  const done=getTodayDone();const idx=done.indexOf(id);
+window.toggleRoutineTask=async function(id){const done=getTodayDone();const idx=done.indexOf(id);
   if(idx===-1){done.push(id);setTodayDone(done);const given=getTodayXpGiven();if(!given.includes(id)){addToXpGiven(id);gStats.totalTasksDone++;await addXP(config.xpRoutineTask,true,'check')}}
-  else{done.splice(idx,1);setTodayDone(done)}
-  renderRoutine();
-};
+  else{done.splice(idx,1);setTodayDone(done)}renderRoutine()};
 
-window.addRoutineTask=async function(){
-  const input=document.getElementById('routineInput');const text=input.value.trim();if(!text){input.focus();return}
-  setSyncing(true);const id=Date.now().toString(36)+Math.random().toString(36).substr(2,5);
-  await setDoc(doc(db,`panelkit_routine_${slug}`,id),{text,createdAt:Date.now()});
-  input.value='';setSyncing(false);
-};
+window.addRoutineTask=async function(){const input=document.getElementById('routineInput');const text=input.value.trim();if(!text){input.focus();return}
+  setSyncing(true);await setDoc(doc(db,`panelkit_routine_${slug}`,uid()),{text,createdAt:Date.now()});input.value='';setSyncing(false)};
 
-window.deleteRoutineTask=async function(id,event){
-  event.stopPropagation();setSyncing(true);
-  await deleteDoc(doc(db,`panelkit_routine_${slug}`,id));
-  setTodayDone(getTodayDone().filter(d=>d!==id));setSyncing(false);
-};
+window.deleteRoutineTask=async function(id,event){event.stopPropagation();setSyncing(true);await deleteDoc(doc(db,`panelkit_routine_${slug}`,id));setTodayDone(getTodayDone().filter(d=>d!==id));setSyncing(false)};
 
-function listenRoutine(){
-  const q=query(collection(db,`panelkit_routine_${slug}`),orderBy('createdAt','asc'));
-  onSnapshot(q,snap=>{routineTasks=snap.docs.map(d=>({id:d.id,...d.data()}));renderRoutine()});
-}
+function listenRoutine(){const q=query(collection(db,`panelkit_routine_${slug}`),orderBy('createdAt','asc'));onSnapshot(q,snap=>{routineTasks=snap.docs.map(d=>({id:d.id,...d.data()}));renderRoutine()})}
 
-// ── Values Table ──────────────────────────────────────────────────────────
-function getDefaultValues(){
-  const makeActs=()=>[{text:'',xp:10},{text:'',xp:10},{text:'',xp:10}];
-  return{self:Array(5).fill(''),familia:[{valor:'',act:makeActs()},{valor:'',act:makeActs()}],amigos:[{valor:'',act:makeActs()},{valor:'',act:makeActs()}]};
-}
+// ── Values ────────────────────────────────────────────────────────────────
+function getDefaultValues(){const m=()=>[{text:'',xp:10},{text:'',xp:10},{text:'',xp:10}];return{self:Array(5).fill(''),familia:[{valor:'',act:m()},{valor:'',act:m()}],amigos:[{valor:'',act:m()},{valor:'',act:m()}]}}
+function mergeValues(data){const def=getDefaultValues();const m=()=>[{text:'',xp:10},{text:'',xp:10},{text:'',xp:10}];return{self:Array.isArray(data.self)&&data.self.length>=5?data.self:def.self,familia:(data.familia||def.familia).map(v=>({valor:v.valor||'',act:(v.act||m()).map(a=>({text:a.text||'',xp:a.xp??10}))})),amigos:(data.amigos||def.amigos).map(v=>({valor:v.valor||'',act:(v.act||m()).map(a=>({text:a.text||'',xp:a.xp??10}))}))}}
 
-function mergeValues(data){
-  const def=getDefaultValues();const makeActs=()=>[{text:'',xp:10},{text:'',xp:10},{text:'',xp:10}];
-  return{
-    self:Array.isArray(data.self)&&data.self.length>=5?data.self:def.self,
-    familia:(data.familia||def.familia).map(v=>({valor:v.valor||'',act:(v.act||makeActs()).map(a=>({text:a.text||'',xp:a.xp??10}))})),
-    amigos:(data.amigos||def.amigos).map(v=>({valor:v.valor||'',act:(v.act||makeActs()).map(a=>({text:a.text||'',xp:a.xp??10}))})
-    )};
-}
+async function loadValues(){try{const d=await withTimeout(getDoc(doc(db,'panelkit_values',slug)));valuesData=d.exists()?mergeValues(d.data()):getDefaultValues()}catch(e){valuesData=getDefaultValues()}renderValuesTable()}
 
-async function loadValues(){
-  try{const d=await withTimeout(getDoc(doc(db,'panelkit_values',slug)));valuesData=d.exists()?mergeValues(d.data()):getDefaultValues()}
-  catch(e){valuesData=getDefaultValues()}
-  renderValuesTable();
-}
+function updateValuesBadge(){if(!valuesData)return;const total=12;const done=(gStats.completedActivities||[]).filter(id=>id.startsWith('familia_')||id.startsWith('amigos_')).length;const badge=document.getElementById('valuesBadge');const prog=document.getElementById('valuesProgress');if(badge){badge.textContent=`${done}/${total}`;badge.className='fab-badge'+(done>0?' show':'')}if(prog)prog.textContent=`${done} / ${total}`}
 
-function renderValuesTable(){
-  if(!valuesData)return;
-  // Self
-  document.getElementById('selfList').innerHTML=valuesData.self.map((txt,i)=>`
-    <div class="self-row">
-      <span class="self-prefix">Una persona que...</span>
-      <input class="self-input" type="text" value="${esc(txt)}" placeholder="escribe aquí..." oninput="onSelfChange(${i},this.value)" maxlength="200">
-    </div>`).join('');
+function renderValuesTable(){if(!valuesData)return;
+  document.getElementById('selfList').innerHTML=valuesData.self.map((txt,i)=>`<div class="self-row"><span class="self-prefix">Una persona que...</span><input class="self-input" type="text" value="${esc(txt)}" placeholder="escribe aquí..." oninput="onSelfChange(${i},this.value)" maxlength="200"></div>`).join('');
+  ['familia','amigos'].forEach(section=>{document.getElementById(`${section}List`).innerHTML=valuesData[section].map((blk,vi)=>{const prefix=V_PREFIXES[section][vi];const actId=`${section}_${vi}`;return`<div class="valor-block"><div class="valor-header">${prefix?`<span class="valor-prefix">${prefix}...</span>`:'<span class="valor-prefix" style="color:var(--txt2)">VALOR:</span>'}<input class="valor-input" type="text" value="${esc(blk.valor)}" placeholder="completa aquí..." oninput="onValorChange('${section}',${vi},this.value)" maxlength="200"></div>${blk.act.map((a,ai)=>{const aId=`${actId}_${ai}`;const done=gStats.completedActivities.includes(aId);return`<div class="act-row"><span class="act-num">${ai+1}.</span><input class="act-input" type="text" value="${esc(a.text)}" placeholder="Actividad ${ai+1}..." oninput="onActChange('${section}',${vi},${ai},this.value)" maxlength="200"><span class="act-xp-badge">+${a.xp} XP</span><button class="act-done-btn ${done?'completed':''}" id="btn_${aId}" onclick="completeActivity('${aId}',${a.xp})" ${done?'disabled':''}>${done?'✓ Hecho':'Completar'}</button></div>`}).join('')}</div>`}).join('')});
+  updateValuesBadge()}
 
-  // Familia + Amigos
-  ['familia','amigos'].forEach(section=>{
-    const prefixes=V_PREFIXES[section];
-    document.getElementById(`${section}List`).innerHTML=valuesData[section].map((blk,vi)=>{
-      const prefix=prefixes[vi];
-      const actId=`${section}_${vi}`;
-      return`<div class="valor-block">
-        <div class="valor-header">
-          ${prefix?`<span class="valor-prefix">${prefix}...</span>`:'<span class="valor-prefix" style="color:var(--txt2)">VALOR:</span>'}
-          <input class="valor-input" type="text" value="${esc(blk.valor)}" placeholder="completa aquí..." oninput="onValorChange('${section}',${vi},this.value)" maxlength="200">
-        </div>
-        ${blk.act.map((a,ai)=>{
-          const aId=`${actId}_${ai}`;
-          const done=gStats.completedActivities.includes(aId);
-          return`<div class="act-row">
-            <span class="act-num">${ai+1}.</span>
-            <input class="act-input" type="text" value="${esc(a.text)}" placeholder="Actividad ${ai+1}..." oninput="onActChange('${section}',${vi},${ai},this.value)" maxlength="200">
-            <span class="act-xp-badge">+${a.xp} XP</span>
-            <button class="act-done-btn ${done?'completed':''}" id="btn_${aId}" onclick="completeActivity('${aId}',${a.xp})" ${done?'disabled':''}>
-              ${done?'✓ Hecho':'Completar'}
-            </button>
-          </div>`;
-        }).join('')}
+window.onSelfChange=function(i,val){valuesData.self[i]=val;scheduleValuesSave()};
+window.onValorChange=function(s,vi,val){valuesData[s][vi].valor=val;scheduleValuesSave()};
+window.onActChange=function(s,vi,ai,val){valuesData[s][vi].act[ai].text=val;scheduleValuesSave()};
+function scheduleValuesSave(){clearTimeout(saveValuesTimeout);saveValuesTimeout=setTimeout(async()=>{setSyncing(true);await setDoc(doc(db,'panelkit_values',slug),valuesData);setSyncing(false)},1500)}
+
+window.completeActivity=async function(actId,xp){if(gStats.completedActivities.includes(actId))return;gStats.completedActivities.push(actId);const btn=document.getElementById(`btn_${actId}`);if(btn){btn.textContent='✓ Hecho';btn.classList.add('completed');btn.disabled=true}updateValuesBadge();await addXP(xp,true,'check')};
+
+// ── Metas ─────────────────────────────────────────────────────────────────
+async function loadMetas(){try{const d=await withTimeout(getDoc(doc(db,'panelkit_metas',slug)));metasData=d.exists()?d.data():{goals:[]}}catch(e){metasData={goals:[]}}if(!metasData.goals)metasData.goals=[];renderMetas();updateMetasBadge()}
+function scheduleMetasSave(){clearTimeout(saveMetasTimeout);saveMetasTimeout=setTimeout(async()=>{setSyncing(true);await setDoc(doc(db,'panelkit_metas',slug),metasData);setSyncing(false)},800)}
+
+function updateMetasBadge(){const total=metasData.goals.length;const badge=document.getElementById('metasBadge');const prog=document.getElementById('metasProgress');if(badge){badge.textContent=total;badge.className='fab-badge'+(total>0?' show':'')}if(prog)prog.textContent=`${total} meta${total!==1?'s':''}`}
+
+function renderMetas(){const el=document.getElementById('metasList');
+  if(!metasData.goals.length){el.innerHTML=`<div class="empty-state"><div class="empty-state-icon">🎯</div><p>Aún no tienes metas.<br><span style="font-size:.8rem">Agrega una con el botón de arriba.</span></p></div>`;return}
+  el.innerHTML=metasData.goals.map((goal,gi)=>{
+    const steps=goal.steps||[];
+    const doneCount=steps.filter(s=>gStats.completedSteps.includes(`${goal.id}_${s.id}`)).length;
+    const pct=steps.length?Math.round((doneCount/steps.length)*100):0;
+    // Find current step index (first uncompleted)
+    const stepsHtml=steps.map((step,si)=>{
+      const sid=`${goal.id}_${step.id}`;
+      const isDone=gStats.completedSteps.includes(sid);
+      return`<div class="step-row ${isDone?'step-done':''}">
+        <button class="star-btn ${isDone?'done':''}" id="star_${goal.id}_${step.id}" onclick="completeStep('${goal.id}','${step.id}')">${isDone?'★':'☆'}</button>
+        <span class="step-num">${si+1}.</span>
+        <span class="step-text">${esc(step.text||'Paso '+(si+1))}</span>
+        <button class="step-delete-btn" onclick="deleteStep('${goal.id}','${step.id}',event)">✕</button>
       </div>`;
     }).join('');
-  });
-  updateValuesBadge();
-}
+    const allDone=steps.length>0&&doneCount===steps.length;
+    return`<div class="meta-card ${allDone?'all-done':''}">
+      ${allDone?'<div class="completed-banner">🏆 ¡Meta cumplida! ¡Felicitaciones!</div>':''}
+      <div class="meta-card-header">
+        <input class="meta-title-input" type="text" value="${esc(goal.title||'')}" placeholder="¿Cuál es tu meta?" oninput="updateGoalTitle('${goal.id}',this.value)" maxlength="100">
+        <span class="meta-counter ${allDone?'done-all':''}">${doneCount}/${steps.length}</span>
+        <button class="meta-delete-btn" onclick="deleteGoal('${goal.id}')">🗑️</button>
+      </div>
+      ${steps.length?`<div class="meta-progress-wrap"><div class="meta-progress-track"><div class="meta-progress-fill" style="width:${pct}%"></div></div><div class="meta-progress-text">${doneCount} / ${steps.length} pasos</div></div>`:''}
+      <div class="meta-steps">${stepsHtml||'<p class="steps-empty">Agrega pasos del más simple al más complejo ↓</p>'}</div>
+      <div class="step-add-row">
+        <input class="step-add-input" type="text" id="stepInput_${goal.id}" placeholder="Agregar siguiente paso..." maxlength="120" onkeypress="if(event.key==='Enter')addStep('${goal.id}')">
+        <button class="step-add-btn" onclick="addStep('${goal.id}')">+</button>
+      </div>
+    </div>`;
+  }).join('');
+  updateMetasBadge()}
 
-// Drawer open/close
-window.openValuesDrawer = function(){
-  document.getElementById('drawerOverlay').classList.add('open');
-  document.body.style.overflow='hidden';
-};
-window.closeValuesDrawer = function(){
-  document.getElementById('drawerOverlay').classList.remove('open');
-  document.body.style.overflow='';
-};
-window.handleDrawerOverlayClick = function(e){
-  if(e.target===document.getElementById('drawerOverlay'))closeValuesDrawer();
-};
+window.addGoal=function(){metasData.goals.unshift({id:uid(),title:'',steps:[],createdAt:Date.now()});renderMetas();scheduleMetasSave();setTimeout(()=>{const inputs=document.querySelectorAll('.meta-title-input');if(inputs[0])inputs[0].focus()},50)};
 
-// Update FAB badge with completed count
-function updateValuesBadge(){
-  if(!valuesData)return;
-  const total=valuesData.familia.length*3+valuesData.amigos.length*3; // 12
-  const done=(gStats.completedActivities||[]).filter(id=>id.startsWith('familia_')||id.startsWith('amigos_')).length;
-  const badge=document.getElementById('valuesFabBadge');
-  const prog=document.getElementById('drawerProgress');
-  if(badge){badge.textContent=`${done}/${total}`;badge.className='values-fab-badge'+(done>0?' show':'')}
-  if(prog)prog.textContent=`${done} / ${total} actividades`;
-}
+window.deleteGoal=function(gid){if(!confirm('¿Eliminar esta meta y todos sus pasos?'))return;metasData.goals=metasData.goals.filter(g=>g.id!==gid);renderMetas();scheduleMetasSave()};
 
-// Value field change handlers (debounced save)
-window.onSelfChange=function(i,val){valuesData.self[i]=val;scheduleValuesSave()};
-window.onValorChange=function(section,vi,val){valuesData[section][vi].valor=val;scheduleValuesSave()};
-window.onActChange=function(section,vi,ai,val){valuesData[section][vi].act[ai].text=val;scheduleValuesSave()};
+window.updateGoalTitle=function(gid,val){const g=metasData.goals.find(g=>g.id===gid);if(g){g.title=val;scheduleMetasSave()}};
 
-function scheduleValuesSave(){
-  clearTimeout(saveValuesTimeout);
-  saveValuesTimeout=setTimeout(async()=>{
-    setSyncing(true);
-    await setDoc(doc(db,'panelkit_values',slug),valuesData);
-    setSyncing(false);
-  },1500);
-}
+window.addStep=function(gid){const input=document.getElementById(`stepInput_${gid}`);if(!input)return;const text=input.value.trim();if(!text){input.focus();return}const g=metasData.goals.find(g=>g.id===gid);if(!g)return;if(!g.steps)g.steps=[];g.steps.push({id:uid(),text,createdAt:Date.now()});input.value='';renderMetas();scheduleMetasSave()};
 
-// Complete activity → earn XP (once)
-window.completeActivity=async function(actId,xp){
-  if(gStats.completedActivities.includes(actId))return;
-  gStats.completedActivities.push(actId);
-  const btn=document.getElementById(`btn_${actId}`);
-  if(btn){btn.textContent='✓ Hecho';btn.classList.add('completed');btn.disabled=true}
-  updateValuesBadge();
-  await addXP(xp,true,'check');
+window.deleteStep=function(gid,sid,event){event.stopPropagation();const g=metasData.goals.find(g=>g.id===gid);if(!g)return;g.steps=g.steps.filter(s=>s.id!==sid);renderMetas();scheduleMetasSave()};
+
+window.completeStep=async function(gid,sid){
+  const key=`${gid}_${sid}`;
+  if(gStats.completedSteps.includes(key))return;
+  // Star pop animation
+  const starEl=document.getElementById(`star_${gid}_${sid}`);
+  if(starEl){
+    starEl.textContent='★';
+    starEl.classList.add('done','popping');
+    setTimeout(()=>starEl.classList.remove('popping'),550);
+  }
+  gStats.completedSteps.push(key);
+  // Check if goal fully complete
+  const g=metasData.goals.find(g=>g.id===gid);
+  const xpReward=g?10+((g.steps||[]).findIndex(s=>s.id===sid))*5:15;
+  if(g&&g.steps&&g.steps.every(s=>gStats.completedSteps.includes(`${gid}_${s.id}`))){
+    gStats.completedGoals=(gStats.completedGoals||0)+1;
+    playSound('victory');
+  }
+  setTimeout(()=>renderMetas(),600);
+  await addXP(Math.min(xpReward,50),true,'check');
 };
 
 // ── Cards ─────────────────────────────────────────────────────────────────
-function renderCards(){
-  const pOrder={alta:0,media:1,baja:2};
-  const filtered=activeFilter==='all'?cards:cards.filter(c=>c.category===activeFilter);
-  const sorted=[...filtered].sort((a,b)=>{if(a.read!==b.read)return a.read?1:-1;return(pOrder[a.priority]??3)-(pOrder[b.priority]??3)});
+function renderCards(){const pOrder={alta:0,media:1,baja:2};const filtered=activeFilter==='all'?cards:cards.filter(c=>c.category===activeFilter);const sorted=[...filtered].sort((a,b)=>{if(a.read!==b.read)return a.read?1:-1;return(pOrder[a.priority]??3)-(pOrder[b.priority]??3)});
   if(!sorted.length){document.getElementById('cardsGrid').innerHTML=`<div class="empty-state"><div class="empty-state-icon">📭</div><p>${activeFilter==='all'?'Sin tarjetas aún':'Nada en esta categoría'}</p></div>`;return}
-  document.getElementById('cardsGrid').innerHTML=sorted.map(card=>`
-    <div class="thought-card priority-${card.priority} ${card.read?'read':''}" onclick="toggleRead('${card.id}',${card.read})">
-      <div class="card-top"><div class="priority-dot ${card.priority}"></div><span class="cat-tag ${card.category}">${card.category}</span>${card.read?'<span class="read-badge">leído</span>':''}</div>
-      <div class="card-text">${esc(card.text)}</div>
-      <div class="card-action"><button class="read-btn ${card.read?'unread-btn':''}" onclick="toggleRead('${card.id}',${card.read});event.stopPropagation()">${card.read?'↩ No leído':'✓ Marcar leído'}</button></div>
-    </div>`).join('');
-}
+  document.getElementById('cardsGrid').innerHTML=sorted.map(card=>`<div class="thought-card priority-${card.priority} ${card.read?'read':''}" onclick="toggleRead('${card.id}',${card.read})"><div class="card-top"><div class="priority-dot ${card.priority}"></div><span class="cat-tag ${card.category}">${card.category}</span>${card.read?'<span class="read-badge">leído</span>':''}</div><div class="card-text">${esc(card.text)}</div><div class="card-action"><button class="read-btn ${card.read?'unread-btn':''}" onclick="toggleRead('${card.id}',${card.read});event.stopPropagation()">${card.read?'↩ No leído':'✓ Marcar leído'}</button></div></div>`).join('')}
 
-window.toggleRead=async function(cardId,currentRead){
-  setSyncing(true);
-  await updateDoc(doc(db,`panelkit_cards_${slug}`,cardId),{read:!currentRead});
-  if(!currentRead){gStats.totalCardsRead++;await addXP(config.xpCardRead,true,'check')}
-  setSyncing(false);
-};
-
-function renderFilters(){
-  const cats=['all',...new Set(cards.map(c=>c.category))];
-  const labels={all:'Todas',cuerpo:'Cuerpo',errores:'Errores',emociones:'Emociones',relaciones:'Relaciones',autoestima:'Autoestima',general:'General'};
-  document.getElementById('filterRow').innerHTML=cats.map(cat=>`<button class="filter-btn ${activeFilter===cat?'active':''}" onclick="setFilter('${cat}')">${labels[cat]||cat}</button>`).join('');
-}
+window.toggleRead=async function(cardId,currentRead){setSyncing(true);await updateDoc(doc(db,`panelkit_cards_${slug}`,cardId),{read:!currentRead});if(!currentRead){gStats.totalCardsRead++;await addXP(config.xpCardRead,true,'check')}setSyncing(false)};
+function renderFilters(){const cats=['all',...new Set(cards.map(c=>c.category))];const labels={all:'Todas',cuerpo:'Cuerpo',errores:'Errores',emociones:'Emociones',relaciones:'Relaciones',autoestima:'Autoestima',general:'General'};document.getElementById('filterRow').innerHTML=cats.map(cat=>`<button class="filter-btn ${activeFilter===cat?'active':''}" onclick="setFilter('${cat}')">${labels[cat]||cat}</button>`).join('')}
 window.setFilter=function(cat){activeFilter=cat;renderFilters();renderCards()};
-
-function updateStats(){
-  document.getElementById('statTotal').textContent=cards.length;
-  document.getElementById('statRead').textContent=cards.filter(c=>c.read).length;
-  document.getElementById('statPriority').textContent=cards.filter(c=>c.priority==='alta').length;
-}
-
-function listenCards(){
-  const q=query(collection(db,`panelkit_cards_${slug}`),orderBy('createdAt','desc'));
-  onSnapshot(q,snap=>{cards=snap.docs.map(d=>({id:d.id,...d.data()}));updateStats();renderFilters();renderCards();setSyncing(false)});
-}
+function updateStats(){document.getElementById('statTotal').textContent=cards.length;document.getElementById('statRead').textContent=cards.filter(c=>c.read).length;document.getElementById('statPriority').textContent=cards.filter(c=>c.priority==='alta').length}
+function listenCards(){const q=query(collection(db,`panelkit_cards_${slug}`),orderBy('createdAt','desc'));onSnapshot(q,snap=>{cards=snap.docs.map(d=>({id:d.id,...d.data()}));updateStats();renderFilters();renderCards();setSyncing(false)})}
 
 // ── Init ──────────────────────────────────────────────────────────────────
-const PHRASES=[
-  "Cada pequeño paso hacia adelante es una victoria. Estás haciendo más de lo que crees.",
-  "Los pensamientos no son hechos. Puedes observarlos sin que te definan.",
-  "Hoy no tiene que ser perfecto para ser valioso.",
-  "Tu historia no termina en tu peor momento.",
-  "Mereces el mismo cuidado que le das a los demás.",
-  "El progreso no es lineal, y eso está bien.",
-  "No tienes que tenerlo todo resuelto hoy.",
-  "Eres más fuerte que los pensamientos que intentan convencerte de lo contrario.",
-  "Cada día que eliges seguir adelante es un acto de coraje.",
-  "Lo que sientes es válido. Y también puede cambiar.",
-  "Eres un trabajo en progreso, y eso es suficiente.",
-];
+const PHRASES=["Cada pequeño paso hacia adelante es una victoria. Estás haciendo más de lo que crees.","Los pensamientos no son hechos. Puedes observarlos sin que te definan.","Hoy no tiene que ser perfecto para ser valioso.","Tu historia no termina en tu peor momento.","Mereces el mismo cuidado que le das a los demás.","El progreso no es lineal, y eso está bien.","No tienes que tenerlo todo resuelto hoy.","Eres más fuerte que los pensamientos que intentan convencerte de lo contrario.","Cada día que eliges seguir adelante es un acto de coraje.","Lo que sientes es válido. Y también puede cambiar.","Eres un trabajo en progreso, y eso es suficiente."];
 
 async function loadPatient(){
   if(!slug){showError();return}
-
-  // Kill-switch: si Firebase tarda más de 12s, mostrar error y liberar la UI
-  const killswitch=setTimeout(()=>{
-    console.warn('Firebase timeout — mostrando UI con defaults');
-    loadingOverlay.classList.add('hidden');
-    if(mainContent.style.display==='none') showError();
-  },12000);
-
+  const killswitch=setTimeout(()=>{loadingOverlay.classList.add('hidden');if(mainContent.style.display==='none')showError()},12000);
   try{
     const pd=await withTimeout(getDoc(doc(db,'panelkit_patients',slug)));
     if(!pd.exists()){clearTimeout(killswitch);showError();return}
     const patient=pd.data();
     patientDisplayName.textContent=patient.name||slug;
-    document.title=`${patient.name} — PanelKit`;
+    document.title=`${patient.name} \u2014 PanelKit`;
     document.getElementById('dailyDateBadge').textContent=formatDate(TODAY);
     const doy=Math.floor((new Date()-new Date(new Date().getFullYear(),0,0))/86400000);
     document.getElementById('phraseCard').textContent='"'+PHRASES[doy%PHRASES.length]+'"';
-    // Config (non-blocking si falla)
     try{const cd=await withTimeout(getDoc(doc(db,'panelkit_config',slug)),5000);if(cd.exists())config={...DEF_CFG,...cd.data()}}catch(e){}
     mainContent.style.display='block';setSyncing(false);
     await loadGam();
     await loadValues();
+    await loadMetas();
     listenRoutine();
     listenCards();
   }catch(err){
     console.error(err);
-    if(err.message==='timeout'){
-      // Timeout: mostrar UI con defaults en lugar de error
-      mainContent.style.display='block';
-      gamLoaded=true;updateGamUI();renderAchievements();
-      valuesData=getDefaultValues();renderValuesTable();
-    } else {
-      showError();
-    }
-  }finally{
-    clearTimeout(killswitch);
-    loadingOverlay.classList.add('hidden');
-  }
+    if(err.message==='timeout'){mainContent.style.display='block';gamLoaded=true;updateGamUI();renderAchievements();valuesData=getDefaultValues();renderValuesTable();renderMetas()}
+    else{showError()}
+  }finally{clearTimeout(killswitch);loadingOverlay.classList.add('hidden')}
 }
 
 function showError(){loadingOverlay.classList.add('hidden');errorScreen.classList.add('show')}
-
 document.getElementById('routineInput').addEventListener('keypress',e=>{if(e.key==='Enter')addRoutineTask()});
 loadPatient();
 </script>
