@@ -317,6 +317,25 @@ body{font-family:'Outfit',sans-serif;background:var(--bg);color:var(--txt);min-h
 .meta-add-step button{background:rgba(253,203,110,.15);border:1px solid rgba(253,203,110,.28);border-radius:8px;color:#fdcb6e;font-size:1.1rem;font-weight:700;padding:9px 16px;cursor:pointer;transition:all .2s;font-family:'JetBrains Mono',monospace}
 .meta-add-step button:hover{background:rgba(253,203,110,.25);transform:none;box-shadow:none}
 .metas-empty{text-align:center;padding:28px;color:var(--txt2);font-size:.85rem}
+
+/* ── Patient add-card form ── */
+.patient-card-form{background:var(--bg);border:1px dashed rgba(162,155,254,.4);border-radius:12px;padding:16px;margin-bottom:14px;display:none}
+.patient-card-form.open{display:block}
+.patient-card-form textarea{width:100%;background:var(--bg2);border:1px solid var(--brd);border-radius:8px;color:var(--txt);font-family:'Outfit',sans-serif;font-size:.9rem;padding:12px;outline:none;resize:none;min-height:80px;transition:border-color .2s;line-height:1.5}
+.patient-card-form textarea:focus{border-color:#a29bfe;box-shadow:0 0 0 3px rgba(162,155,254,.12)}
+.patient-card-form textarea::placeholder{color:var(--txt2);font-size:.85rem}
+.patient-cat-row{display:flex;gap:8px;margin:10px 0;flex-wrap:wrap}
+.patient-cat-btn{background:var(--bg2);border:1px solid var(--brd);border-radius:20px;color:var(--txt2);font-family:'JetBrains Mono',monospace;font-size:.62rem;padding:5px 12px;cursor:pointer;transition:all .2s}
+.patient-cat-btn.selected{background:rgba(162,155,254,.2);border-color:#a29bfe;color:#a29bfe}
+.patient-card-form-footer{display:flex;justify-content:flex-end;gap:8px;margin-top:10px}
+.patient-submit-btn{background:#a29bfe;border:none;border-radius:8px;color:#0a0a0b;font-family:'JetBrains Mono',monospace;font-size:.75rem;font-weight:700;padding:9px 18px;cursor:pointer;transition:all .2s}
+.patient-submit-btn:hover{transform:translateY(-1px);box-shadow:0 4px 14px rgba(162,155,254,.35)}
+.patient-cancel-btn{background:transparent;border:1px solid var(--brd);border-radius:8px;color:var(--txt2);font-family:'JetBrains Mono',monospace;font-size:.75rem;padding:9px 14px;cursor:pointer;transition:all .2s}
+.patient-cancel-btn:hover{border-color:var(--txt2);color:var(--txt);transform:none;box-shadow:none}
+.add-own-card-btn{display:flex;align-items:center;gap:8px;background:rgba(162,155,254,.1);border:1px solid rgba(162,155,254,.25);border-radius:8px;color:#a29bfe;font-family:'JetBrains Mono',monospace;font-size:.72rem;padding:8px 14px;cursor:pointer;transition:all .2s;margin-bottom:16px;width:100%}
+.add-own-card-btn:hover{background:rgba(162,155,254,.18);transform:none;box-shadow:none}
+.add-own-card-btn.hidden{display:none}
+.own-card-badge{font-family:'JetBrains Mono',monospace;font-size:.58rem;color:#a29bfe;border:1px solid rgba(162,155,254,.3);padding:2px 7px;border-radius:4px;flex-shrink:0}
 @media(max-width:480px){body{padding:14px 14px 120px}.stats-row{gap:8px}.stat-value{font-size:1.3rem}.achievements-grid{grid-template-columns:repeat(2,1fr)}}
 </style>
 </head>
@@ -459,6 +478,22 @@ body{font-family:'Outfit',sans-serif;background:var(--bg);color:var(--txt);min-h
 
     <div class="section">
       <div class="section-title"><span>📝</span> Mis Tarjetas</div>
+      <button class="add-own-card-btn hidden" id="addOwnCardBtn" onclick="togglePatientCardForm()">
+        ✏️ Agregar mi propia reflexión
+      </button>
+      <div class="patient-card-form" id="patientCardForm">
+        <textarea id="patientCardText" placeholder="¿Qué estás pensando o sintiendo? Escríbelo aquí..." rows="3"></textarea>
+        <div class="patient-cat-row" id="patientCatRow">
+          <button class="patient-cat-btn selected" data-cat="personal" onclick="selectPatientCat(this)">💭 Reflexión</button>
+          <button class="patient-cat-btn" data-cat="emociones" onclick="selectPatientCat(this)">❤️ Emoción</button>
+          <button class="patient-cat-btn" data-cat="autoestima" onclick="selectPatientCat(this)">⭐ Logro</button>
+          <button class="patient-cat-btn" data-cat="general" onclick="selectPatientCat(this)">📌 Otro</button>
+        </div>
+        <div class="patient-card-form-footer">
+          <button class="patient-cancel-btn" onclick="togglePatientCardForm()">Cancelar</button>
+          <button class="patient-submit-btn" onclick="addPatientCard()">Guardar reflexión →</button>
+        </div>
+      </div>
       <div class="filter-row" id="filterRow"></div>
       <div class="cards-grid" id="cardsGrid"></div>
     </div>
@@ -511,6 +546,25 @@ const V_PREFIXES={familia:['Ser un hijo','Ser un hermano'],amigos:['Ser un amigo
 
 // ── State ─────────────────────────────────────────────────────────────────
 const slug=window.location.search.slice(1);
+const DEF_MODULES={rutina:true,metas:true,valores:true,tarjetas:true,tarjetasPaciente:false};
+let modules={...DEF_MODULES};
+
+function applyModules(){
+  // Rutina section
+  const rutinaSection=document.querySelector('.daily-section');
+  if(rutinaSection) rutinaSection.style.display=modules.rutina?'':'none';
+  // FABs - find by their id within fab-group items
+  document.querySelectorAll('.fab-item').forEach(item=>{
+    if(item.querySelector('.values-fab')) item.style.display=modules.valores?'flex':'none';
+    if(item.querySelector('.metas-fab')) item.style.display=modules.metas?'flex':'none';
+  });
+  // Patient add card button
+  const addOwnBtn=document.getElementById('addOwnCardBtn');
+  if(addOwnBtn) addOwnBtn.classList.toggle('hidden',!modules.tarjetasPaciente);
+  // Cards section visibility (hide whole section if tarjetas off)
+  const cardsSection=document.getElementById('cardsGrid')?.closest('.section');
+  if(cardsSection) cardsSection.style.display=modules.tarjetas?'':'none';
+}
 let cards=[],routineTasks=[],valuesData=null,metasData={goals:[]},activeFilter='all';
 let gStats={...DEF_GSTATS},gamLoaded=false,achieveQueue=[],showingAchieve=false;
 const TODAY=new Date().toISOString().split('T')[0];
@@ -720,10 +774,66 @@ window.completeStep=async function(gid,sid){
   await addXP(Math.min(xpReward,50),true,'check');
 };
 
+// ── Patient card functions ────────────────────────────────────────────────
+let selectedPatientCat='personal';
+
+window.togglePatientCardForm=function(){
+  const form=document.getElementById('patientCardForm');
+  form.classList.toggle('open');
+  if(form.classList.contains('open')){
+    document.getElementById('patientCardText').focus();
+  } else {
+    document.getElementById('patientCardText').value='';
+    selectedPatientCat='personal';
+    document.querySelectorAll('.patient-cat-btn').forEach(b=>b.classList.toggle('selected',b.dataset.cat==='personal'));
+  }
+};
+
+window.selectPatientCat=function(btn){
+  selectedPatientCat=btn.dataset.cat;
+  document.querySelectorAll('.patient-cat-btn').forEach(b=>b.classList.remove('selected'));
+  btn.classList.add('selected');
+};
+
+window.addPatientCard=async function(){
+  const text=document.getElementById('patientCardText').value.trim();
+  if(!text) return;
+  setSyncing(true);
+  const id=Date.now().toString(36)+Math.random().toString(36).substr(2,5);
+  await setDoc(doc(db,`panelkit_cards_${slug}`,id),{
+    text, category:selectedPatientCat, priority:'baja',
+    createdAt:Date.now(), read:false, author:'patient'
+  });
+  setSyncing(false);
+  togglePatientCardForm();
+};
+
 // ── Cards ─────────────────────────────────────────────────────────────────
 function renderCards(){const pOrder={alta:0,media:1,baja:2};const filtered=activeFilter==='all'?cards:cards.filter(c=>c.category===activeFilter);const sorted=[...filtered].sort((a,b)=>{if(a.read!==b.read)return a.read?1:-1;return(pOrder[a.priority]??3)-(pOrder[b.priority]??3)});
   if(!sorted.length){document.getElementById('cardsGrid').innerHTML=`<div class="empty-state"><div class="empty-state-icon">📭</div><p>${activeFilter==='all'?'Sin tarjetas aún':'Nada en esta categoría'}</p></div>`;return}
-  document.getElementById('cardsGrid').innerHTML=sorted.map(card=>`<div class="thought-card priority-${card.priority} ${card.read?'read':''}" onclick="toggleRead('${card.id}',${card.read})"><div class="card-top"><div class="priority-dot ${card.priority}"></div><span class="cat-tag ${card.category}">${card.category}</span>${card.read?'<span class="read-badge">leído</span>':''}</div><div class="card-text">${esc(card.text)}</div><div class="card-action"><button class="read-btn ${card.read?'unread-btn':''}" onclick="toggleRead('${card.id}',${card.read});event.stopPropagation()">${card.read?'↩ No leído':'✓ Marcar leído'}</button></div></div>`).join('')}
+  document.getElementById('cardsGrid').innerHTML=sorted.map(card=>{
+    const isOwn=card.author==='patient';
+    return`<div class="thought-card ${isOwn?'':'priority-'+card.priority} ${card.read?'read':''}" style="${isOwn?'border-left:3px solid #a29bfe':''}" onclick="toggleRead('${card.id}',${card.read})">
+      <div class="card-top">
+        ${isOwn?'<span style="font-size:.85rem">✏️</span>':'<div class="priority-dot '+card.priority+'"></div>'}
+        <span class="cat-tag ${card.category}">${card.category}</span>
+        ${isOwn?'<span class="own-card-badge">tuya</span>':''}
+        ${card.read?'<span class="read-badge">leído</span>':''}
+      </div>
+      <div class="card-text">${esc(card.text)}</div>
+      <div class="card-action">
+        ${isOwn?`<button class="patient-cancel-btn" style="font-size:.62rem;padding:5px 10px" onclick="deleteOwnCard('${card.id}');event.stopPropagation()">🗑️ Eliminar</button>`:''}
+        <button class="read-btn ${card.read?'unread-btn':''}" onclick="toggleRead('${card.id}',${card.read});event.stopPropagation()">${card.read?'↩ No leído':'✓ Marcar leído'}</button>
+      </div>
+    </div>`;
+  }).join('')}
+
+window.deleteOwnCard=async function(cardId){
+  if(!confirm('¿Eliminar esta reflexión?'))return;
+  setSyncing(true);
+  await deleteDoc(doc(db,`panelkit_cards_${slug}`,cardId));
+  setSyncing(false);
+};
 
 window.toggleRead=async function(cardId,currentRead){setSyncing(true);await updateDoc(doc(db,`panelkit_cards_${slug}`,cardId),{read:!currentRead});if(!currentRead){gStats.totalCardsRead++;await addXP(config.xpCardRead,true,'check')}setSyncing(false)};
 function renderFilters(){const cats=['all',...new Set(cards.map(c=>c.category))];const labels={all:'Todas',cuerpo:'Cuerpo',errores:'Errores',emociones:'Emociones',relaciones:'Relaciones',autoestima:'Autoestima',general:'General'};document.getElementById('filterRow').innerHTML=cats.map(cat=>`<button class="filter-btn ${activeFilter===cat?'active':''}" onclick="setFilter('${cat}')">${labels[cat]||cat}</button>`).join('')}
@@ -741,17 +851,20 @@ async function loadPatient(){
     const pd=await withTimeout(getDoc(doc(db,'panelkit_patients',slug)));
     if(!pd.exists()){clearTimeout(killswitch);showError();return}
     const patient=pd.data();
+    modules={...DEF_MODULES,...(patient.modules||{})};
     patientDisplayName.textContent=patient.name||slug;
     document.title=`${patient.name} \u2014 PanelKit`;
     document.getElementById('dailyDateBadge').textContent=formatDate(TODAY);
     const doy=Math.floor((new Date()-new Date(new Date().getFullYear(),0,0))/86400000);
     document.getElementById('phraseCard').textContent='"'+PHRASES[doy%PHRASES.length]+'"';
     try{const cd=await withTimeout(getDoc(doc(db,'panelkit_config',slug)),5000);if(cd.exists())config={...DEF_CFG,...cd.data()}}catch(e){}
-    mainContent.style.display='block';setSyncing(false);
+    mainContent.style.display='block';
+    applyModules();
+    setSyncing(false);
     await loadGam();
-    await loadValues();
-    await loadMetas();
-    listenRoutine();
+    if(modules.valores) await loadValues();
+    if(modules.metas) await loadMetas();
+    if(modules.rutina) listenRoutine();
     listenCards();
   }catch(err){
     console.error(err);
