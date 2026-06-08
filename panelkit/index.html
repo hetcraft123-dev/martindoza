@@ -167,6 +167,20 @@ button.success{background:var(--ok)}
 .copy-feedback{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(20px);background:var(--ok);color:white;padding:12px 24px;border-radius:10px;font-family:'JetBrains Mono',monospace;font-size:.78rem;opacity:0;transition:all .3s;pointer-events:none;z-index:1000}
 .copy-feedback.show{opacity:1;transform:translateX(-50%) translateY(0)}
 
+
+/* ── Module Toggles ── */
+.modules-intro{font-size:.82rem;color:var(--txt2);margin-bottom:20px;line-height:1.5}
+.toggle-row{display:flex;align-items:center;justify-content:space-between;padding:16px 0;border-bottom:1px solid var(--brd)}
+.toggle-row:last-child{border-bottom:none}
+.toggle-info{flex:1;margin-right:16px}
+.toggle-label{font-size:.9rem;color:var(--txt);font-weight:500;margin-bottom:3px}
+.toggle-desc{font-size:.73rem;color:var(--txt2);line-height:1.4}
+.toggle-switch{position:relative;width:46px;height:26px;flex-shrink:0}
+.toggle-switch input{opacity:0;width:0;height:0;position:absolute}
+.toggle-slider{position:absolute;inset:0;background:var(--brd);border-radius:26px;cursor:pointer;transition:all .25s}
+.toggle-slider::before{content:'';position:absolute;width:20px;height:20px;left:3px;bottom:3px;background:white;border-radius:50%;transition:all .25s;box-shadow:0 1px 4px rgba(0,0,0,.3)}
+.toggle-switch input:checked+.toggle-slider{background:var(--acc)}
+.toggle-switch input:checked+.toggle-slider::before{transform:translateX(20px)}
 /* ── Responsive ── */
 @media(max-width:600px){
   body{padding:14px}
@@ -207,6 +221,7 @@ button.success{background:var(--ok)}
       <button class="modal-tab active" data-tab="cards" onclick="switchTab('cards')">📝 Tarjetas</button>
       <button class="modal-tab" data-tab="valores" onclick="switchTab('valores')">🌿 Valores</button>
       <button class="modal-tab" data-tab="config" onclick="switchTab('config')">⚙️ Config XP</button>
+      <button class="modal-tab" data-tab="modulos" onclick="switchTab('modulos')">📐 Módulos</button>
     </div>
     <div class="modal-body">
 
@@ -280,6 +295,46 @@ button.success{background:var(--ok)}
           <div class="level-preview-row"><span>✨ Luz</span><span id="lvlP3">1500+ XP</span></div>
         </div>
         <button class="config-save-btn success" onclick="saveConfig()">💾 Guardar configuración</button>
+
+      <!-- Tab: Módulos -->
+      <div class="tab-content" data-tab="modulos">
+        <p class="modules-intro">Activa o desactiva secciones para personalizar la página de cada consultante según su objetivo terapéutico. Los cambios aplican en tiempo real.</p>
+        <div class="toggle-row">
+          <div class="toggle-info">
+            <div class="toggle-label">☀️ Rutina diaria</div>
+            <div class="toggle-desc">Tareas que el consultante completa cada día</div>
+          </div>
+          <label class="toggle-switch"><input type="checkbox" id="mod_rutina" onchange="saveModules()"><span class="toggle-slider"></span></label>
+        </div>
+        <div class="toggle-row">
+          <div class="toggle-info">
+            <div class="toggle-label">🎯 Metas / Plan de trabajo</div>
+            <div class="toggle-desc">Objetivos con pasos del más simple al más complejo</div>
+          </div>
+          <label class="toggle-switch"><input type="checkbox" id="mod_metas" onchange="saveModules()"><span class="toggle-slider"></span></label>
+        </div>
+        <div class="toggle-row">
+          <div class="toggle-info">
+            <div class="toggle-label">🌿 Hoja de valores</div>
+            <div class="toggle-desc">Tabla de valores personales y actividades</div>
+          </div>
+          <label class="toggle-switch"><input type="checkbox" id="mod_valores" onchange="saveModules()"><span class="toggle-slider"></span></label>
+        </div>
+        <div class="toggle-row">
+          <div class="toggle-info">
+            <div class="toggle-label">📝 Tarjetas del terapeuta</div>
+            <div class="toggle-desc">Pensamientos y reflexiones que agrega Martin</div>
+          </div>
+          <label class="toggle-switch"><input type="checkbox" id="mod_tarjetas" onchange="saveModules()"><span class="toggle-slider"></span></label>
+        </div>
+        <div class="toggle-row">
+          <div class="toggle-info">
+            <div class="toggle-label">✏️ Tarjetas del consultante</div>
+            <div class="toggle-desc">El propio consultante puede agregar sus reflexiones personales</div>
+          </div>
+          <label class="toggle-switch"><input type="checkbox" id="mod_tarjetasPaciente" onchange="saveModules()"><span class="toggle-slider"></span></label>
+        </div>
+      </div>
       </div>
     </div>
   </div>
@@ -408,6 +463,7 @@ window.switchTab = function(tab){
   document.querySelectorAll('.tab-content').forEach(c=>c.classList.toggle('active',c.dataset.tab===tab));
   if(tab==='valores') loadValores();
   if(tab==='config')  loadConfig();
+  if(tab==='modulos') loadModules();
 };
 
 // ── Values (Tabla de Valores) ─────────────────────────────────────────────
@@ -527,6 +583,35 @@ window.saveConfig = async function(){
   showFeedback('✓ Configuración guardada');
 };
 
+// ── Modules ───────────────────────────────────────────────────────────────
+const DEFAULT_MODULES={rutina:true,metas:true,valores:true,tarjetas:true,tarjetasPaciente:false};
+let currentModules={...DEFAULT_MODULES};
+
+function loadModules(){
+  const p=patients.find(p=>p.slug===currentId);
+  currentModules={...DEFAULT_MODULES,...(p?.modules||{})};
+  Object.keys(DEFAULT_MODULES).forEach(key=>{
+    const el=document.getElementById(`mod_${key}`);
+    if(el) el.checked=!!currentModules[key];
+  });
+}
+
+window.saveModules=async function(){
+  if(!currentId)return;
+  const newMods={};
+  Object.keys(DEFAULT_MODULES).forEach(key=>{
+    const el=document.getElementById(`mod_${key}`);
+    if(el) newMods[key]=el.checked;
+  });
+  currentModules=newMods;
+  const p=patients.find(p=>p.slug===currentId);
+  if(!p)return;
+  setSyncing(true);
+  await setDoc(doc(db,'panelkit_patients',currentId),{...p,modules:newMods});
+  setSyncing(false);
+  showFeedback('✓ Módulos actualizados');
+};
+
 // ── Modal ─────────────────────────────────────────────────────────────────
 window.openModal = function(slug){
   currentId=slug;
@@ -550,15 +635,18 @@ window.closeModal = function(){
 // ── Cards ─────────────────────────────────────────────────────────────────
 function renderCards(){
   if(currentCards.length===0){cardsList.innerHTML=`<div class="empty-state"><div class="empty-icon">📝</div><p class="empty-text">Sin tarjetas</p></div>`;return}
-  cardsList.innerHTML=currentCards.map(c=>`
-    <div class="card-item">
+  cardsList.innerHTML=currentCards.map(c=>{
+    const isPatient=c.author==='patient';
+    return`<div class="card-item" style="${isPatient?'border-left:3px solid #a29bfe':''}" >
       <div class="card-item-header">
         <div class="card-priority ${c.priority}"></div>
         <span class="card-tag ${c.category}">${c.category}</span>
+        ${isPatient?'<span style="font-family:'JetBrains Mono',monospace;font-size:.58rem;color:#a29bfe;border:1px solid rgba(162,155,254,.3);padding:2px 7px;border-radius:4px;margin-left:4px">✏️ suya</span>':''}
         <div class="card-item-actions"><button class="danger" onclick="deleteCard('${c.id}')">✕</button></div>
       </div>
       <div class="card-item-text">${esc(c.text)}</div>
-    </div>`).join('');
+    </div>`;
+  }).join('');
 }
 
 window.addCard = async function(){
