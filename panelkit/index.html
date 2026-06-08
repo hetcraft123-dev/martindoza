@@ -9,18 +9,9 @@
 <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=Outfit:wght@300;500;700&display=swap" rel="stylesheet">
 <style>
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
-:root{
-  --bg:#0a0a0b;--bg2:#141416;--bg3:#1a1a1e;
-  --txt:#e8e8e8;--txt2:#6b6b70;
-  --acc:#6c5ce7;--accg:rgba(108,92,231,.3);
-  --acc2:#00cec9;
-  --ok:#00c853;--warn:#ff9100;--err:#ff5252;
-  --brd:#252529;
-}
-body{font-family:'Outfit',sans-serif;background:var(--bg);color:var(--txt);min-height:100vh;padding:24px;
-  background-image:radial-gradient(ellipse at top,rgba(108,92,231,.08) 0%,transparent 50%),radial-gradient(circle at 80% 80%,rgba(0,206,201,.04) 0%,transparent 40%)}
-
-/* ── Login ── */
+:root{--bg:#0a0a0b;--bg2:#141416;--bg3:#1a1a1e;--txt:#e8e8e8;--txt2:#6b6b70;--acc:#6c5ce7;--accg:rgba(108,92,231,.3);--acc2:#00cec9;--ok:#00c853;--warn:#ff9100;--err:#ff5252;--brd:#252529}
+body{font-family:'Outfit',sans-serif;background:var(--bg);color:var(--txt);min-height:100vh;padding:24px;background-image:radial-gradient(ellipse at top,rgba(108,92,231,.08) 0%,transparent 50%),radial-gradient(circle at 80% 80%,rgba(0,206,201,.04) 0%,transparent 40%)}
+/* Login */
 .login-screen{position:fixed;inset:0;background:var(--bg);z-index:9999;display:flex;align-items:center;justify-content:center;padding:20px}
 .login-card{background:var(--bg2);border:1px solid var(--brd);border-radius:20px;padding:40px 36px;width:100%;max-width:380px;text-align:center}
 .login-logo{font-family:'JetBrains Mono',monospace;font-size:2rem;font-weight:700;background:linear-gradient(135deg,var(--acc),var(--acc2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:6px}
@@ -30,15 +21,13 @@ body{font-family:'Outfit',sans-serif;background:var(--bg);color:var(--txt);min-h
 .login-btn{width:100%;background:var(--acc);border:none;border-radius:10px;color:white;font-family:'JetBrains Mono',monospace;font-size:.85rem;font-weight:700;padding:14px;cursor:pointer;transition:all .2s;margin-top:4px}
 .login-btn:hover{transform:translateY(-2px);box-shadow:0 6px 20px var(--accg)}
 .login-error{color:var(--err);font-size:.8rem;margin-top:10px;display:none}
-.login-hint{color:var(--txt2);font-size:.7rem;margin-top:14px;font-family:'JetBrains Mono',monospace}
-
-/* ── Loading ── */
+/* Loading */
 .loading-overlay{position:fixed;inset:0;background:var(--bg);display:flex;align-items:center;justify-content:center;z-index:500;transition:opacity .4s}
 .loading-overlay.hidden{opacity:0;pointer-events:none}
 .spinner{width:36px;height:36px;border:3px solid var(--brd);border-top-color:var(--acc);border-radius:50%;animation:spin .8s linear infinite}
 @keyframes spin{to{transform:rotate(360deg)}}
-
-/* ── Layout ── */
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
+/* Layout */
 .container{max-width:1100px;margin:0 auto}
 .header{text-align:center;margin-bottom:36px}
 .logo{font-family:'JetBrains Mono',monospace;font-size:2rem;font-weight:700;background:linear-gradient(135deg,var(--acc),var(--acc2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:4px}
@@ -46,16 +35,13 @@ body{font-family:'Outfit',sans-serif;background:var(--bg);color:var(--txt);min-h
 .sync-status{display:inline-flex;align-items:center;gap:6px;font-family:'JetBrains Mono',monospace;font-size:.62rem;color:var(--txt2);padding:4px 12px;background:var(--bg2);border-radius:20px}
 .sync-dot{width:6px;height:6px;border-radius:50%;background:var(--ok);transition:background .3s}
 .sync-dot.syncing{background:var(--warn);animation:pulse 1s infinite}
-@keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
 .logout-btn{background:transparent;border:1px solid var(--brd);border-radius:20px;color:var(--txt2);font-family:'JetBrains Mono',monospace;font-size:.62rem;padding:4px 14px;cursor:pointer;transition:all .2s}
 .logout-btn:hover{border-color:var(--err);color:var(--err);transform:none;box-shadow:none}
-
-/* ── Section ── */
+/* Section */
 .section{background:var(--bg2);border:1px solid var(--brd);border-radius:16px;padding:24px;margin-bottom:24px}
 .section-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px}
 .section-title{font-family:'JetBrains Mono',monospace;font-size:1rem;font-weight:600;color:var(--acc);display:flex;align-items:center;gap:10px}
-
-/* ── Forms ── */
+/* Forms */
 .form-row{display:flex;gap:12px;margin-bottom:14px}
 .form-group{flex:1}
 .form-group.small{flex:0 0 auto;min-width:140px}
@@ -68,17 +54,16 @@ button{background:var(--acc);border:none;border-radius:8px;color:white;font-fami
 button:hover{transform:translateY(-2px);box-shadow:0 4px 18px var(--accg)}
 button:active{transform:scale(.98)}
 button.secondary{background:transparent;border:1px solid var(--brd);color:var(--txt2)}
-button.secondary:hover{border-color:var(--txt2);color:var(--txt);box-shadow:none}
+button.secondary:hover{border-color:var(--txt2);color:var(--txt);box-shadow:none;transform:none}
 button.danger{background:var(--err)}
 button.danger:hover{box-shadow:0 4px 14px rgba(255,82,82,.3)}
 button.success{background:var(--ok)}
-
-/* ── Patients Grid ── */
+/* Patients grid */
 .patients-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px}
-.patient-card{background:var(--bg);border:1px solid var(--brd);border-radius:12px;padding:20px;transition:all .3s;cursor:pointer}
+.patient-card{background:var(--bg);border:1px solid var(--brd);border-radius:12px;padding:20px;transition:all .3s}
 .patient-card:hover{border-color:var(--acc);transform:translateY(-2px)}
 .patient-header{display:flex;align-items:center;gap:12px;margin-bottom:12px}
-.patient-avatar{width:48px;height:48px;border-radius:12px;background:linear-gradient(135deg,var(--acc),var(--acc2));display:flex;align-items:center;justify-content:center;font-size:1.4rem;font-weight:700;color:white}
+.patient-avatar{width:48px;height:48px;border-radius:12px;background:linear-gradient(135deg,var(--acc),var(--acc2));display:flex;align-items:center;justify-content:center;font-size:1.4rem;font-weight:700;color:white;flex-shrink:0}
 .patient-name{font-weight:600;font-size:1.05rem;margin-bottom:2px}
 .patient-id{font-family:'JetBrains Mono',monospace;font-size:.68rem;color:var(--txt2)}
 .patient-stats{display:flex;gap:16px;margin-top:10px;padding-top:10px;border-top:1px solid var(--brd)}
@@ -88,8 +73,7 @@ button.success{background:var(--ok)}
 .link-input{flex:1;font-family:'JetBrains Mono',monospace;font-size:.72rem}
 .patient-actions{display:flex;gap:8px;margin-top:14px}
 .patient-actions button{flex:1;padding:9px;font-size:.68rem}
-
-/* ── Tags ── */
+/* Tags */
 .card-tag{font-size:.6rem;padding:3px 8px;border-radius:4px;font-family:'JetBrains Mono',monospace}
 .card-tag.cuerpo{background:rgba(255,107,107,.2);color:#ff6b6b}
 .card-tag.errores{background:rgba(255,145,0,.2);color:#ff9100}
@@ -97,82 +81,61 @@ button.success{background:var(--ok)}
 .card-tag.relaciones{background:rgba(108,92,231,.2);color:#6c5ce7}
 .card-tag.autoestima{background:rgba(253,203,110,.2);color:#fdcb6e}
 .card-tag.general{background:rgba(99,110,114,.2);color:#636e72}
-
-/* ── Modal ── */
+.card-tag.personal{background:rgba(162,155,254,.2);color:#a29bfe}
+/* Modal */
 .modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.85);display:flex;align-items:center;justify-content:center;z-index:400;opacity:0;pointer-events:none;transition:opacity .3s;padding:20px}
 .modal-overlay.show{opacity:1;pointer-events:auto}
 .modal{background:var(--bg2);border:1px solid var(--brd);border-radius:16px;width:100%;max-width:680px;max-height:92vh;overflow:hidden;display:flex;flex-direction:column;transform:scale(.9);transition:transform .3s}
 .modal-overlay.show .modal{transform:scale(1)}
 .modal-header{display:flex;align-items:center;justify-content:space-between;padding:20px 24px 0}
 .modal-title{font-family:'JetBrains Mono',monospace;font-size:1.05rem;font-weight:600}
-.modal-close{background:transparent;border:none;color:var(--txt2);font-size:1.5rem;cursor:pointer;padding:4px;line-height:1}
+.modal-close{background:transparent;border:none;color:var(--txt2);font-size:1.5rem;cursor:pointer;padding:4px;line-height:1;transition:color .2s}
 .modal-close:hover{color:var(--txt);transform:none;box-shadow:none}
-
-/* ── Tabs ── */
-.modal-tabs{display:flex;gap:0;padding:0 24px;border-bottom:1px solid var(--brd);margin-top:16px}
-.modal-tab{background:transparent;border:none;border-bottom:2px solid transparent;color:var(--txt2);font-family:'JetBrains Mono',monospace;font-size:.7rem;padding:10px 16px;cursor:pointer;transition:all .2s;border-radius:0;transform:none;box-shadow:none}
+/* Tabs */
+.modal-tabs{display:flex;gap:0;padding:0 24px;border-bottom:1px solid var(--brd);margin-top:16px;overflow-x:auto}
+.modal-tab{background:transparent;border:none;border-bottom:2px solid transparent;color:var(--txt2);font-family:'JetBrains Mono',monospace;font-size:.68rem;padding:10px 14px;cursor:pointer;transition:all .2s;border-radius:0;transform:none;box-shadow:none;white-space:nowrap}
 .modal-tab:hover{color:var(--txt);box-shadow:none;transform:none}
 .modal-tab.active{color:var(--acc);border-bottom-color:var(--acc)}
 .modal-body{overflow-y:auto;padding:20px 24px 24px;flex:1}
-
-/* ── Tab content ── */
 .tab-content{display:none}
 .tab-content.active{display:block}
-
-/* ── Cards list ── */
+/* Cards list */
 .cards-list{display:flex;flex-direction:column;gap:10px;margin-top:16px}
 .card-item{background:var(--bg);border:1px solid var(--brd);border-radius:10px;padding:14px}
-.card-item-header{display:flex;align-items:center;gap:10px;margin-bottom:8px}
-.card-priority{width:8px;height:8px;border-radius:50%}
+.card-item-header{display:flex;align-items:center;gap:8px;margin-bottom:8px;flex-wrap:wrap}
+.card-priority{width:8px;height:8px;border-radius:50%;flex-shrink:0}
 .card-priority.alta{background:var(--err)}.card-priority.media{background:var(--warn)}.card-priority.baja{background:var(--ok)}
 .card-item-text{font-size:.88rem;line-height:1.5}
-.card-item-actions{margin-left:auto;display:flex;gap:5px}
+.card-item-actions{margin-left:auto}
 .card-item-actions button{padding:5px 8px;font-size:.62rem}
-
-/* ── Values Editor ── */
-.values-section-title{font-family:'JetBrains Mono',monospace;font-size:.8rem;font-weight:700;color:var(--acc2);margin:20px 0 12px;text-transform:uppercase;letter-spacing:1px}
+/* Values editor */
+.values-section-title{font-family:'JetBrains Mono',monospace;font-size:.78rem;font-weight:700;color:var(--acc2);margin:20px 0 10px;text-transform:uppercase;letter-spacing:.8px}
 .values-section-title:first-child{margin-top:0}
-.valor-block{background:var(--bg);border:1px solid var(--brd);border-radius:10px;padding:14px;margin-bottom:12px}
-.valor-block-header{font-family:'JetBrains Mono',monospace;font-size:.7rem;color:var(--txt2);margin-bottom:10px;text-transform:uppercase;letter-spacing:.5px}
-.valor-text-display{font-size:.85rem;color:var(--txt);margin-bottom:10px;padding:8px;background:var(--bg2);border-radius:6px;font-style:italic;min-height:28px}
-.act-xp-row{display:flex;align-items:center;gap:10px;margin-bottom:8px}
+.valor-block{background:var(--bg);border:1px solid var(--brd);border-radius:10px;padding:14px;margin-bottom:10px}
+.valor-block-header{font-family:'JetBrains Mono',monospace;font-size:.68rem;color:var(--txt2);margin-bottom:10px;text-transform:uppercase}
+.act-xp-row{display:flex;align-items:center;gap:10px;margin-bottom:8px;flex-wrap:wrap}
 .act-xp-row:last-child{margin-bottom:0}
-.act-label-txt{flex:1;font-size:.82rem;color:var(--txt2)}
-.act-text-display{flex:2;font-size:.82rem;color:var(--txt);background:var(--bg2);padding:6px 10px;border-radius:6px;min-height:24px}
+.act-label-txt{font-size:.78rem;color:var(--txt2);flex-shrink:0;min-width:60px}
+.act-text-display{flex:1;font-size:.82rem;color:var(--txt);background:var(--bg2);padding:6px 10px;border-radius:6px;min-height:24px;min-width:100px}
 .act-xp-input-wrap{display:flex;align-items:center;gap:6px;flex-shrink:0}
 .act-xp-input-wrap label{margin:0;font-size:.65rem;color:var(--txt2);text-transform:none;letter-spacing:0;white-space:nowrap}
 .act-xp-input{width:64px;padding:6px 8px;font-size:.8rem;text-align:center}
-.values-save-btn{width:100%;margin-top:16px}
-
-/* ── Config Editor ── */
-.config-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:4px}
+/* Config */
+.config-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
 .config-item{background:var(--bg);border:1px solid var(--brd);border-radius:10px;padding:14px}
 .config-item label{font-size:.72rem;color:var(--txt2);text-transform:uppercase;letter-spacing:.5px;display:block;margin-bottom:6px}
 .config-item input{padding:10px 12px;font-size:1rem;font-family:'JetBrains Mono',monospace;text-align:center}
-.config-desc{font-size:.72rem;color:var(--txt2);margin-top:4px;line-height:1.4}
-.config-save-btn{width:100%;margin-top:16px}
+.config-desc{font-size:.72rem;color:var(--txt2);margin-top:6px;line-height:1.4}
 .config-level-preview{background:var(--bg);border:1px solid var(--brd);border-radius:10px;padding:14px;margin-top:14px}
 .config-level-preview-title{font-family:'JetBrains Mono',monospace;font-size:.7rem;color:var(--txt2);margin-bottom:10px;text-transform:uppercase;letter-spacing:.5px}
 .level-preview-row{display:flex;align-items:center;justify-content:space-between;padding:5px 0;border-bottom:1px solid var(--brd);font-size:.8rem}
 .level-preview-row:last-child{border-bottom:none}
-.level-preview-row span:first-child{color:var(--txt)}
 .level-preview-row span:last-child{font-family:'JetBrains Mono',monospace;font-size:.72rem;color:var(--txt2)}
-
-/* ── Empty ── */
-.empty-state{text-align:center;padding:40px 20px;color:var(--txt2)}
-.empty-icon{font-size:3rem;margin-bottom:14px;opacity:.3}
-.empty-text{font-size:.88rem}
-
-/* ── Copy toast ── */
-.copy-feedback{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(20px);background:var(--ok);color:white;padding:12px 24px;border-radius:10px;font-family:'JetBrains Mono',monospace;font-size:.78rem;opacity:0;transition:all .3s;pointer-events:none;z-index:1000}
-.copy-feedback.show{opacity:1;transform:translateX(-50%) translateY(0)}
-
-
-/* ── Module Toggles ── */
-.modules-intro{font-size:.82rem;color:var(--txt2);margin-bottom:20px;line-height:1.5}
+/* Modules toggles */
+.modules-intro{font-size:.82rem;color:var(--txt2);margin-bottom:20px;line-height:1.6;background:var(--bg);padding:12px 14px;border-radius:8px;border:1px solid var(--brd)}
 .toggle-row{display:flex;align-items:center;justify-content:space-between;padding:16px 0;border-bottom:1px solid var(--brd)}
 .toggle-row:last-child{border-bottom:none}
-.toggle-info{flex:1;margin-right:16px}
+.toggle-info{flex:1;margin-right:20px}
 .toggle-label{font-size:.9rem;color:var(--txt);font-weight:500;margin-bottom:3px}
 .toggle-desc{font-size:.73rem;color:var(--txt2);line-height:1.4}
 .toggle-switch{position:relative;width:46px;height:26px;flex-shrink:0}
@@ -181,13 +144,13 @@ button.success{background:var(--ok)}
 .toggle-slider::before{content:'';position:absolute;width:20px;height:20px;left:3px;bottom:3px;background:white;border-radius:50%;transition:all .25s;box-shadow:0 1px 4px rgba(0,0,0,.3)}
 .toggle-switch input:checked+.toggle-slider{background:var(--acc)}
 .toggle-switch input:checked+.toggle-slider::before{transform:translateX(20px)}
-/* ── Responsive ── */
-@media(max-width:600px){
-  body{padding:14px}
-  .form-row{flex-direction:column}
-  .config-grid{grid-template-columns:1fr}
-  .act-xp-row{flex-wrap:wrap}
-}
+/* Empty & toast */
+.empty-state{text-align:center;padding:40px 20px;color:var(--txt2)}
+.empty-icon{font-size:3rem;margin-bottom:14px;opacity:.3}
+.empty-text{font-size:.88rem}
+.copy-feedback{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(20px);background:var(--ok);color:white;padding:12px 24px;border-radius:10px;font-family:'JetBrains Mono',monospace;font-size:.78rem;opacity:0;transition:all .3s;pointer-events:none;z-index:1000}
+.copy-feedback.show{opacity:1;transform:translateX(-50%) translateY(0)}
+@media(max-width:600px){body{padding:14px}.form-row{flex-direction:column}.config-grid{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
@@ -199,16 +162,16 @@ button.success{background:var(--ok)}
     <p class="login-subtitle">Acceso exclusivo para terapeutas</p>
     <input class="login-input" type="text" id="loginUser" placeholder="Usuario" autocomplete="username">
     <input class="login-input" type="password" id="loginPass" placeholder="Contraseña" autocomplete="current-password">
-    <button class="login-btn" onclick="doLogin()">Entrar →</button>
+    <button class="login-btn" id="loginBtn" onclick="doLogin()">Entrar →</button>
     <p class="login-error" id="loginError">Credenciales incorrectas</p>
   </div>
 </div>
 
 <!-- Loading -->
-<div class="loading-overlay" id="loadingOverlay"><div class="spinner"></div></div>
+<div class="loading-overlay hidden" id="loadingOverlay"><div class="spinner"></div></div>
 
-<!-- Copy feedback -->
-<div class="copy-feedback" id="copyFeedback">✓ Enlace copiado</div>
+<!-- Toast -->
+<div class="copy-feedback" id="copyFeedback"></div>
 
 <!-- Patient modal -->
 <div class="modal-overlay" id="cardsModal">
@@ -225,7 +188,7 @@ button.success{background:var(--ok)}
     </div>
     <div class="modal-body">
 
-      <!-- Tab: Tarjetas -->
+      <!-- Tarjetas -->
       <div class="tab-content active" data-tab="cards">
         <div class="form-group" style="margin-bottom:12px">
           <label>Texto de la tarjeta</label>
@@ -256,14 +219,14 @@ button.success{background:var(--ok)}
         <div class="cards-list" id="cardsList"></div>
       </div>
 
-      <!-- Tab: Valores -->
+      <!-- Valores -->
       <div class="tab-content" data-tab="valores">
         <div id="valoresEditorContent">
           <div class="empty-state"><div class="empty-icon">⏳</div><p class="empty-text">Cargando...</p></div>
         </div>
       </div>
 
-      <!-- Tab: Config XP -->
+      <!-- Config XP -->
       <div class="tab-content" data-tab="config">
         <div class="config-grid">
           <div class="config-item">
@@ -294,11 +257,12 @@ button.success{background:var(--ok)}
           <div class="level-preview-row"><span>🌳 Árbol</span><span id="lvlP2">500 – 1499 XP</span></div>
           <div class="level-preview-row"><span>✨ Luz</span><span id="lvlP3">1500+ XP</span></div>
         </div>
-        <button class="config-save-btn success" onclick="saveConfig()">💾 Guardar configuración</button>
+        <button class="success" style="width:100%;margin-top:16px" onclick="saveConfig()">💾 Guardar configuración</button>
+      </div>
 
-      <!-- Tab: Módulos -->
+      <!-- Módulos -->
       <div class="tab-content" data-tab="modulos">
-        <p class="modules-intro">Activa o desactiva secciones para personalizar la página de cada consultante según su objetivo terapéutico. Los cambios aplican en tiempo real.</p>
+        <p class="modules-intro">Activa o desactiva secciones para personalizar la página de cada consultante según su objetivo terapéutico. Los cambios aplican de inmediato.</p>
         <div class="toggle-row">
           <div class="toggle-info">
             <div class="toggle-label">☀️ Rutina diaria</div>
@@ -330,17 +294,17 @@ button.success{background:var(--ok)}
         <div class="toggle-row">
           <div class="toggle-info">
             <div class="toggle-label">✏️ Tarjetas del consultante</div>
-            <div class="toggle-desc">El propio consultante puede agregar sus reflexiones personales</div>
+            <div class="toggle-desc">El consultante puede agregar sus propias reflexiones</div>
           </div>
           <label class="toggle-switch"><input type="checkbox" id="mod_tarjetasPaciente" onchange="saveModules()"><span class="toggle-slider"></span></label>
         </div>
       </div>
-      </div>
-    </div>
-  </div>
-</div>
 
-<!-- Panel (hidden until login) -->
+    </div><!-- /modal-body -->
+  </div><!-- /modal -->
+</div><!-- /modal-overlay -->
+
+<!-- Panel -->
 <div id="panelContent" style="display:none">
 <div class="container">
   <header class="header">
@@ -348,13 +312,12 @@ button.success{background:var(--ok)}
     <div class="header-row">
       <div class="sync-status">
         <div class="sync-dot" id="syncDot"></div>
-        <span id="syncText">Conectando...</span>
+        <span id="syncText">Sincronizado</span>
       </div>
       <button class="logout-btn" onclick="doLogout()">✕ Cerrar sesión</button>
     </div>
   </header>
 
-  <!-- New Patient -->
   <div class="section">
     <div class="section-header">
       <div class="section-title"><span>➕</span> Nuevo Paciente</div>
@@ -372,7 +335,6 @@ button.success{background:var(--ok)}
     <button onclick="createPatient()">Crear Paciente</button>
   </div>
 
-  <!-- Patients -->
   <div class="section">
     <div class="section-header">
       <div class="section-title"><span>👥</span> Mis Pacientes</div>
@@ -381,84 +343,84 @@ button.success{background:var(--ok)}
     <div class="patients-grid" id="patientsGrid"></div>
   </div>
 </div>
-</div>
+</div><!-- /panelContent -->
 
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/11.8.1/firebase-app.js";
 import { getFirestore,collection,doc,setDoc,getDoc,deleteDoc,onSnapshot,query,orderBy } from "https://www.gstatic.com/firebasejs/11.8.1/firebase-firestore.js";
 
-const firebaseConfig = {
-  apiKey:"AIzaSyDetXdN-ujotpEY7HNJMQB2JEOYooLxpkk",authDomain:"todo-hetcraft.firebaseapp.com",
-  projectId:"todo-hetcraft",storageBucket:"todo-hetcraft.firebasestorage.app",
-  messagingSenderId:"225738970824",appId:"1:225738970824:web:f3a5c8432a9c3c6595f7fd"
-};
-const app = initializeApp(firebaseConfig);
-const db  = getFirestore(app);
+const firebaseConfig={apiKey:"AIzaSyDetXdN-ujotpEY7HNJMQB2JEOYooLxpkk",authDomain:"todo-hetcraft.firebaseapp.com",projectId:"todo-hetcraft",storageBucket:"todo-hetcraft.firebasestorage.app",messagingSenderId:"225738970824",appId:"1:225738970824:web:f3a5c8432a9c3c6595f7fd"};
+const app=initializeApp(firebaseConfig);
+const db=getFirestore(app);
 
 // ── Constants ──────────────────────────────────────────────────────────────
-const CREDENTIALS   = { user:'admin', pass:'peru@@2026' };
-const AUTH_KEY      = 'panelkit_auth_v2';
-const BASE_URL      = 'https://hetcraft123-dev.github.io/martindoza/paciente/';
-const DEFAULT_CFG   = { xpRoutineTask:10, xpCardRead:15, xpAllRoutinesBonus:50, xpToLevel1:100 };
-const VALORES_PREFIXES = {
-  familia: ['Ser un hijo', 'Ser un hermano'],
-  amigos:  ['Ser un amigo', '']
-};
+const CREDS={user:'admin',pass:'peru@@2026'};
+const AUTH_KEY='panelkit_auth_v2';
+const BASE_URL='https://hetcraft123-dev.github.io/martindoza/paciente/';
+const DEF_CFG={xpRoutineTask:10,xpCardRead:15,xpAllRoutinesBonus:50,xpToLevel1:100};
+const DEF_MODULES={rutina:true,metas:true,valores:true,tarjetas:true,tarjetasPaciente:false};
+const VAL_PREFIXES={familia:['Ser un hijo','Ser un hermano'],amigos:['Ser un amigo','']};
 
 // ── State ─────────────────────────────────────────────────────────────────
-let patients=[],currentId=null,currentCards=[],currentValues=null,currentConfig=null;
-let unsubCards=null;
-
-// ── DOM ───────────────────────────────────────────────────────────────────
-const loginScreen    = document.getElementById('loginScreen');
-const panelContent   = document.getElementById('panelContent');
-const loadingOverlay = document.getElementById('loadingOverlay');
-const copyFeedback   = document.getElementById('copyFeedback');
-const patientsGrid   = document.getElementById('patientsGrid');
-const patientsCount  = document.getElementById('patientsCount');
-const cardsModal     = document.getElementById('cardsModal');
-const cardsList      = document.getElementById('cardsList');
-const syncDot        = document.getElementById('syncDot');
-const syncText       = document.getElementById('syncText');
+let patients=[],currentId=null,currentCards=[],currentValues=null,unsubCards=null;
 
 // ── Helpers ───────────────────────────────────────────────────────────────
 function esc(t){const d=document.createElement('div');d.textContent=t;return d.innerHTML}
-function setSyncing(on){syncDot.className='sync-dot'+(on?' syncing':'');syncText.textContent=on?'Guardando…':'Sincronizado'}
-function showFeedback(msg){copyFeedback.textContent=msg;copyFeedback.classList.add('show');setTimeout(()=>copyFeedback.classList.remove('show'),2200)}
-
-// ── Auth ──────────────────────────────────────────────────────────────────
-function checkAuth(){
-  if(localStorage.getItem(AUTH_KEY)==='ok'){showPanel()}
-  else{loginScreen.style.display='flex'}
+function setSyncing(on){
+  document.getElementById('syncDot').className='sync-dot'+(on?' syncing':'');
+  document.getElementById('syncText').textContent=on?'Guardando…':'Sincronizado';
+}
+function toast(msg){
+  const el=document.getElementById('copyFeedback');
+  el.textContent=msg;el.classList.add('show');
+  setTimeout(()=>el.classList.remove('show'),2200);
 }
 
-window.doLogin = function(){
+// ── Auth ──────────────────────────────────────────────────────────────────
+window.doLogin=function(){
   const u=document.getElementById('loginUser').value.trim();
   const p=document.getElementById('loginPass').value;
-  if(u===CREDENTIALS.user&&p===CREDENTIALS.pass){
+  const errEl=document.getElementById('loginError');
+  errEl.style.display='none';
+  if(u===CREDS.user&&p===CREDS.pass){
     localStorage.setItem(AUTH_KEY,'ok');
-    loginScreen.style.display='none';
-    showPanel();
+    document.getElementById('loginScreen').style.display='none';
+    document.getElementById('panelContent').style.display='block';
+    initPanel();
   }else{
-    document.getElementById('loginError').style.display='block';
+    errEl.style.display='block';
   }
 };
 
-window.doLogout = function(){
+window.doLogout=function(){
   localStorage.removeItem(AUTH_KEY);
   location.reload();
 };
 
-document.getElementById('loginPass').addEventListener('keypress',e=>{if(e.key==='Enter')doLogin()});
+// Enter key on login
 document.getElementById('loginUser').addEventListener('keypress',e=>{if(e.key==='Enter')document.getElementById('loginPass').focus()});
+document.getElementById('loginPass').addEventListener('keypress',e=>{if(e.key==='Enter')doLogin()});
 
-function showPanel(){
-  panelContent.style.display='block';
-  setupListeners();
+// ── Init ──────────────────────────────────────────────────────────────────
+function initPanel(){
+  const q=query(collection(db,'panelkit_patients'),orderBy('createdAt','desc'));
+  onSnapshot(q,snap=>{
+    patients=snap.docs.map(d=>({id:d.id,...d.data()}));
+    renderPatients();setSyncing(false);
+  });
 }
 
-// ── Modal tabs ────────────────────────────────────────────────────────────
-window.switchTab = function(tab){
+function checkAuth(){
+  if(localStorage.getItem(AUTH_KEY)==='ok'){
+    document.getElementById('loginScreen').style.display='none';
+    document.getElementById('panelContent').style.display='block';
+    initPanel();
+  }
+}
+checkAuth();
+
+// ── Modal ─────────────────────────────────────────────────────────────────
+window.switchTab=function(tab){
   document.querySelectorAll('.modal-tab').forEach(t=>t.classList.toggle('active',t.dataset.tab===tab));
   document.querySelectorAll('.tab-content').forEach(c=>c.classList.toggle('active',c.dataset.tab===tab));
   if(tab==='valores') loadValores();
@@ -466,101 +428,131 @@ window.switchTab = function(tab){
   if(tab==='modulos') loadModules();
 };
 
-// ── Values (Tabla de Valores) ─────────────────────────────────────────────
+window.openModal=function(slug){
+  currentId=slug;
+  const p=patients.find(p=>p.slug===slug);
+  document.getElementById('modalPatientName').textContent=p?.name||slug;
+  switchTab('cards');
+  document.getElementById('cardsModal').classList.add('show');
+  if(unsubCards)unsubCards();
+  const q=query(collection(db,`panelkit_cards_${slug}`),orderBy('createdAt','desc'));
+  unsubCards=onSnapshot(q,snap=>{currentCards=snap.docs.map(d=>({id:d.id,...d.data()}));renderCards()});
+};
+
+window.closeModal=function(){
+  document.getElementById('cardsModal').classList.remove('show');
+  if(unsubCards){unsubCards();unsubCards=null}
+  currentId=null;
+};
+
+document.getElementById('cardsModal').addEventListener('click',e=>{if(e.target===document.getElementById('cardsModal'))closeModal()});
+
+// ── Cards ─────────────────────────────────────────────────────────────────
+function renderCards(){
+  const el=document.getElementById('cardsList');
+  if(!currentCards.length){el.innerHTML=`<div class="empty-state"><div class="empty-icon">📝</div><p class="empty-text">Sin tarjetas</p></div>`;return}
+  el.innerHTML=currentCards.map(c=>{
+    const isPatient=c.author==='patient';
+    return`<div class="card-item" style="${isPatient?'border-left:3px solid #a29bfe':''}">
+      <div class="card-item-header">
+        <div class="card-priority ${c.priority}"></div>
+        <span class="card-tag ${c.category}">${c.category}</span>
+        ${isPatient?'<span style="font-family:\'JetBrains Mono\',monospace;font-size:.58rem;color:#a29bfe;border:1px solid rgba(162,155,254,.3);padding:2px 7px;border-radius:4px">✏️ suya</span>':''}
+        <div class="card-item-actions"><button class="danger" onclick="deleteCard('${c.id}')">✕</button></div>
+      </div>
+      <div class="card-item-text">${esc(c.text)}</div>
+    </div>`;
+  }).join('');
+}
+
+window.addCard=async function(){
+  const text=document.getElementById('cardText').value.trim();
+  if(!text||!currentId)return;
+  const id=Date.now().toString(36)+Math.random().toString(36).substr(2,5);
+  setSyncing(true);
+  await setDoc(doc(db,`panelkit_cards_${currentId}`,id),{
+    text,category:document.getElementById('cardCategory').value,
+    priority:document.getElementById('cardPriority').value,
+    createdAt:Date.now(),read:false,author:'martin'
+  });
+  const p=patients.find(p=>p.slug===currentId);
+  if(p)await setDoc(doc(db,'panelkit_patients',currentId),{...p,cardsCount:(p.cardsCount||0)+1});
+  document.getElementById('cardText').value='';
+  setSyncing(false);
+};
+
+window.deleteCard=async function(cardId){
+  if(!currentId)return;
+  setSyncing(true);
+  await deleteDoc(doc(db,`panelkit_cards_${currentId}`,cardId));
+  setSyncing(false);
+};
+
+// ── Valores ───────────────────────────────────────────────────────────────
 function getDefaultValues(){
-  const makeActs=()=>[{text:'',xp:10},{text:'',xp:10},{text:'',xp:10}];
-  return{
-    self:Array(5).fill(''),
-    familia:[{valor:'',act:makeActs()},{valor:'',act:makeActs()}],
-    amigos: [{valor:'',act:makeActs()},{valor:'',act:makeActs()}]
-  };
+  const a=()=>[{text:'',xp:10},{text:'',xp:10},{text:'',xp:10}];
+  return{self:Array(5).fill(''),familia:[{valor:'',act:a()},{valor:'',act:a()}],amigos:[{valor:'',act:a()},{valor:'',act:a()}]};
 }
 
 async function loadValores(){
-  const el=document.getElementById('valoresEditorContent');
-  el.innerHTML='<div class="empty-state"><div class="empty-icon">⏳</div><p class="empty-text">Cargando valores...</p></div>';
+  document.getElementById('valoresEditorContent').innerHTML='<div class="empty-state"><div class="empty-icon">⏳</div><p class="empty-text">Cargando...</p></div>';
   const d=await getDoc(doc(db,'panelkit_values',currentId));
-  currentValues=d.exists()?mergeDefaultValues(d.data()):getDefaultValues();
+  currentValues=d.exists()?mergeVals(d.data()):getDefaultValues();
   renderValoresEditor();
 }
 
-function mergeDefaultValues(data){
-  const def=getDefaultValues();
-  const makeActs=()=>[{text:'',xp:10},{text:'',xp:10},{text:'',xp:10}];
+function mergeVals(data){
+  const def=getDefaultValues();const a=()=>[{text:'',xp:10},{text:'',xp:10},{text:'',xp:10}];
   return{
-    self: Array.isArray(data.self)?data.self:def.self,
-    familia: (data.familia||def.familia).map(v=>({valor:v.valor||'',act:(v.act||makeActs()).map(a=>({text:a.text||'',xp:a.xp??10}))})),
-    amigos:  (data.amigos||def.amigos).map(v=>({valor:v.valor||'',act:(v.act||makeActs()).map(a=>({text:a.text||'',xp:a.xp??10}))}))
+    self:Array.isArray(data.self)?data.self:def.self,
+    familia:(data.familia||def.familia).map(v=>({valor:v.valor||'',act:(v.act||a()).map(x=>({text:x.text||'',xp:x.xp??10}))})),
+    amigos:(data.amigos||def.amigos).map(v=>({valor:v.valor||'',act:(v.act||a()).map(x=>({text:x.text||'',xp:x.xp??10}))}))
   };
 }
 
 function renderValoresEditor(){
-  const v=currentValues;
-  let html='';
-
-  // Self section
-  html+=`<div class="values-section-title">Relaciones Conmigo Mismo</div>`;
-  html+=`<div class="valor-block"><div class="valor-block-header">¿Qué tipo de persona quiero ser?</div>`;
-  v.self.forEach((txt,i)=>html+=`<div style="padding:6px 0;border-bottom:1px solid var(--brd);font-size:.83rem;color:${txt?'var(--txt)':'var(--txt2)'}"><span style="color:var(--txt2);font-size:.72rem">Una persona que...</span><br>${txt?esc(txt):'<em>(sin completar)</em>'}</div>`);
+  const v=currentValues;let html='';
+  html+=`<div class="values-section-title">Relaciones Conmigo Mismo</div><div class="valor-block"><div class="valor-block-header">¿Qué tipo de persona quiero ser?</div>`;
+  v.self.forEach((txt,i)=>html+=`<div style="padding:6px 0;border-bottom:1px solid var(--brd);font-size:.82rem"><span style="color:var(--txt2);font-size:.7rem">Una persona que...</span><br>${txt?esc(txt):'<em style="color:var(--txt2)">(vacío)</em>'}</div>`);
   html+=`</div>`;
-
-  // Familia + Amigos
-  ['familia','amigos'].forEach(section=>{
+  ['familia','amigos'].forEach(sec=>{
     const labels={familia:'Relación con mi Familia',amigos:'Relaciones con mis Amigos'};
-    html+=`<div class="values-section-title">${labels[section]}</div>`;
-    v[section].forEach((blk,vi)=>{
-      const prefix=VALORES_PREFIXES[section][vi];
-      html+=`<div class="valor-block">
-        <div class="valor-block-header">VALOR: ${prefix?prefix+' — ':''}${blk.valor?esc(blk.valor):'<em style="color:var(--txt2)">(sin completar)</em>'}</div>`;
+    html+=`<div class="values-section-title">${labels[sec]}</div>`;
+    v[sec].forEach((blk,vi)=>{
+      const prefix=VAL_PREFIXES[sec][vi];
+      html+=`<div class="valor-block"><div class="valor-block-header">VALOR: ${prefix?prefix+' — ':''}${blk.valor?esc(blk.valor):'<em style="color:var(--txt2)">(vacío)</em>'}</div>`;
       blk.act.forEach((a,ai)=>{
-        const actId=`xp_${section}_${vi}_${ai}`;
-        html+=`<div class="act-xp-row">
-          <div class="act-label-txt">Act. ${ai+1}:</div>
-          <div class="act-text-display">${a.text?esc(a.text):'<em style="color:var(--txt2)">(vacío)</em>'}</div>
-          <div class="act-xp-input-wrap">
-            <label for="${actId}">XP:</label>
-            <input class="act-xp-input" type="number" id="${actId}" value="${a.xp}" min="1" max="999">
-          </div>
-        </div>`;
+        const id=`xp_${sec}_${vi}_${ai}`;
+        html+=`<div class="act-xp-row"><div class="act-label-txt">Act.${ai+1}:</div><div class="act-text-display">${a.text?esc(a.text):'<em style="color:var(--txt2)">(vacío)</em>'}</div><div class="act-xp-input-wrap"><label for="${id}">XP:</label><input class="act-xp-input" type="number" id="${id}" value="${a.xp}" min="1" max="999"></div></div>`;
       });
       html+=`</div>`;
     });
   });
-
-  html+=`<button class="values-save-btn success" onclick="saveValores()">💾 Guardar XP de actividades</button>`;
+  html+=`<button class="success" style="width:100%;margin-top:16px" onclick="saveValores()">💾 Guardar XP de actividades</button>`;
   document.getElementById('valoresEditorContent').innerHTML=html;
 }
 
-window.saveValores = async function(){
+window.saveValores=async function(){
   if(!currentValues||!currentId)return;
   const v=JSON.parse(JSON.stringify(currentValues));
-  ['familia','amigos'].forEach(section=>{
-    v[section].forEach((blk,vi)=>{
-      blk.act.forEach((a,ai)=>{
-        const el=document.getElementById(`xp_${section}_${vi}_${ai}`);
-        if(el)a.xp=parseInt(el.value)||10;
-      });
-    });
-  });
+  ['familia','amigos'].forEach(sec=>{v[sec].forEach((blk,vi)=>{blk.act.forEach((a,ai)=>{const el=document.getElementById(`xp_${sec}_${vi}_${ai}`);if(el)a.xp=parseInt(el.value)||10})})});
   setSyncing(true);
   await setDoc(doc(db,'panelkit_values',currentId),v);
-  currentValues=v;
-  setSyncing(false);
-  showFeedback('✓ XP guardados correctamente');
+  currentValues=v;setSyncing(false);toast('✓ XP guardados');
 };
 
 // ── Config ────────────────────────────────────────────────────────────────
 async function loadConfig(){
   const d=await getDoc(doc(db,'panelkit_config',currentId));
-  currentConfig=d.exists()?{...DEFAULT_CFG,...d.data()}:{...DEFAULT_CFG};
-  document.getElementById('cfgXpTask').value=currentConfig.xpRoutineTask;
-  document.getElementById('cfgXpCard').value=currentConfig.xpCardRead;
-  document.getElementById('cfgXpBonus').value=currentConfig.xpAllRoutinesBonus;
-  document.getElementById('cfgXpLevel').value=currentConfig.xpToLevel1;
+  const c=d.exists()?{...DEF_CFG,...d.data()}:{...DEF_CFG};
+  document.getElementById('cfgXpTask').value=c.xpRoutineTask;
+  document.getElementById('cfgXpCard').value=c.xpCardRead;
+  document.getElementById('cfgXpBonus').value=c.xpAllRoutinesBonus;
+  document.getElementById('cfgXpLevel').value=c.xpToLevel1;
   updateLevelPreview();
 }
 
-window.updateLevelPreview = function(){
+window.updateLevelPreview=function(){
   const l=parseInt(document.getElementById('cfgXpLevel').value)||100;
   document.getElementById('lvlP0').textContent=`0 – ${l-1} XP`;
   document.getElementById('lvlP1').textContent=`${l} – ${l*5-1} XP`;
@@ -568,7 +560,7 @@ window.updateLevelPreview = function(){
   document.getElementById('lvlP3').textContent=`${l*15}+ XP`;
 };
 
-window.saveConfig = async function(){
+window.saveConfig=async function(){
   if(!currentId)return;
   const c={
     xpRoutineTask:parseInt(document.getElementById('cfgXpTask').value)||10,
@@ -578,122 +570,56 @@ window.saveConfig = async function(){
   };
   setSyncing(true);
   await setDoc(doc(db,'panelkit_config',currentId),c);
-  currentConfig=c;
-  setSyncing(false);
-  showFeedback('✓ Configuración guardada');
+  setSyncing(false);toast('✓ Configuración guardada');
 };
 
 // ── Modules ───────────────────────────────────────────────────────────────
-const DEFAULT_MODULES={rutina:true,metas:true,valores:true,tarjetas:true,tarjetasPaciente:false};
-let currentModules={...DEFAULT_MODULES};
-
 function loadModules(){
   const p=patients.find(p=>p.slug===currentId);
-  currentModules={...DEFAULT_MODULES,...(p?.modules||{})};
-  Object.keys(DEFAULT_MODULES).forEach(key=>{
+  const mods={...DEF_MODULES,...(p?.modules||{})};
+  Object.keys(DEF_MODULES).forEach(key=>{
     const el=document.getElementById(`mod_${key}`);
-    if(el) el.checked=!!currentModules[key];
+    if(el)el.checked=!!mods[key];
   });
 }
 
 window.saveModules=async function(){
   if(!currentId)return;
-  const newMods={};
-  Object.keys(DEFAULT_MODULES).forEach(key=>{
+  const mods={};
+  Object.keys(DEF_MODULES).forEach(key=>{
     const el=document.getElementById(`mod_${key}`);
-    if(el) newMods[key]=el.checked;
+    if(el)mods[key]=el.checked;
   });
-  currentModules=newMods;
   const p=patients.find(p=>p.slug===currentId);
   if(!p)return;
   setSyncing(true);
-  await setDoc(doc(db,'panelkit_patients',currentId),{...p,modules:newMods});
-  setSyncing(false);
-  showFeedback('✓ Módulos actualizados');
-};
-
-// ── Modal ─────────────────────────────────────────────────────────────────
-window.openModal = function(slug){
-  currentId=slug;
-  const p=patients.find(p=>p.slug===slug);
-  document.getElementById('modalPatientName').textContent=p?.name||slug;
-  // Reset to cards tab
-  switchTab('cards');
-  cardsModal.classList.add('show');
-  // Listen to cards
-  if(unsubCards)unsubCards();
-  const q=query(collection(db,`panelkit_cards_${slug}`),orderBy('createdAt','desc'));
-  unsubCards=onSnapshot(q,snap=>{currentCards=snap.docs.map(d=>({id:d.id,...d.data()}));renderCards()});
-};
-
-window.closeModal = function(){
-  cardsModal.classList.remove('show');
-  if(unsubCards){unsubCards();unsubCards=null}
-  currentId=null;
-};
-
-// ── Cards ─────────────────────────────────────────────────────────────────
-function renderCards(){
-  if(currentCards.length===0){cardsList.innerHTML=`<div class="empty-state"><div class="empty-icon">📝</div><p class="empty-text">Sin tarjetas</p></div>`;return}
-  cardsList.innerHTML=currentCards.map(c=>{
-    const isPatient=c.author==='patient';
-    return`<div class="card-item" style="${isPatient?'border-left:3px solid #a29bfe':''}" >
-      <div class="card-item-header">
-        <div class="card-priority ${c.priority}"></div>
-        <span class="card-tag ${c.category}">${c.category}</span>
-        ${isPatient?'<span style="font-family:'JetBrains Mono',monospace;font-size:.58rem;color:#a29bfe;border:1px solid rgba(162,155,254,.3);padding:2px 7px;border-radius:4px;margin-left:4px">✏️ suya</span>':''}
-        <div class="card-item-actions"><button class="danger" onclick="deleteCard('${c.id}')">✕</button></div>
-      </div>
-      <div class="card-item-text">${esc(c.text)}</div>
-    </div>`;
-  }).join('');
-}
-
-window.addCard = async function(){
-  const text=document.getElementById('cardText').value.trim();
-  if(!text||!currentId)return;
-  const id=Date.now().toString(36)+Math.random().toString(36).substr(2,5);
-  setSyncing(true);
-  await setDoc(doc(db,`panelkit_cards_${currentId}`,id),{
-    text,category:document.getElementById('cardCategory').value,
-    priority:document.getElementById('cardPriority').value,createdAt:Date.now(),read:false
-  });
-  const p=patients.find(p=>p.slug===currentId);
-  if(p)await setDoc(doc(db,'panelkit_patients',currentId),{...p,cardsCount:(p.cardsCount||0)+1});
-  document.getElementById('cardText').value='';
-  setSyncing(false);
-};
-
-window.deleteCard = async function(cardId){
-  if(!currentId)return;
-  setSyncing(true);
-  await deleteDoc(doc(db,`panelkit_cards_${currentId}`,cardId));
-  const p=patients.find(p=>p.slug===currentId);
-  if(p)await setDoc(doc(db,'panelkit_patients',currentId),{...p,cardsCount:Math.max((p.cardsCount||1)-1,0)});
-  setSyncing(false);
+  await setDoc(doc(db,'panelkit_patients',currentId),{...p,modules:mods});
+  setSyncing(false);toast('✓ Módulos actualizados');
 };
 
 // ── Patients ──────────────────────────────────────────────────────────────
-function generateSlug(name,id){
+function slug(name,id){
   return name.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^a-z0-9]/g,'-').replace(/-+/g,'-').replace(/^-|-$/g,'')+'-'+id;
 }
 
 function renderPatients(){
-  patientsCount.textContent=`${patients.length} paciente${patients.length!==1?'s':''}`;
-  if(patients.length===0){patientsGrid.innerHTML=`<div class="empty-state" style="grid-column:1/-1"><div class="empty-icon">👥</div><p class="empty-text">No hay pacientes aún</p></div>`;return}
-  patientsGrid.innerHTML=patients.map(p=>{
+  const grid=document.getElementById('patientsGrid');
+  const count=document.getElementById('patientsCount');
+  count.textContent=`${patients.length} paciente${patients.length!==1?'s':''}`;
+  if(!patients.length){grid.innerHTML=`<div class="empty-state" style="grid-column:1/-1"><div class="empty-icon">👥</div><p class="empty-text">No hay pacientes aún</p></div>`;return}
+  grid.innerHTML=patients.map(p=>{
     const url=BASE_URL+p.slug;
+    const mods={...DEF_MODULES,...(p.modules||{})};
+    const modBadges=Object.entries(mods).filter(([,v])=>v).map(([k])=>({rutina:'☀️',metas:'🎯',valores:'🌿',tarjetas:'📝',tarjetasPaciente:'✏️'}[k]||'')).join(' ');
     return`<div class="patient-card">
       <div class="patient-header">
         <div class="patient-avatar">${p.name.charAt(0).toUpperCase()}</div>
         <div><div class="patient-name">${esc(p.name)}</div><div class="patient-id">#${p.identifier}</div></div>
       </div>
-      <div class="patient-stats">
-        <div><div class="patient-stat-value">${p.cardsCount||0}</div><div class="patient-stat-label">Tarjetas</div></div>
-      </div>
+      <div style="font-size:.72rem;color:var(--txt2);margin-bottom:10px">${modBadges||'sin módulos'}</div>
       <div class="link-container">
         <input type="text" class="link-input" value="${url}" readonly onclick="this.select()">
-        <button class="secondary" onclick="copyLink('${p.slug}')">📋</button>
+        <button class="secondary" onclick="navigator.clipboard.writeText('${url}').then(()=>toast('✓ Enlace copiado'))">📋</button>
       </div>
       <div class="patient-actions">
         <button onclick="openModal('${p.slug}')">📝 Gestionar</button>
@@ -703,50 +629,31 @@ function renderPatients(){
   }).join('');
 }
 
-window.createPatient = async function(){
-  const nameInput=document.getElementById('patientName');
-  const idInput=document.getElementById('patientId');
-  const name=nameInput.value.trim();
-  const id=idInput.value.trim()||Date.now().toString().slice(-4);
-  if(!name){nameInput.focus();return}
-  const slug=generateSlug(name,id);
+window.createPatient=async function(){
+  const nameEl=document.getElementById('patientName');
+  const idEl=document.getElementById('patientId');
+  const name=nameEl.value.trim();
+  const id=idEl.value.trim()||Date.now().toString().slice(-4);
+  if(!name){nameEl.focus();return}
+  const s=slug(name,id);
   setSyncing(true);
-  await setDoc(doc(db,'panelkit_patients',slug),{name,identifier:id,slug,createdAt:Date.now(),cardsCount:0});
-  nameInput.value='';idInput.value='';
-  setSyncing(false);
+  await setDoc(doc(db,'panelkit_patients',s),{
+    name,identifier:id,slug:s,createdAt:Date.now(),cardsCount:0,
+    modules:{...DEF_MODULES}
+  });
+  nameEl.value='';idEl.value='';
+  setSyncing(false);toast('✓ Paciente creado');
 };
 
-window.deletePatient = async function(slug){
+window.deletePatient=async function(s){
   if(!confirm('¿Eliminar este paciente y todos sus datos?'))return;
   setSyncing(true);
-  const p=patients.find(p=>p.slug===slug);
-  if(p?.cardsCount)for(const c of currentCards)await deleteDoc(doc(db,`panelkit_cards_${slug}`,c.id));
-  await deleteDoc(doc(db,'panelkit_patients',slug));
+  await deleteDoc(doc(db,'panelkit_patients',s));
   setSyncing(false);
 };
-
-window.copyLink = function(slug){
-  navigator.clipboard.writeText(BASE_URL+slug).then(()=>showFeedback('✓ Enlace copiado'));
-};
-
-// ── Listeners ─────────────────────────────────────────────────────────────
-function setupListeners(){
-  const q=query(collection(db,'panelkit_patients'),orderBy('createdAt','desc'));
-  onSnapshot(q,snap=>{
-    patients=snap.docs.map(d=>({id:d.id,...d.data()}));
-    renderPatients();setSyncing(false);
-  });
-  setTimeout(()=>loadingOverlay.classList.add('hidden'),500);
-}
-
-// ── Close modal on outside click ──────────────────────────────────────────
-cardsModal.addEventListener('click',e=>{if(e.target===cardsModal)closeModal()});
 
 document.getElementById('patientName').addEventListener('keypress',e=>{if(e.key==='Enter')document.getElementById('patientId').focus()});
 document.getElementById('patientId').addEventListener('keypress',e=>{if(e.key==='Enter')createPatient()});
-
-// ── Init ──────────────────────────────────────────────────────────────────
-checkAuth();
 </script>
 </body>
 </html>
