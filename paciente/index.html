@@ -9,27 +9,17 @@
 <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=Outfit:wght@300;500;700&display=swap" rel="stylesheet">
 <style>
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
-:root{
-  --bg:#0a0a0b;--bg2:#141416;--bg3:#1a1a1e;
-  --txt:#e8e8e8;--txt2:#6b6b70;
-  --acc:#6c5ce7;--accg:rgba(108,92,231,.3);
-  --acc2:#00cec9;
-  --ok:#00c853;--warn:#ff9100;--err:#ff5252;
-  --brd:#252529;
-  --daily:#fdcb6e;--dailyg:rgba(253,203,110,.18);
-  --lvc:#636e72;--lvg:rgba(99,110,114,.3);
-}
-body{font-family:'Outfit',sans-serif;background:var(--bg);color:var(--txt);min-height:100vh;padding:20px 20px 120px;
-  background-image:radial-gradient(ellipse at top,rgba(108,92,231,.07) 0%,transparent 50%),radial-gradient(circle at 80% 80%,rgba(0,206,201,.04) 0%,transparent 40%)}
+:root{--bg:#0a0a0b;--bg2:#141416;--bg3:#1a1a1e;--txt:#e8e8e8;--txt2:#6b6b70;--acc:#6c5ce7;--accg:rgba(108,92,231,.3);--acc2:#00cec9;--ok:#00c853;--warn:#ff9100;--err:#ff5252;--brd:#252529;--daily:#fdcb6e;--dailyg:rgba(253,203,110,.18);--lvc:#636e72;--lvg:rgba(99,110,114,.3)}
+body{font-family:'Outfit',sans-serif;background:var(--bg);color:var(--txt);min-height:100vh;padding:20px 20px 60px;background-image:radial-gradient(ellipse at top,rgba(108,92,231,.07) 0%,transparent 50%),radial-gradient(circle at 80% 80%,rgba(0,206,201,.04) 0%,transparent 40%)}
 .container{max-width:760px;margin:0 auto}
-
 /* Loading */
 .loading-overlay{position:fixed;inset:0;background:var(--bg);display:flex;align-items:center;justify-content:center;z-index:999;transition:opacity .4s}
 .loading-overlay.hidden{opacity:0;pointer-events:none}
 .spinner{width:36px;height:36px;border:3px solid var(--brd);border-top-color:var(--acc);border-radius:50%;animation:spin .8s linear infinite}
 @keyframes spin{to{transform:rotate(360deg)}}
 @keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
-
+@keyframes mc-float{0%,100%{transform:translateY(0) rotate(-2deg)}50%{transform:translateY(-13px) rotate(2deg)}}
+@keyframes star-pop{0%{transform:scale(1) rotate(0)}25%{transform:scale(1.8) rotate(18deg)}60%{transform:scale(.85) rotate(-10deg)}85%{transform:scale(1.12) rotate(4deg)}100%{transform:scale(1) rotate(0)}}
 /* Header */
 .header{text-align:center;margin-bottom:22px;padding-top:8px}
 .logo{font-family:'JetBrains Mono',monospace;font-size:1.5rem;font-weight:700;background:linear-gradient(135deg,var(--acc),var(--acc2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
@@ -37,33 +27,23 @@ body{font-family:'Outfit',sans-serif;background:var(--bg);color:var(--txt);min-h
 .sync-status{display:inline-flex;align-items:center;gap:6px;font-family:'JetBrains Mono',monospace;font-size:.62rem;color:var(--txt2);margin-top:8px;padding:4px 12px;background:var(--bg2);border-radius:20px}
 .sync-dot{width:6px;height:6px;border-radius:50%;background:var(--ok);transition:background .3s}
 .sync-dot.syncing{background:var(--warn);animation:pulse 1s infinite}
-
 /* Level bar */
 .level-bar-wrap{background:var(--bg2);border:1px solid var(--brd);border-radius:14px;padding:14px 18px;margin-bottom:20px}
 .level-info{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px}
 .level-name{font-family:'JetBrains Mono',monospace;font-size:.85rem;font-weight:700;color:var(--lvc);transition:color .4s}
 .streak-badge{font-family:'JetBrains Mono',monospace;font-size:.78rem;background:rgba(255,145,0,.12);color:var(--warn);padding:3px 10px;border-radius:12px;border:1px solid rgba(255,145,0,.2)}
 .xp-track{width:100%;height:7px;background:var(--bg);border-radius:10px;overflow:hidden;margin-bottom:5px}
-.xp-fill{height:100%;border-radius:10px;transition:width .5s ease,background .4s;background:linear-gradient(90deg,var(--lvc),#636e7299)}
+.xp-fill{height:100%;border-radius:10px;transition:width .5s ease,background .4s;background:linear-gradient(90deg,var(--lvc),var(--lvc)88)}
 .xp-text{font-family:'JetBrains Mono',monospace;font-size:.62rem;color:var(--txt2);text-align:right}
-
-/* Error */
-.error-screen{text-align:center;padding:80px 20px;display:none}
-.error-screen.show{display:block}
-
-/* Section */
+/* Section base */
 .section{background:var(--bg2);border:1px solid var(--brd);border-radius:16px;padding:22px;margin-bottom:20px}
-.section-title{font-family:'JetBrains Mono',monospace;font-size:.9rem;font-weight:600;color:var(--acc);display:flex;align-items:center;gap:8px;margin-bottom:18px}
-
-/* Stats */
-.stats-row{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:20px}
-.stat-card{background:var(--bg2);border:1px solid var(--brd);border-radius:12px;padding:16px 12px;text-align:center}
-.stat-value{font-family:'JetBrains Mono',monospace;font-size:1.6rem;font-weight:700;color:var(--acc);line-height:1}
-.stat-label{font-size:.7rem;color:var(--txt2);text-transform:uppercase;letter-spacing:.5px;margin-top:4px}
-
-/* Phrase */
-.phrase-card{background:linear-gradient(135deg,rgba(108,92,231,.12),rgba(0,206,201,.08));border:1px solid rgba(108,92,231,.3);border-radius:14px;padding:20px;margin-bottom:20px;font-style:italic;color:var(--txt2);font-size:.9rem;line-height:1.6;text-align:center}
-
+.section-title{font-family:'JetBrains Mono',monospace;font-size:.9rem;font-weight:600;color:var(--acc);display:flex;align-items:center;gap:8px}
+/* Collapsible sections */
+.section-title-bar{display:flex;align-items:center;justify-content:space-between;cursor:pointer;user-select:none;-webkit-user-select:none}
+.section-title-bar .section-title{margin-bottom:0}
+.section-chevron{font-size:.7rem;color:var(--txt2);transition:transform .3s;flex-shrink:0}
+.section-badge{font-family:'JetBrains Mono',monospace;font-size:.65rem;color:var(--txt2);background:var(--bg);padding:2px 8px;border-radius:10px;margin-left:6px;font-weight:400}
+.section-body{margin-top:18px}
 /* Daily */
 .daily-section{border-color:rgba(253,203,110,.25);background:linear-gradient(135deg,rgba(253,203,110,.05) 0%,var(--bg2) 60%)}
 .daily-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
@@ -78,208 +58,22 @@ body{font-family:'Outfit',sans-serif;background:var(--bg);color:var(--txt);min-h
 .routine-task.done{opacity:.45}
 .routine-check{flex-shrink:0;width:22px;height:22px;border-radius:6px;border:2px solid var(--brd);display:flex;align-items:center;justify-content:center;font-size:.7rem;font-weight:700;color:var(--bg);transition:all .2s}
 .routine-check.checked{background:var(--daily);border-color:var(--daily)}
-.routine-task-text{flex:1;font-size:.9rem;line-height:1.3}
+.routine-task-text{flex:1;font-size:.9rem}
 .routine-task.done .routine-task-text{text-decoration:line-through}
 .routine-task-delete{flex-shrink:0;background:transparent;border:none;color:var(--txt2);font-size:.75rem;cursor:pointer;padding:4px 6px;border-radius:4px;opacity:0;transition:all .15s;line-height:1}
 .routine-task:hover .routine-task-delete{opacity:1}
-.routine-task-delete:hover{color:var(--err);background:rgba(255,82,82,.1);transform:none;box-shadow:none}
+.routine-task-delete:hover{color:var(--err);transform:none;box-shadow:none}
 .routine-empty{text-align:center;padding:20px;color:var(--txt2);font-size:.85rem}
 .daily-add-row{display:flex;gap:10px}
 .daily-add-row input{flex:1;background:var(--bg);border:1px solid var(--brd);border-radius:8px;color:var(--txt);font-family:'Outfit',sans-serif;font-size:.9rem;padding:10px 14px;outline:none;transition:all .2s}
 .daily-add-row input:focus{border-color:var(--daily);box-shadow:0 0 0 3px var(--dailyg)}
 .daily-add-row button{background:var(--daily);border:none;border-radius:8px;color:#0a0a0b;font-family:'JetBrains Mono',monospace;font-size:1.2rem;font-weight:700;padding:10px 18px;cursor:pointer;transition:all .2s;line-height:1}
 .daily-add-row button:hover{transform:translateY(-1px);box-shadow:0 4px 16px var(--dailyg)}
-
-/* Filters */
-.filter-row{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:18px}
-.filter-btn{background:var(--bg);border:1px solid var(--brd);border-radius:20px;color:var(--txt2);font-family:'JetBrains Mono',monospace;font-size:.65rem;padding:6px 14px;cursor:pointer;transition:all .2s}
-.filter-btn:hover{border-color:var(--acc);color:var(--txt);transform:none;box-shadow:none}
-.filter-btn.active{background:var(--acc);border-color:var(--acc);color:white;box-shadow:0 2px 10px var(--accg)}
-
-/* Cards */
-.cards-grid{display:flex;flex-direction:column;gap:12px}
-.thought-card{background:var(--bg);border:1px solid var(--brd);border-radius:12px;padding:18px;transition:all .3s;cursor:pointer}
-.thought-card:hover{border-color:rgba(108,92,231,.4)}
-.thought-card.priority-alta{border-left:3px solid var(--err)}
-.thought-card.priority-media{border-left:3px solid var(--warn)}
-.thought-card.priority-baja{border-left:3px solid var(--ok)}
-.thought-card.read{opacity:.55}
-.card-top{display:flex;align-items:center;gap:8px;margin-bottom:10px}
-.priority-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0}
-.priority-dot.alta{background:var(--err)}.priority-dot.media{background:var(--warn)}.priority-dot.baja{background:var(--ok)}
-.cat-tag{font-size:.6rem;padding:2px 8px;border-radius:4px;font-family:'JetBrains Mono',monospace}
-.cat-tag.cuerpo{background:rgba(255,107,107,.2);color:#ff6b6b}.cat-tag.errores{background:rgba(255,145,0,.2);color:#ff9100}
-.cat-tag.emociones{background:rgba(0,206,201,.2);color:#00cec9}.cat-tag.relaciones{background:rgba(108,92,231,.2);color:#6c5ce7}
-.cat-tag.autoestima{background:rgba(253,203,110,.2);color:#fdcb6e}.cat-tag.general{background:rgba(99,110,114,.2);color:#636e72}
-.read-badge{margin-left:auto;font-family:'JetBrains Mono',monospace;font-size:.58rem;color:var(--ok);border:1px solid rgba(0,200,83,.3);padding:2px 8px;border-radius:4px}
-.card-text{font-size:.92rem;line-height:1.6;margin-bottom:12px}
-.card-action{display:flex;justify-content:flex-end}
-.read-btn{background:transparent;border:1px solid var(--brd);border-radius:6px;color:var(--txt2);font-family:'JetBrains Mono',monospace;font-size:.65rem;padding:6px 12px;cursor:pointer;transition:all .2s}
-.read-btn:hover{border-color:var(--ok);color:var(--ok);transform:none;box-shadow:none}
-.read-btn.unread-btn:hover{border-color:var(--txt2);color:var(--txt)}
-
-/* Achievements */
-.achievements-section{padding:0;overflow:hidden}
-.achievements-toggle{display:flex;align-items:center;justify-content:space-between;padding:22px;cursor:pointer;transition:background .2s;border-radius:16px}
-.achievements-toggle:hover{background:var(--bg3)}
-.achievements-title{color:#fdcb6e!important;margin-bottom:0!important}
-.achievements-count{font-family:'JetBrains Mono',monospace;font-size:.7rem;color:var(--txt2);background:var(--bg);padding:2px 8px;border-radius:10px;margin-left:8px}
-.chevron{font-size:.7rem;color:var(--txt2);transition:transform .3s}
-.chevron.open{transform:rotate(180deg)}
-.achievements-body{padding:0 22px 22px;display:none}
-.achievements-body.open{display:block}
-.achievements-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px}
-.achievement-card{background:var(--bg);border:1px solid var(--brd);border-radius:10px;padding:14px;text-align:center}
-.achievement-card.unlocked{border-color:rgba(253,203,110,.35);background:rgba(253,203,110,.05)}
-.achievement-card.locked{opacity:.4}
-.achievement-card-icon{font-size:1.6rem;margin-bottom:6px}
-.achievement-card-name{font-family:'JetBrains Mono',monospace;font-size:.68rem;font-weight:700;margin-bottom:4px}
-.achievement-card.unlocked .achievement-card-name{color:var(--daily)}
-.achievement-card-desc{font-size:.72rem;color:var(--txt2);line-height:1.3}
-.achievement-card-xp{font-family:'JetBrains Mono',monospace;font-size:.65rem;color:var(--ok);margin-top:6px;font-weight:700}
-
-/* ── Minecraft FAB Group ── */
-@keyframes mc-float{
-  0%,100%{transform:translateY(0px) rotate(-2deg)}
-  50%{transform:translateY(-13px) rotate(2deg)}
-}
-@keyframes star-pop{
-  0%{transform:scale(1) rotate(0)}
-  20%{transform:scale(1.9) rotate(22deg)}
-  55%{transform:scale(.8) rotate(-12deg)}
-  80%{transform:scale(1.15) rotate(5deg)}
-  100%{transform:scale(1) rotate(0)}
-}
-.fab-group{position:fixed;bottom:28px;right:22px;display:flex;flex-direction:column;align-items:center;gap:18px;z-index:300}
-.fab-item{display:flex;flex-direction:column;align-items:center;gap:5px}
-.fab-label{font-family:'JetBrains Mono',monospace;font-size:.48rem;color:rgba(200,200,200,.55);text-transform:uppercase;letter-spacing:.8px;white-space:nowrap;background:rgba(0,0,0,.35);padding:2px 7px;border-radius:4px;pointer-events:none}
-.values-fab,.metas-fab{position:relative;width:54px;height:54px;border-radius:50%;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:1.45rem;padding:0;line-height:1;transition:filter .2s}
-.values-fab{background:linear-gradient(135deg,#00cec9,#00b894);box-shadow:0 4px 20px rgba(0,206,201,.4);animation:mc-float 2.2s ease-in-out infinite}
-.values-fab:hover{filter:brightness(1.15)}
-.metas-fab{background:linear-gradient(135deg,#6c5ce7,#a29bfe);box-shadow:0 4px 20px rgba(108,92,231,.4);animation:mc-float 2.6s ease-in-out infinite .4s}
-.metas-fab:hover{filter:brightness(1.15)}
-.fab-badge{position:absolute;top:-4px;right:-4px;background:var(--ok);color:white;font-family:'JetBrains Mono',monospace;font-size:.5rem;font-weight:800;padding:2px 5px;border-radius:10px;border:2px solid var(--bg);white-space:nowrap;display:none}
-.fab-badge.show{display:block}
-
-/* ── Drawers (shared base) ── */
-.drawer-overlay{position:fixed;inset:0;background:rgba(0,0,0,.72);z-index:700;opacity:0;pointer-events:none;transition:opacity .3s}
-.drawer-overlay.open{opacity:1;pointer-events:auto}
-.bottom-drawer{position:fixed;bottom:0;left:0;right:0;height:88vh;background:var(--bg2);border-radius:20px 20px 0 0;z-index:701;transform:translateY(100%);transition:transform .35s cubic-bezier(.32,.72,0,1);display:flex;flex-direction:column;overflow:hidden;max-width:860px;margin:0 auto}
-.drawer-overlay.open .bottom-drawer{transform:translateY(0)}
-.drawer-handle{width:38px;height:4px;background:var(--brd);border-radius:2px;margin:12px auto 0;flex-shrink:0}
-.drawer-header{display:flex;align-items:center;justify-content:space-between;padding:14px 22px 12px;border-bottom:1px solid var(--brd);flex-shrink:0}
-.drawer-title{font-family:'JetBrains Mono',monospace;font-size:.92rem;font-weight:700;display:flex;align-items:center;gap:8px}
-.drawer-title.green{color:var(--acc2)}
-.drawer-title.purple{color:#a29bfe}
-.drawer-meta-row{display:flex;align-items:center;gap:10px}
-.drawer-progress-badge{font-family:'JetBrains Mono',monospace;font-size:.65rem;color:var(--txt2);background:var(--bg);padding:3px 10px;border-radius:12px}
-.drawer-close{background:transparent;border:none;color:var(--txt2);font-size:1.4rem;cursor:pointer;padding:4px;line-height:1;transition:color .2s}
-.drawer-close:hover{color:var(--txt);transform:none;box-shadow:none}
-.drawer-body{overflow-y:auto;flex:1;padding:20px 20px 48px;-webkit-overflow-scrolling:touch}
-
-/* ── Values content ── */
-.values-group{margin-bottom:24px}
-.values-group:last-child{margin-bottom:0}
-.values-group-label{font-family:'JetBrains Mono',monospace;font-size:.75rem;font-weight:700;color:var(--acc2);text-transform:uppercase;letter-spacing:.8px;margin-bottom:10px;padding-bottom:6px;border-bottom:1px solid rgba(0,206,201,.2)}
-.values-question{font-size:.8rem;color:var(--txt2);margin-bottom:10px}
-.self-row{display:flex;align-items:center;gap:10px;margin-bottom:8px}
-.self-prefix{font-size:.8rem;color:var(--txt2);white-space:nowrap;flex-shrink:0}
-.self-input{flex:1;background:var(--bg);border:1px solid var(--brd);border-radius:8px;color:var(--txt);font-family:'Outfit',sans-serif;font-size:.88rem;padding:8px 12px;outline:none;transition:all .2s}
-.self-input:focus{border-color:var(--acc2);box-shadow:0 0 0 3px rgba(0,206,201,.15)}
-.valor-block{background:var(--bg);border:1px solid var(--brd);border-radius:10px;padding:14px;margin-bottom:10px}
-.valor-block:last-child{margin-bottom:0}
-.valor-header{display:flex;align-items:center;gap:8px;margin-bottom:10px}
-.valor-prefix{font-family:'JetBrains Mono',monospace;font-size:.68rem;color:var(--acc2);font-weight:700;white-space:nowrap}
-.valor-input{flex:1;background:var(--bg2);border:1px solid var(--brd);border-radius:6px;color:var(--txt);font-family:'Outfit',sans-serif;font-size:.85rem;padding:6px 10px;outline:none;transition:all .2s}
-.valor-input:focus{border-color:var(--acc2);box-shadow:0 0 0 2px rgba(0,206,201,.15)}
-.act-row{display:flex;align-items:center;gap:8px;margin-bottom:8px}
-.act-row:last-child{margin-bottom:0}
-.act-num{font-family:'JetBrains Mono',monospace;font-size:.65rem;color:var(--txt2);flex-shrink:0;width:18px}
-.act-input{flex:1;background:var(--bg2);border:1px solid var(--brd);border-radius:6px;color:var(--txt);font-family:'Outfit',sans-serif;font-size:.85rem;padding:7px 10px;outline:none;transition:all .2s}
-.act-input:focus{border-color:var(--acc2);box-shadow:0 0 0 2px rgba(0,206,201,.15)}
-.act-xp-badge{font-family:'JetBrains Mono',monospace;font-size:.62rem;color:var(--ok);background:rgba(0,200,83,.1);border:1px solid rgba(0,200,83,.2);padding:3px 8px;border-radius:8px;white-space:nowrap;flex-shrink:0}
-.act-done-btn{flex-shrink:0;background:transparent;border:1px solid var(--brd);border-radius:6px;color:var(--txt2);font-size:.68rem;padding:5px 9px;cursor:pointer;transition:all .2s;white-space:nowrap;font-family:'JetBrains Mono',monospace}
-.act-done-btn:hover{border-color:var(--ok);color:var(--ok);transform:none;box-shadow:none}
-.act-done-btn.completed{background:rgba(0,200,83,.1);border-color:var(--ok);color:var(--ok);cursor:default}
-.act-done-btn.completed:hover{transform:none;box-shadow:none}
-
-/* ── Metas content ── */
-.metas-add-btn{width:100%;background:transparent;border:1px dashed rgba(162,155,254,.4);border-radius:10px;color:#a29bfe;font-family:'JetBrains Mono',monospace;font-size:.78rem;padding:12px;cursor:pointer;transition:all .2s;margin-bottom:16px}
-.metas-add-btn:hover{background:rgba(108,92,231,.08);border-color:#a29bfe;transform:none;box-shadow:none}
-.meta-card{background:var(--bg);border:1px solid var(--brd);border-radius:14px;padding:18px;margin-bottom:16px;transition:border-color .2s}
-.meta-card:last-child{margin-bottom:0}
-.meta-card-header{display:flex;align-items:center;gap:10px;margin-bottom:14px}
-.meta-title-input{flex:1;background:transparent;border:none;border-bottom:1px solid var(--brd);color:var(--txt);font-family:'Outfit',sans-serif;font-size:1rem;font-weight:600;padding:4px 2px;outline:none;transition:border-color .2s}
-.meta-title-input:focus{border-bottom-color:#a29bfe}
-.meta-title-input::placeholder{color:var(--txt2)}
-.meta-delete-btn{background:transparent;border:none;color:var(--txt2);font-size:.85rem;cursor:pointer;padding:4px 6px;border-radius:4px;transition:all .15s;flex-shrink:0}
-.meta-delete-btn:hover{color:var(--err);background:rgba(255,82,82,.1);transform:none;box-shadow:none}
-/* Progress bar */
-.meta-progress-wrap{margin-bottom:14px}
-.meta-progress-track{width:100%;height:5px;background:var(--bg2);border-radius:10px;overflow:hidden;margin-bottom:4px}
-.meta-progress-fill{height:100%;background:linear-gradient(90deg,#6c5ce7,#a29bfe);border-radius:10px;transition:width .5s ease;width:0%}
-.meta-progress-text{font-family:'JetBrains Mono',monospace;font-size:.62rem;color:var(--txt2)}
-/* Steps */
-.steps-list{display:flex;flex-direction:column;gap:6px;margin-bottom:12px}
-.step-row{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:8px;transition:all .2s;border:1px solid transparent;cursor:pointer}
-.step-row.step-done{opacity:.45;cursor:default}
-.step-row.step-current{border-color:rgba(162,155,254,.35);background:rgba(108,92,231,.06)}
-.step-row.step-future{opacity:.55;cursor:default}
-.step-num-badge{width:26px;height:26px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'JetBrains Mono',monospace;font-size:.65rem;font-weight:700;flex-shrink:0;transition:all .2s}
-.step-num-badge.done{background:var(--ok);color:var(--bg)}
-.step-num-badge.current{background:linear-gradient(135deg,#6c5ce7,#a29bfe);color:white}
-.step-num-badge.future{background:var(--bg2);color:var(--txt2);border:1px solid var(--brd)}
-.step-text{flex:1;font-size:.88rem;line-height:1.3}
-.step-row.step-done .step-text{text-decoration:line-through}
-.step-row.step-current .step-text{color:var(--txt);font-weight:500}
-.step-delete-btn{background:transparent;border:none;color:var(--txt2);font-size:.7rem;cursor:pointer;padding:3px 5px;border-radius:4px;opacity:0;transition:all .15s;flex-shrink:0}
-.steps-list:hover .step-delete-btn{opacity:.6}
-.step-delete-btn:hover{color:var(--err);opacity:1;background:rgba(255,82,82,.1);transform:none;box-shadow:none}
-.step-add-row{display:flex;gap:8px}
-.step-add-input{flex:1;background:var(--bg2);border:1px solid var(--brd);border-radius:8px;color:var(--txt);font-family:'Outfit',sans-serif;font-size:.85rem;padding:8px 12px;outline:none;transition:all .2s}
-.step-add-input:focus{border-color:#a29bfe;box-shadow:0 0 0 2px rgba(108,92,231,.2)}
-.step-add-input::placeholder{color:var(--txt2);font-size:.82rem}
-.step-add-btn{background:linear-gradient(135deg,#6c5ce7,#a29bfe);border:none;border-radius:8px;color:white;font-family:'JetBrains Mono',monospace;font-size:1rem;font-weight:700;padding:8px 16px;cursor:pointer;transition:all .2s;line-height:1}
-.step-add-btn:hover{transform:translateY(-1px);box-shadow:0 4px 14px var(--accg)}
-.steps-empty{font-size:.82rem;color:var(--txt2);padding:8px 0;font-style:italic}
-
-/* Empty */
-.empty-state{text-align:center;padding:36px 20px;color:var(--txt2)}
-.empty-state-icon{font-size:2.5rem;opacity:.3;margin-bottom:10px}
-
-/* Popups */
-.xp-popup{position:fixed;top:70px;left:50%;transform:translateX(-50%) translateY(0);background:var(--lvc);color:#0a0a0b;font-family:'JetBrains Mono',monospace;font-weight:800;font-size:1rem;padding:8px 22px;border-radius:20px;pointer-events:none;opacity:0;z-index:600;transition:opacity .3s,transform .4s;white-space:nowrap}
-.xp-popup.show{opacity:1;transform:translateX(-50%) translateY(-14px)}
-.victory-popup{position:fixed;bottom:28px;left:50%;transform:translateX(-50%) translateY(20px);background:linear-gradient(135deg,rgba(253,203,110,.96),rgba(225,112,85,.92));color:#0a0a0b;font-family:'JetBrains Mono',monospace;font-weight:700;font-size:.82rem;padding:14px 24px;border-radius:14px;pointer-events:none;opacity:0;z-index:600;transition:opacity .4s,transform .4s;text-align:center;white-space:nowrap;box-shadow:0 8px 32px rgba(253,203,110,.3)}
-.victory-popup.show{opacity:1;transform:translateX(-50%) translateY(0)}
-.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.85);display:flex;align-items:center;justify-content:center;z-index:800;opacity:0;pointer-events:none;transition:opacity .3s;padding:20px}
-.modal-overlay.show{opacity:1;pointer-events:auto}
-.achieve-popup{background:var(--bg2);border:1px solid rgba(253,203,110,.4);border-radius:20px;padding:32px 28px;max-width:320px;width:100%;text-align:center;transform:scale(.85);transition:transform .3s}
-.modal-overlay.show .achieve-popup{transform:scale(1)}
-.achieve-popup-label{font-family:'JetBrains Mono',monospace;font-size:.62rem;color:var(--daily);letter-spacing:2px;margin-bottom:14px}
-.achieve-popup-icon{font-size:3.5rem;margin-bottom:10px}
-.achieve-popup-name{font-family:'JetBrains Mono',monospace;font-size:1.1rem;font-weight:700;margin-bottom:6px}
-.achieve-popup-desc{font-size:.85rem;color:var(--txt2);line-height:1.5;margin-bottom:12px}
-.achieve-popup-xp{font-family:'JetBrains Mono',monospace;font-size:.9rem;color:var(--ok);font-weight:700;margin-bottom:20px}
-.popup-btn{background:var(--daily);border:none;border-radius:10px;color:#0a0a0b;font-family:'JetBrains Mono',monospace;font-size:.8rem;font-weight:700;padding:12px 28px;cursor:pointer;transition:all .2s}
-.popup-btn:hover{transform:translateY(-2px);box-shadow:0 4px 16px var(--dailyg)}
-.levelup-popup{background:var(--bg2);border-radius:20px;padding:36px 28px;max-width:320px;width:100%;text-align:center;transform:scale(.85);transition:transform .3s;position:relative;overflow:hidden}
-.modal-overlay.show .levelup-popup{transform:scale(1)}
-.levelup-glow{position:absolute;inset:0;pointer-events:none;opacity:.1}
-.levelup-label{font-family:'JetBrains Mono',monospace;font-size:.62rem;letter-spacing:2px;text-transform:uppercase;margin-bottom:14px;color:var(--lvc)}
-.levelup-icon-big{font-size:4rem;margin-bottom:10px}
-.levelup-name{font-family:'JetBrains Mono',monospace;font-size:1.3rem;font-weight:800;margin-bottom:8px;color:var(--lvc)}
-.levelup-desc{font-size:.88rem;color:var(--txt2);line-height:1.5;margin-bottom:22px}
-.levelup-btn{border:none;border-radius:10px;color:#0a0a0b;font-family:'JetBrains Mono',monospace;font-size:.8rem;font-weight:700;padding:12px 28px;cursor:pointer;transition:all .2s;background:var(--lvc)}
-.levelup-btn:hover{transform:translateY(-2px)}
-
-
-/* ── Metas / Plan de trabajo ── */
+/* Metas inline */
 .metas-section{border-color:rgba(253,203,110,.18);background:linear-gradient(135deg,rgba(253,203,110,.04) 0%,var(--bg2) 70%)}
 .metas-title{color:#fdcb6e!important}
-.metas-header-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px}
-.add-meta-btn{background:rgba(253,203,110,.12);border:1px solid rgba(253,203,110,.28);border-radius:8px;color:#fdcb6e;font-family:'JetBrains Mono',monospace;font-size:.7rem;padding:8px 14px;cursor:pointer;transition:all .2s}
-.add-meta-btn:hover{background:rgba(253,203,110,.22);transform:none;box-shadow:none}
+.metas-add-btn{display:block;width:100%;background:rgba(108,92,231,.1);border:1px dashed rgba(108,92,231,.35);border-radius:10px;color:#a29bfe;font-family:'JetBrains Mono',monospace;font-size:.75rem;padding:12px;cursor:pointer;transition:all .2s;margin-bottom:14px;text-align:center}
+.metas-add-btn:hover{background:rgba(108,92,231,.18);transform:none;box-shadow:none}
 .meta-card{background:var(--bg);border:1px solid var(--brd);border-radius:12px;padding:18px;margin-bottom:14px;transition:border-color .2s}
 .meta-card:last-child{margin-bottom:0}
 .meta-card:hover{border-color:rgba(253,203,110,.22)}
@@ -307,23 +101,78 @@ body{font-family:'Outfit',sans-serif;background:var(--bg);color:var(--txt);min-h
 .step-num{font-family:'JetBrains Mono',monospace;font-size:.62rem;color:var(--txt2);flex-shrink:0;width:18px;text-align:right}
 .step-text{flex:1;font-size:.9rem;color:var(--txt);transition:all .25s;line-height:1.3}
 .done-step .step-text{text-decoration:line-through;color:var(--txt2)}
-.step-delete{background:transparent;border:none;color:var(--txt2);font-size:.75rem;cursor:pointer;padding:3px 7px;border-radius:4px;opacity:0;transition:all .15s;flex-shrink:0}
-.meta-step:hover .step-delete{opacity:1}
-.step-delete:hover{color:var(--err);transform:none;box-shadow:none}
-.meta-add-step{display:flex;gap:8px}
-.meta-add-step input{flex:1;background:var(--bg2);border:1px solid var(--brd);border-radius:8px;color:var(--txt);font-family:'Outfit',sans-serif;font-size:.85rem;padding:9px 12px;outline:none;transition:all .2s}
-.meta-add-step input:focus{border-color:#fdcb6e;box-shadow:0 0 0 3px rgba(253,203,110,.1)}
-.meta-add-step input::placeholder{color:var(--txt2);font-size:.8rem}
-.meta-add-step button{background:rgba(253,203,110,.15);border:1px solid rgba(253,203,110,.28);border-radius:8px;color:#fdcb6e;font-size:1.1rem;font-weight:700;padding:9px 16px;cursor:pointer;transition:all .2s;font-family:'JetBrains Mono',monospace}
-.meta-add-step button:hover{background:rgba(253,203,110,.25);transform:none;box-shadow:none}
+.step-delete-btn{background:transparent;border:none;color:var(--txt2);font-size:.75rem;cursor:pointer;padding:3px 7px;border-radius:4px;opacity:0;transition:all .15s;flex-shrink:0}
+.meta-step:hover .step-delete-btn{opacity:1}
+.step-delete-btn:hover{color:var(--err);transform:none;box-shadow:none}
+.step-add-row{display:flex;gap:8px}
+.step-add-input{flex:1;background:var(--bg2);border:1px solid var(--brd);border-radius:8px;color:var(--txt);font-family:'Outfit',sans-serif;font-size:.85rem;padding:9px 12px;outline:none;transition:all .2s}
+.step-add-input:focus{border-color:#fdcb6e;box-shadow:0 0 0 3px rgba(253,203,110,.1)}
+.step-add-input::placeholder{color:var(--txt2);font-size:.8rem}
+.step-add-btn{background:rgba(253,203,110,.15);border:1px solid rgba(253,203,110,.28);border-radius:8px;color:#fdcb6e;font-size:1.1rem;font-weight:700;padding:9px 16px;cursor:pointer;transition:all .2s;font-family:'JetBrains Mono',monospace}
+.step-add-btn:hover{background:rgba(253,203,110,.25);transform:none;box-shadow:none}
 .metas-empty{text-align:center;padding:28px;color:var(--txt2);font-size:.85rem}
-
-/* ── Patient add-card form ── */
+/* Valores inline */
+.values-section{border-color:rgba(0,206,201,.2);background:linear-gradient(135deg,rgba(0,206,201,.04) 0%,var(--bg2) 70%)}
+.values-title{color:var(--acc2)!important}
+.values-group{margin-bottom:22px}
+.values-group:last-child{margin-bottom:0}
+.values-group-label{font-family:'JetBrains Mono',monospace;font-size:.75rem;font-weight:700;color:var(--acc2);text-transform:uppercase;letter-spacing:.8px;margin-bottom:10px;padding-bottom:6px;border-bottom:1px solid rgba(0,206,201,.2)}
+.values-question{font-size:.8rem;color:var(--txt2);margin-bottom:10px}
+.self-row{display:flex;align-items:center;gap:10px;margin-bottom:8px}
+.self-prefix{font-size:.8rem;color:var(--txt2);white-space:nowrap;flex-shrink:0}
+.self-input{flex:1;background:var(--bg);border:1px solid var(--brd);border-radius:8px;color:var(--txt);font-family:'Outfit',sans-serif;font-size:.88rem;padding:8px 12px;outline:none;transition:all .2s}
+.self-input:focus{border-color:var(--acc2);box-shadow:0 0 0 3px rgba(0,206,201,.15)}
+.valor-block{background:var(--bg);border:1px solid var(--brd);border-radius:10px;padding:14px;margin-bottom:10px}
+.valor-block:last-child{margin-bottom:0}
+.valor-header{display:flex;align-items:center;gap:8px;margin-bottom:10px}
+.valor-prefix{font-family:'JetBrains Mono',monospace;font-size:.68rem;color:var(--acc2);font-weight:700;white-space:nowrap}
+.valor-input{flex:1;background:var(--bg2);border:1px solid var(--brd);border-radius:6px;color:var(--txt);font-family:'Outfit',sans-serif;font-size:.85rem;padding:6px 10px;outline:none;transition:all .2s}
+.valor-input:focus{border-color:var(--acc2);box-shadow:0 0 0 2px rgba(0,206,201,.15)}
+.act-row{display:flex;align-items:center;gap:8px;margin-bottom:8px}
+.act-row:last-child{margin-bottom:0}
+.act-num{font-family:'JetBrains Mono',monospace;font-size:.65rem;color:var(--txt2);flex-shrink:0;width:18px}
+.act-input{flex:1;background:var(--bg2);border:1px solid var(--brd);border-radius:6px;color:var(--txt);font-family:'Outfit',sans-serif;font-size:.85rem;padding:7px 10px;outline:none;transition:all .2s}
+.act-input:focus{border-color:var(--acc2);box-shadow:0 0 0 2px rgba(0,206,201,.15)}
+.act-xp-badge{font-family:'JetBrains Mono',monospace;font-size:.62rem;color:var(--ok);background:rgba(0,200,83,.1);border:1px solid rgba(0,200,83,.2);padding:3px 8px;border-radius:8px;white-space:nowrap;flex-shrink:0}
+.act-done-btn{flex-shrink:0;background:transparent;border:1px solid var(--brd);border-radius:6px;color:var(--txt2);font-size:.68rem;padding:5px 9px;cursor:pointer;transition:all .2s;white-space:nowrap;font-family:'JetBrains Mono',monospace}
+.act-done-btn:hover{border-color:var(--ok);color:var(--ok);transform:none;box-shadow:none}
+.act-done-btn.completed{background:rgba(0,200,83,.1);border-color:var(--ok);color:var(--ok);cursor:default}
+/* Stats */
+.stats-row{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:20px}
+.stat-card{background:var(--bg2);border:1px solid var(--brd);border-radius:12px;padding:16px 12px;text-align:center}
+.stat-value{font-family:'JetBrains Mono',monospace;font-size:1.6rem;font-weight:700;color:var(--acc);line-height:1}
+.stat-label{font-size:.7rem;color:var(--txt2);text-transform:uppercase;letter-spacing:.5px;margin-top:4px}
+/* Phrase */
+.phrase-card{background:linear-gradient(135deg,rgba(108,92,231,.12),rgba(0,206,201,.08));border:1px solid rgba(108,92,231,.3);border-radius:14px;padding:20px;margin-bottom:20px;font-style:italic;color:var(--txt2);font-size:.9rem;line-height:1.6;text-align:center}
+/* Cards */
+.cards-grid{display:flex;flex-direction:column;gap:12px}
+.thought-card{background:var(--bg);border:1px solid var(--brd);border-radius:12px;padding:18px;transition:all .3s;cursor:pointer}
+.thought-card:hover{border-color:rgba(108,92,231,.4)}
+.thought-card.priority-alta{border-left:3px solid var(--err)}
+.thought-card.priority-media{border-left:3px solid var(--warn)}
+.thought-card.priority-baja{border-left:3px solid var(--ok)}
+.thought-card.read{opacity:.55}
+.card-top{display:flex;align-items:center;gap:8px;margin-bottom:10px}
+.priority-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0}
+.priority-dot.alta{background:var(--err)}.priority-dot.media{background:var(--warn)}.priority-dot.baja{background:var(--ok)}
+.cat-tag{font-size:.6rem;padding:2px 8px;border-radius:4px;font-family:'JetBrains Mono',monospace}
+.cat-tag.cuerpo{background:rgba(255,107,107,.2);color:#ff6b6b}.cat-tag.errores{background:rgba(255,145,0,.2);color:#ff9100}
+.cat-tag.emociones{background:rgba(0,206,201,.2);color:#00cec9}.cat-tag.relaciones{background:rgba(108,92,231,.2);color:#6c5ce7}
+.cat-tag.autoestima{background:rgba(253,203,110,.2);color:#fdcb6e}.cat-tag.general{background:rgba(99,110,114,.2);color:#636e72}
+.cat-tag.personal{background:rgba(162,155,254,.2);color:#a29bfe}
+.read-badge{margin-left:auto;font-family:'JetBrains Mono',monospace;font-size:.58rem;color:var(--ok);border:1px solid rgba(0,200,83,.3);padding:2px 8px;border-radius:4px}
+.own-card-badge{font-family:'JetBrains Mono',monospace;font-size:.58rem;color:#a29bfe;border:1px solid rgba(162,155,254,.3);padding:2px 7px;border-radius:4px}
+.card-text{font-size:.92rem;line-height:1.6;margin-bottom:12px}
+.card-action{display:flex;justify-content:flex-end;gap:8px}
+.read-btn{background:transparent;border:1px solid var(--brd);border-radius:6px;color:var(--txt2);font-family:'JetBrains Mono',monospace;font-size:.65rem;padding:6px 12px;cursor:pointer;transition:all .2s}
+.read-btn:hover{border-color:var(--ok);color:var(--ok);transform:none;box-shadow:none}
+/* Patient add card */
+.add-own-card-btn{display:none;align-items:center;gap:8px;background:rgba(162,155,254,.1);border:1px solid rgba(162,155,254,.25);border-radius:8px;color:#a29bfe;font-family:'JetBrains Mono',monospace;font-size:.72rem;padding:8px 14px;cursor:pointer;transition:all .2s;margin-bottom:16px;width:100%}
+.add-own-card-btn:hover{background:rgba(162,155,254,.18);transform:none;box-shadow:none}
 .patient-card-form{background:var(--bg);border:1px dashed rgba(162,155,254,.4);border-radius:12px;padding:16px;margin-bottom:14px;display:none}
 .patient-card-form.open{display:block}
 .patient-card-form textarea{width:100%;background:var(--bg2);border:1px solid var(--brd);border-radius:8px;color:var(--txt);font-family:'Outfit',sans-serif;font-size:.9rem;padding:12px;outline:none;resize:none;min-height:80px;transition:border-color .2s;line-height:1.5}
 .patient-card-form textarea:focus{border-color:#a29bfe;box-shadow:0 0 0 3px rgba(162,155,254,.12)}
-.patient-card-form textarea::placeholder{color:var(--txt2);font-size:.85rem}
 .patient-cat-row{display:flex;gap:8px;margin:10px 0;flex-wrap:wrap}
 .patient-cat-btn{background:var(--bg2);border:1px solid var(--brd);border-radius:20px;color:var(--txt2);font-family:'JetBrains Mono',monospace;font-size:.62rem;padding:5px 12px;cursor:pointer;transition:all .2s}
 .patient-cat-btn.selected{background:rgba(162,155,254,.2);border-color:#a29bfe;color:#a29bfe}
@@ -332,103 +181,72 @@ body{font-family:'Outfit',sans-serif;background:var(--bg);color:var(--txt);min-h
 .patient-submit-btn:hover{transform:translateY(-1px);box-shadow:0 4px 14px rgba(162,155,254,.35)}
 .patient-cancel-btn{background:transparent;border:1px solid var(--brd);border-radius:8px;color:var(--txt2);font-family:'JetBrains Mono',monospace;font-size:.75rem;padding:9px 14px;cursor:pointer;transition:all .2s}
 .patient-cancel-btn:hover{border-color:var(--txt2);color:var(--txt);transform:none;box-shadow:none}
-.add-own-card-btn{display:flex;align-items:center;gap:8px;background:rgba(162,155,254,.1);border:1px solid rgba(162,155,254,.25);border-radius:8px;color:#a29bfe;font-family:'JetBrains Mono',monospace;font-size:.72rem;padding:8px 14px;cursor:pointer;transition:all .2s;margin-bottom:16px;width:100%}
-.add-own-card-btn:hover{background:rgba(162,155,254,.18);transform:none;box-shadow:none}
-.add-own-card-btn.hidden{display:none}
-.own-card-badge{font-family:'JetBrains Mono',monospace;font-size:.58rem;color:#a29bfe;border:1px solid rgba(162,155,254,.3);padding:2px 7px;border-radius:4px;flex-shrink:0}
-@media(max-width:480px){body{padding:14px 14px 120px}.stats-row{gap:8px}.stat-value{font-size:1.3rem}.achievements-grid{grid-template-columns:repeat(2,1fr)}}
+/* Filters */
+.filter-row{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:18px}
+.filter-btn{background:var(--bg);border:1px solid var(--brd);border-radius:20px;color:var(--txt2);font-family:'JetBrains Mono',monospace;font-size:.65rem;padding:6px 14px;cursor:pointer;transition:all .2s}
+.filter-btn:hover{border-color:var(--acc);color:var(--txt);transform:none;box-shadow:none}
+.filter-btn.active{background:var(--acc);border-color:var(--acc);color:white;box-shadow:0 2px 10px var(--accg)}
+/* Achievements */
+.achievements-section{padding:0;overflow:hidden}
+.achievements-toggle{display:flex;align-items:center;justify-content:space-between;padding:22px;cursor:pointer;transition:background .2s;border-radius:16px}
+.achievements-toggle:hover{background:var(--bg3)}
+.achievements-title{color:#fdcb6e!important;margin-bottom:0!important}
+.achievements-count{font-family:'JetBrains Mono',monospace;font-size:.7rem;color:var(--txt2);background:var(--bg);padding:2px 8px;border-radius:10px;margin-left:8px}
+.chevron{font-size:.7rem;color:var(--txt2);transition:transform .3s}
+.chevron.open{transform:rotate(180deg)}
+.achievements-body{padding:0 22px 22px;display:none}
+.achievements-body.open{display:block}
+.achievements-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px}
+.achievement-card{background:var(--bg);border:1px solid var(--brd);border-radius:10px;padding:14px;text-align:center;transition:all .2s}
+.achievement-card.unlocked{border-color:rgba(253,203,110,.35);background:rgba(253,203,110,.05)}
+.achievement-card.locked{opacity:.4}
+.achievement-card-icon{font-size:1.6rem;margin-bottom:6px}
+.achievement-card-name{font-family:'JetBrains Mono',monospace;font-size:.68rem;font-weight:700;margin-bottom:4px}
+.achievement-card.unlocked .achievement-card-name{color:var(--daily)}
+.achievement-card-desc{font-size:.72rem;color:var(--txt2);line-height:1.3}
+.achievement-card-xp{font-family:'JetBrains Mono',monospace;font-size:.65rem;color:var(--ok);margin-top:6px;font-weight:700}
+/* Popups */
+.xp-popup{position:fixed;top:70px;left:50%;transform:translateX(-50%) translateY(0);background:var(--lvc);color:#0a0a0b;font-family:'JetBrains Mono',monospace;font-weight:800;font-size:1rem;padding:8px 22px;border-radius:20px;pointer-events:none;opacity:0;z-index:600;transition:opacity .3s,transform .4s;white-space:nowrap}
+.xp-popup.show{opacity:1;transform:translateX(-50%) translateY(-14px)}
+.victory-popup{position:fixed;bottom:28px;left:50%;transform:translateX(-50%) translateY(20px);background:linear-gradient(135deg,rgba(253,203,110,.96),rgba(225,112,85,.92));color:#0a0a0b;font-family:'JetBrains Mono',monospace;font-weight:700;font-size:.82rem;padding:14px 24px;border-radius:14px;pointer-events:none;opacity:0;z-index:600;transition:opacity .4s,transform .4s;text-align:center;white-space:nowrap;box-shadow:0 8px 32px rgba(253,203,110,.3)}
+.victory-popup.show{opacity:1;transform:translateX(-50%) translateY(0)}
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.85);display:flex;align-items:center;justify-content:center;z-index:800;opacity:0;pointer-events:none;transition:opacity .3s;padding:20px}
+.modal-overlay.show{opacity:1;pointer-events:auto}
+.achieve-popup{background:var(--bg2);border:1px solid rgba(253,203,110,.4);border-radius:20px;padding:32px 28px;max-width:320px;width:100%;text-align:center;transform:scale(.85);transition:transform .3s}
+.modal-overlay.show .achieve-popup{transform:scale(1)}
+.levelup-popup{background:var(--bg2);border-radius:20px;padding:36px 28px;max-width:320px;width:100%;text-align:center;transform:scale(.85);transition:transform .3s;position:relative;overflow:hidden}
+.modal-overlay.show .levelup-popup{transform:scale(1)}
+.popup-btn{background:var(--daily);border:none;border-radius:10px;color:#0a0a0b;font-family:'JetBrains Mono',monospace;font-size:.8rem;font-weight:700;padding:12px 28px;cursor:pointer;transition:all .2s}
+.popup-btn:hover{transform:translateY(-2px);box-shadow:0 4px 16px var(--dailyg)}
+.error-screen{text-align:center;padding:80px 20px;display:none}
+.error-screen.show{display:block}
+@media(max-width:480px){body{padding:14px 14px 60px}.stats-row{gap:8px}.stat-value{font-size:1.3rem}.achievements-grid{grid-template-columns:repeat(2,1fr)}.act-row{flex-wrap:wrap}}
 </style>
 </head>
 <body>
-
 <div class="loading-overlay" id="loadingOverlay"><div class="spinner"></div></div>
 <div class="xp-popup" id="xpPopup"></div>
 <div class="victory-popup" id="victoryPopup"></div>
-
 <!-- Achievement popup -->
 <div class="modal-overlay" id="achievementOverlay">
   <div class="achieve-popup">
-    <div class="achieve-popup-label">🏆 Logro desbloqueado</div>
-    <div class="achieve-popup-icon" id="achievPopupIcon"></div>
-    <div class="achieve-popup-name" id="achievPopupName"></div>
-    <div class="achieve-popup-desc" id="achievPopupDesc"></div>
-    <div class="achieve-popup-xp" id="achievPopupXp"></div>
+    <div style="font-family:'JetBrains Mono',monospace;font-size:.62rem;color:var(--daily);letter-spacing:2px;margin-bottom:14px">🏆 Logro desbloqueado</div>
+    <div style="font-size:3.5rem;margin-bottom:10px" id="achievPopupIcon"></div>
+    <div style="font-family:'JetBrains Mono',monospace;font-size:1.1rem;font-weight:700;margin-bottom:6px" id="achievPopupName"></div>
+    <div style="font-size:.85rem;color:var(--txt2);line-height:1.5;margin-bottom:12px" id="achievPopupDesc"></div>
+    <div style="font-family:'JetBrains Mono',monospace;font-size:.9rem;color:var(--ok);font-weight:700;margin-bottom:20px" id="achievPopupXp"></div>
     <button class="popup-btn" onclick="hideAchievementPopup()">¡Genial!</button>
   </div>
 </div>
-
 <!-- Level up popup -->
 <div class="modal-overlay" id="levelupOverlay">
   <div class="levelup-popup">
-    <div class="levelup-glow" id="levelupGlow"></div>
-    <div class="levelup-label" id="levelupLabel">¡NUEVO NIVEL!</div>
-    <div class="levelup-icon-big" id="levelupIconBig"></div>
-    <div class="levelup-name" id="levelupName"></div>
-    <div class="levelup-desc">Has alcanzado un nuevo nivel en tu camino.</div>
-    <button class="levelup-btn" id="levelupBtn" onclick="hideLevelupPopup()">¡Seguir adelante!</button>
-  </div>
-</div>
-
-<!-- ── FAB Group (Minecraft float) ── -->
-<div class="fab-group">
-  <div class="fab-item">
-    <span class="fab-label">Hoja de valores</span>
-    <button class="values-fab" onclick="openDrawer('values')">
-      🌿<span class="fab-badge" id="valuesBadge"></span>
-    </button>
-  </div>
-  <div class="fab-item">
-    <span class="fab-label">Mis metas</span>
-    <button class="metas-fab" onclick="openDrawer('metas')">
-      🎯<span class="fab-badge" id="metasBadge"></span>
-    </button>
-  </div>
-</div>
-
-<!-- ── Values Drawer ── -->
-<div class="drawer-overlay" id="valuesOverlay" onclick="handleOverlayClick(event,'values')">
-  <div class="bottom-drawer">
-    <div class="drawer-handle"></div>
-    <div class="drawer-header">
-      <div class="drawer-title green">🌿 Hoja de Valores</div>
-      <div class="drawer-meta-row">
-        <span class="drawer-progress-badge" id="valuesProgress">0 / 12</span>
-        <button class="drawer-close" onclick="closeDrawer('values')">×</button>
-      </div>
-    </div>
-    <div class="drawer-body">
-      <div class="values-group">
-        <div class="values-group-label">Relaciones Conmigo Mismo</div>
-        <div class="values-question">¿Qué tipo de persona quiero ser?</div>
-        <div id="selfList"></div>
-      </div>
-      <div class="values-group">
-        <div class="values-group-label">Relación con mi Familia</div>
-        <div id="familiaList"></div>
-      </div>
-      <div class="values-group">
-        <div class="values-group-label">Relaciones con mis Amigos</div>
-        <div id="amigosList"></div>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- ── Metas Drawer ── -->
-<div class="drawer-overlay" id="metasOverlay" onclick="handleOverlayClick(event,'metas')">
-  <div class="bottom-drawer">
-    <div class="drawer-handle"></div>
-    <div class="drawer-header">
-      <div class="drawer-title purple">🎯 Mis Metas</div>
-      <div class="drawer-meta-row">
-        <span class="drawer-progress-badge" id="metasProgress">0 metas</span>
-        <button class="drawer-close" onclick="closeDrawer('metas')">×</button>
-      </div>
-    </div>
-    <div class="drawer-body">
-      <button class="metas-add-btn" onclick="addGoal()">+ Nueva meta</button>
-      <div id="metasList"></div>
-    </div>
+    <div style="position:absolute;inset:0;pointer-events:none;opacity:.1" id="levelupGlow"></div>
+    <div style="font-family:'JetBrains Mono',monospace;font-size:.62rem;letter-spacing:2px;text-transform:uppercase;margin-bottom:14px" id="levelupLabel">¡NUEVO NIVEL!</div>
+    <div style="font-size:4rem;margin-bottom:10px" id="levelupIconBig"></div>
+    <div style="font-family:'JetBrains Mono',monospace;font-size:1.3rem;font-weight:800;margin-bottom:8px" id="levelupName"></div>
+    <div style="font-size:.88rem;color:var(--txt2);line-height:1.5;margin-bottom:22px">Has alcanzado un nuevo nivel en tu camino.</div>
+    <button class="popup-btn" id="levelupBtn" onclick="hideLevelupPopup()">¡Seguir adelante!</button>
   </div>
 </div>
 
@@ -437,24 +255,20 @@ body{font-family:'Outfit',sans-serif;background:var(--bg);color:var(--txt);min-h
     <div style="font-size:4rem;opacity:.4;margin-bottom:16px">🔍</div>
     <p style="color:var(--txt2)">No se encontró este tablero.<br>Verifica el enlace.</p>
   </div>
-
   <div id="mainContent" style="display:none">
     <header class="header">
       <div class="logo">🧠 PanelKit</div>
       <div class="patient-display-name" id="patientDisplayName">…</div>
       <div class="sync-status"><div class="sync-dot" id="syncDot"></div><span id="syncText">Conectando...</span></div>
     </header>
-
+    <!-- Level bar -->
     <div class="level-bar-wrap">
-      <div class="level-info">
-        <span class="level-name" id="levelName">🌱 Semilla</span>
-        <span class="streak-badge" id="streakBadge">🔥 0 días</span>
-      </div>
+      <div class="level-info"><span class="level-name" id="levelName">🌱 Semilla</span><span class="streak-badge" id="streakBadge">🔥 0 días</span></div>
       <div class="xp-track"><div class="xp-fill" id="xpFill"></div></div>
       <div class="xp-text" id="xpText">0 / 100 XP</div>
     </div>
-
-    <div class="section daily-section">
+    <!-- Rutina -->
+    <div class="section daily-section" id="rutinaSection">
       <div class="daily-header">
         <div class="section-title daily-title"><span>☀️</span> Rutina de Hoy</div>
         <div class="daily-date-badge" id="dailyDateBadge">—</div>
@@ -467,23 +281,55 @@ body{font-family:'Outfit',sans-serif;background:var(--bg);color:var(--txt);min-h
         <button onclick="addRoutineTask()">+</button>
       </div>
     </div>
-
+    <!-- Metas inline -->
+    <div class="section metas-section" id="metasSection">
+      <div class="section-title-bar" onclick="toggleSection('metas')">
+        <div class="section-title metas-title"><span>🎯</span> Mis Metas <span class="section-badge" id="metasBadge">0 metas</span></div>
+        <span class="section-chevron" id="metasChevron" style="transform:rotate(180deg)">▼</span>
+      </div>
+      <div class="section-body" id="metasBody">
+        <button class="metas-add-btn" onclick="addGoal()">+ Nueva meta</button>
+        <div id="metasList"></div>
+      </div>
+    </div>
+    <!-- Valores inline -->
+    <div class="section values-section" id="valoresSection">
+      <div class="section-title-bar" onclick="toggleSection('valores')">
+        <div class="section-title values-title"><span>🌿</span> Hoja de Valores <span class="section-badge" id="valuesBadge">0 / 12</span></div>
+        <span class="section-chevron" id="valoresChevron">▼</span>
+      </div>
+      <div class="section-body" id="valoresBody" style="display:none">
+        <div class="values-group">
+          <div class="values-group-label">Relaciones Conmigo Mismo</div>
+          <div class="values-question">¿Qué tipo de persona quiero ser?</div>
+          <div id="selfList"></div>
+        </div>
+        <div class="values-group">
+          <div class="values-group-label">Relación con mi Familia</div>
+          <div id="familiaList"></div>
+        </div>
+        <div class="values-group">
+          <div class="values-group-label">Relaciones con mis Amigos</div>
+          <div id="amigosList"></div>
+        </div>
+      </div>
+    </div>
+    <!-- Stats -->
     <div class="stats-row">
       <div class="stat-card"><div class="stat-value" id="statTotal">0</div><div class="stat-label">Tarjetas</div></div>
       <div class="stat-card"><div class="stat-value" id="statRead">0</div><div class="stat-label">Leídas</div></div>
       <div class="stat-card"><div class="stat-value" id="statPriority">0</div><div class="stat-label">Prioritarias</div></div>
     </div>
-
     <div class="phrase-card" id="phraseCard"></div>
-
-    <div class="section">
+    <!-- Cards -->
+    <div class="section" id="tarjetasSection">
       <div class="section-title"><span>📝</span> Mis Tarjetas</div>
-      <button class="add-own-card-btn hidden" id="addOwnCardBtn" onclick="togglePatientCardForm()">
+      <button class="add-own-card-btn" id="addOwnCardBtn" onclick="togglePatientCardForm()">
         ✏️ Agregar mi propia reflexión
       </button>
       <div class="patient-card-form" id="patientCardForm">
-        <textarea id="patientCardText" placeholder="¿Qué estás pensando o sintiendo? Escríbelo aquí..." rows="3"></textarea>
-        <div class="patient-cat-row" id="patientCatRow">
+        <textarea id="patientCardText" placeholder="¿Qué estás pensando o sintiendo?" rows="3"></textarea>
+        <div class="patient-cat-row">
           <button class="patient-cat-btn selected" data-cat="personal" onclick="selectPatientCat(this)">💭 Reflexión</button>
           <button class="patient-cat-btn" data-cat="emociones" onclick="selectPatientCat(this)">❤️ Emoción</button>
           <button class="patient-cat-btn" data-cat="autoestima" onclick="selectPatientCat(this)">⭐ Logro</button>
@@ -491,13 +337,13 @@ body{font-family:'Outfit',sans-serif;background:var(--bg);color:var(--txt);min-h
         </div>
         <div class="patient-card-form-footer">
           <button class="patient-cancel-btn" onclick="togglePatientCardForm()">Cancelar</button>
-          <button class="patient-submit-btn" onclick="addPatientCard()">Guardar reflexión →</button>
+          <button class="patient-submit-btn" onclick="addPatientCard()">Guardar →</button>
         </div>
       </div>
       <div class="filter-row" id="filterRow"></div>
       <div class="cards-grid" id="cardsGrid"></div>
     </div>
-
+    <!-- Achievements -->
     <div class="section achievements-section">
       <div class="achievements-toggle" onclick="toggleAchievements()">
         <div class="section-title achievements-title"><span>🏆</span> Logros <span class="achievements-count" id="achievementsCount">0/13</span></div>
@@ -511,6 +357,7 @@ body{font-family:'Outfit',sans-serif;background:var(--bg);color:var(--txt);min-h
 </div>
 
 <script type="module">
+
 import { initializeApp } from "https://www.gstatic.com/firebasejs/11.8.1/firebase-app.js";
 import { getFirestore,collection,doc,getDoc,setDoc,deleteDoc,updateDoc,onSnapshot,query,orderBy } from "https://www.gstatic.com/firebasejs/11.8.1/firebase-firestore.js";
 
@@ -550,21 +397,32 @@ const DEF_MODULES={rutina:true,metas:true,valores:true,tarjetas:true,tarjetasPac
 let modules={...DEF_MODULES};
 
 function applyModules(){
-  // Rutina section
-  const rutinaSection=document.querySelector('.daily-section');
-  if(rutinaSection) rutinaSection.style.display=modules.rutina?'':'none';
-  // FABs - find by their id within fab-group items
-  document.querySelectorAll('.fab-item').forEach(item=>{
-    if(item.querySelector('.values-fab')) item.style.display=modules.valores?'flex':'none';
-    if(item.querySelector('.metas-fab')) item.style.display=modules.metas?'flex':'none';
-  });
-  // Patient add card button
+  // Rutina
+  const rutina=document.querySelector('.daily-section');
+  if(rutina) rutina.style.display=modules.rutina?'':'none';
+  // Metas inline section
+  const metasSec=document.getElementById('metasSection');
+  if(metasSec) metasSec.style.display=modules.metas?'':'none';
+  // Valores inline section
+  const valoresSec=document.getElementById('valoresSection');
+  if(valoresSec) valoresSec.style.display=modules.valores?'':'none';
+  // Cards section
+  const cardsSec=document.getElementById('cardsGrid')?.closest('.section');
+  if(cardsSec) cardsSec.style.display=modules.tarjetas?'':'none';
+  // Patient add-card button (style.display, not classList)
   const addOwnBtn=document.getElementById('addOwnCardBtn');
-  if(addOwnBtn) addOwnBtn.classList.toggle('hidden',!modules.tarjetasPaciente);
-  // Cards section visibility (hide whole section if tarjetas off)
-  const cardsSection=document.getElementById('cardsGrid')?.closest('.section');
-  if(cardsSection) cardsSection.style.display=modules.tarjetas?'':'none';
+  if(addOwnBtn) addOwnBtn.style.display=modules.tarjetasPaciente?'flex':'none';
 }
+
+// Toggle inline section collapse
+window.toggleSection=function(name){
+  const body=document.getElementById(name+'Body');
+  const chev=document.getElementById(name+'Chevron');
+  if(!body)return;
+  const closing=body.style.display!=='none';
+  body.style.display=closing?'none':'';
+  if(chev)chev.style.transform=closing?'rotate(0deg)':'rotate(180deg)';
+};
 let cards=[],routineTasks=[],valuesData=null,metasData={goals:[]},activeFilter='all';
 let gStats={...DEF_GSTATS},gamLoaded=false,achieveQueue=[],showingAchieve=false;
 const TODAY=new Date().toISOString().split('T')[0];
@@ -605,9 +463,8 @@ function getTodayXpGiven(){try{const s=JSON.parse(localStorage.getItem(XP_KEY)||
 function addToXpGiven(id){const g=getTodayXpGiven();if(!g.includes(id)){g.push(id);localStorage.setItem(XP_KEY,JSON.stringify({date:TODAY,ids:g}))}}
 
 // ── Drawers ───────────────────────────────────────────────────────────────
-window.openDrawer=function(name){document.getElementById(name+'Overlay').classList.add('open');document.body.style.overflow='hidden'};
-window.closeDrawer=function(name){document.getElementById(name+'Overlay').classList.remove('open');document.body.style.overflow=''};
-window.handleOverlayClick=function(e,name){if(e.target===document.getElementById(name+'Overlay'))closeDrawer(name)};
+// Drawers removed — sections now inline
+
 
 // ── XP / Level UI ─────────────────────────────────────────────────────────
 function showXpPopup(amt){const LEVELS=getLevels();const p=document.getElementById('xpPopup');p.textContent=`+${amt} XP`;p.style.background=LEVELS[gStats.level]?.color||'#636e72';p.classList.remove('show');void p.offsetWidth;p.classList.add('show');setTimeout(()=>p.classList.remove('show'),1800)}
